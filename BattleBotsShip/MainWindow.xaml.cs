@@ -26,6 +26,7 @@ namespace BattleBotsShip
         private int _rounds = 1;
         private int _refereshRate = 100;
         private bool _stopSimulation = false;
+        private bool _isRunning = false;
         private Dictionary<string, BoardModel> _attackerBoards = new Dictionary<string, BoardModel>();
         private Dictionary<string, BoardModel> _defenderBoards = new Dictionary<string, BoardModel>();
 
@@ -36,12 +37,21 @@ namespace BattleBotsShip
 
         private async void StartButton_Click(object sender, RoutedEventArgs e)
         {
-            StartButton.IsEnabled = false;
-            StopButton.IsEnabled = true;
+            if (_isRunning)
+                return;
+            if (_attackerBoards.Keys.Count == 0 || _defenderBoards.Keys.Count == 0)
+            {
+                MessageBox.Show("Select at least one board!");
+                return;
+            }
+
+            DisableSettings();
             _stopSimulation = false;
 
             _rounds = Int32.Parse(RoundsTextbox.Text);
             _refereshRate = Int32.Parse(RefreshRateTextbox.Text);
+
+            _isRunning = true;
 
             if (VisualizeCheckbox.IsChecked == true) {
                 await StartSimulationAsync();
@@ -53,9 +63,26 @@ namespace BattleBotsShip
 
         private void StopButton_Click(object sender, RoutedEventArgs e)
         {
+            EnableSettings();
+            _stopSimulation = true;
+        }
+
+        private void DisableSettings()
+        {
+            StartButton.IsEnabled = false;
+            StopButton.IsEnabled = true;
+            BoardSelectorGrid.IsEnabled = false;
+            DisablableSettings.IsEnabled = false;
+            DisablableGridTwo.IsEnabled = false;
+        }
+
+        private void EnableSettings()
+        {
             StartButton.IsEnabled = true;
             StopButton.IsEnabled = false;
-            _stopSimulation = true;
+            BoardSelectorGrid.IsEnabled = true;
+            DisablableSettings.IsEnabled = true;
+            DisablableGridTwo.IsEnabled = true;
         }
 
         private void NumbersOnly_TextChanged(object sender, TextCompositionEventArgs e)
@@ -84,6 +111,10 @@ namespace BattleBotsShip
             }
 
             Report(winners);
+
+            EnableSettings();
+
+            _isRunning = false;
         }
 
         private async Task StartSimulationAsync()
@@ -110,18 +141,22 @@ namespace BattleBotsShip
                 if (_stopSimulation)
                     break;
                 winners.Add(res);
-            }
+            }   
 
             Report(winners);
+
+            EnableSettings();
+
+            _isRunning = false;
         }
 
         private GameModel GetBoard()
         {
             return new GameModel(
                 null,
-                new RandomShotsOpponent(),
+                OpponentBuilder.GetOpponent(AttackerNameCombobox.Text),
                 null,
-                new RandomShotsOpponent(),
+                OpponentBuilder.GetOpponent(DefenderNameCombobox.Text),
                 GameModel.TurnState.Attacker);
         }
 
@@ -134,14 +169,20 @@ namespace BattleBotsShip
             {
                 Content = $"Attackers won {attackerWon} times and defender {defenderWon} times"
             });
-
-            StartButton.IsEnabled = true;
-            StopButton.IsEnabled = false;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             UpdateLayoutSelector();
+
+            foreach(var name in OpponentBuilder.OpponentOptions())
+            {
+                AttackerNameCombobox.Items.Add(name);
+                DefenderNameCombobox.Items.Add(name);
+            }
+
+            AttackerNameCombobox.SelectedIndex = 0;
+            DefenderNameCombobox.SelectedIndex = 0;
         }
 
         private void UpdateLayoutSelector()

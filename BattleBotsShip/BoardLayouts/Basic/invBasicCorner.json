@@ -7,14 +7,6 @@
       "Orientation": 2,
       "Location": {
         "X": 0,
-        "Y": 10
-      }
-    },
-    {
-      "Length": 3,
-      "Orientation": 2,
-      "Location": {
-        "X": 0,
         "Y": 9
       }
     },
@@ -27,7 +19,7 @@
       }
     },
     {
-      "Length": 4,
+      "Length": 3,
       "Orientation": 2,
       "Location": {
         "X": 0,
@@ -35,11 +27,19 @@
       }
     },
     {
-      "Length": 5,
+      "Length": 4,
       "Orientation": 2,
       "Location": {
         "X": 0,
         "Y": 6
+      }
+    },
+    {
+      "Length": 5,
+      "Orientation": 2,
+      "Location": {
+        "X": 0,
+        "Y": 5
       }
     }
   ]

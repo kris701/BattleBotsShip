@@ -30,11 +30,28 @@
             </StackPanel>
         </StackPanel>
 
-        <StackPanel x:Name="ResultsPanel" Grid.Row="1" Grid.Column="1">
-            <Label Content="Results"/>
-        </StackPanel>
+        <Grid x:Name="DisablableGridTwo" Grid.Row="1" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="35"/>
+                <RowDefinition Height="35"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
 
-        <Grid Grid.Row="1">
+            <Label Content="Attacker"/>
+            <ComboBox x:Name="AttackerNameCombobox" Grid.Column="1"/>
+            <Label Content="Defender" Grid.Row="1"/>
+            <ComboBox x:Name="DefenderNameCombobox" Grid.Column="1" Grid.Row="1"/>
+
+            <StackPanel x:Name="ResultsPanel" Grid.Row="2" Grid.ColumnSpan="2">
+                <Label Content="Results"/>
+            </StackPanel>
+        </Grid>
+
+        <Grid x:Name="BoardSelectorGrid" Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="35"/>
                 <RowDefinition/>

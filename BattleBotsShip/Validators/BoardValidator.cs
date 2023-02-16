@@ -24,7 +24,7 @@ namespace BattleBotsShip.Validators
                     if (ship.Location.X + ship.Length > board.Width)
                         throw new InvalidBoardException("Location of ship is outside of the board!");
                 }
-                else if (ship.Location.X > board.Width)
+                else if (ship.Location.X >= board.Width)
                     throw new InvalidBoardException("Location of ship is outside of the board!");
 
                 if (ship.Location.Y < 0)
@@ -34,7 +34,7 @@ namespace BattleBotsShip.Validators
                     if (ship.Location.Y + ship.Length > board.Height)
                         throw new InvalidBoardException("Location of ship is outside of the board!");
                 }
-                else if (ship.Location.Y > board.Height)
+                else if (ship.Location.Y >= board.Height)
                     throw new InvalidBoardException("Location of ship is outside of the board!");
 
                 for (int i = 0; i < ship.Length; i++)

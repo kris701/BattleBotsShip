@@ -1,13 +1,14 @@
-﻿using BattleBotsShip.Models;
-using BattleBotsShip.Tools;
+﻿using BattleshipSimulator;
+using BattleshipTools;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace BattleBotsShip.Bots
+namespace BattleshipAIs.RandomBased
 {
     /// <summary>
     /// A bot that what it hits something, it will try the adjacent points around it in the following rounds
@@ -22,7 +23,7 @@ namespace BattleBotsShip.Bots
         {
             if (!_isCrosshairState)
             {
-                Point firePoint = RndTools.GetRndNewPoint(opponentBoard);
+                Point firePoint = RndTools.GetRndNewPoint(opponentBoard.Width, opponentBoard.Height, opponentBoard.Shots);
                 if (opponentBoard.Fire(firePoint) >= BoardModel.HitState.Hit)
                 {
                     _lastHit = firePoint;
@@ -32,7 +33,7 @@ namespace BattleBotsShip.Bots
             }
             else
             {
-                Point firePoint;
+                Point firePoint = new Point(-1, -1);
 
                 while (true)
                 {
@@ -50,7 +51,7 @@ namespace BattleBotsShip.Bots
                         return;
                     }
 
-                    if (BoundTools.IsWithinBounds(opponentBoard, firePoint))
+                    if (BoundTools.IsWithinBounds(opponentBoard.Width, opponentBoard.Height, firePoint))
                         if (!opponentBoard.Shots.Contains(firePoint))
                             break;
 

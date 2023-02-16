@@ -1,19 +1,19 @@
-﻿using BattleBotsShip.Models;
-using BattleBotsShip.Tools;
+﻿using BattleshipSimulator;
+using BattleshipTools;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace BattleBotsShip.Bots
+namespace BattleshipAIs.RandomBased
 {
     /// <summary>
-    /// When a ship is it, it will check in lines in each direction, until it hits an empty space.
-    /// This basically means it will always remove a ship, if it hits it.
+    /// When a ship is it, it will check in lines in each direction.
     /// </summary>
-    public class ConditionalLineExplosionOpponent : IOpponent
+    public class LineExplosionOpponent : IOpponent
     {
         private bool _isCrosshairState = false;
         private Point _lastHit;
@@ -24,8 +24,8 @@ namespace BattleBotsShip.Bots
         {
             if (!_isCrosshairState)
             {
-                Point firePoint = RndTools.GetRndNewPoint(opponentBoard);
-                if (opponentBoard.Fire(firePoint) == BoardModel.HitState.Hit)
+                Point firePoint = RndTools.GetRndNewPoint(opponentBoard.Width, opponentBoard.Height, opponentBoard.Shots);
+                if (opponentBoard.Fire(firePoint) >= BoardModel.HitState.Hit)
                 {
                     _lastHit = firePoint;
                     _fireState = 0;
@@ -35,7 +35,7 @@ namespace BattleBotsShip.Bots
             }
             else
             {
-                Point firePoint;
+                Point firePoint = new Point(-1, -1);
 
                 while (true)
                 {
@@ -48,16 +48,11 @@ namespace BattleBotsShip.Bots
                     else if (_fireState == 3)
                         firePoint = new Point(_lastHit.X - _reach, _lastHit.Y);
 
-                    if (BoundTools.IsWithinBounds(opponentBoard, firePoint))
+                    if (BoundTools.IsWithinBounds(opponentBoard.Width, opponentBoard.Height, firePoint))
                     {
                         _reach++;
                         if (!opponentBoard.Shots.Contains(firePoint))
                             break;
-                        else if (!opponentBoard.Hits.Contains(firePoint))
-                        {
-                            _fireState++;
-                            _reach = 1;
-                        }
                     }
                     else
                     {
@@ -71,15 +66,8 @@ namespace BattleBotsShip.Bots
                         return;
                     }
                 }
-                var hitRes = opponentBoard.Fire(firePoint);
-                if (hitRes == BoardModel.HitState.Sunk)
-                {
-                    Reset();
-                } 
-                else if (hitRes == BoardModel.HitState.None) {
-                    _fireState++;
-                    _reach = 1;
-                }
+
+                opponentBoard.Fire(firePoint);
             }
         }
 

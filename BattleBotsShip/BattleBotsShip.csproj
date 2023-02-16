@@ -19,4 +19,10 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\BattleshipAIs\BattleshipAIs.csproj" />
+    <ProjectReference Include="..\BattleshipSimulator\BattleshipSimulator.csproj" />
+    <ProjectReference Include="..\BattleshipValidators\BattleshipValidators.csproj" />
+  </ItemGroup>
+
 </Project>

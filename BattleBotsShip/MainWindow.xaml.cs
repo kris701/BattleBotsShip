@@ -1,6 +1,6 @@
-﻿using BattleBotsShip.Bots;
-using BattleBotsShip.Models;
-using BattleBotsShip.Validators;
+﻿using BattleshipAIs;
+using BattleshipSimulator;
+using BattleshipValidators;
 using System;
 using System.Collections.Generic;
 using System.IO;

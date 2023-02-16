@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BattleBotsShip.Validators.Exceptions
+namespace BattleshipValidators.Exceptions
 {
     public class InvalidBoardException : Exception
     {

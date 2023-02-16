@@ -1,11 +1,10 @@
-﻿using BattleBotsShip.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BattleBotsShip.Bots
+namespace BattleshipSimulator
 {
     public interface IOpponent : IResetable
     {

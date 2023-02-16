@@ -1,4 +1,4 @@
-﻿using BattleBotsShip.Models;
+﻿using BattleshipSimulator;
 using System;
 using System.Collections.Generic;
 using System.Linq;

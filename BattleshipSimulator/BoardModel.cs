@@ -1,6 +1,6 @@
-﻿using BattleBotsShip.Bots;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -8,7 +8,7 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace BattleBotsShip.Models
+namespace BattleshipSimulator
 {
     public class BoardModel : IResetable
     {

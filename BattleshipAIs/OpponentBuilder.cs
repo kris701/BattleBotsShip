@@ -1,10 +1,12 @@
-﻿using System;
+﻿using BattleshipAIs.RandomBased;
+using BattleshipSimulator;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BattleBotsShip.Bots
+namespace BattleshipAIs
 {
     public static class OpponentBuilder
     {

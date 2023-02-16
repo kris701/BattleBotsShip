@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace BattleBotsShip.UserControls
+namespace BattleBotsShip.Views.UserControls
 {
     /// <summary>
     /// Interaction logic for VisualBoardModel.xaml

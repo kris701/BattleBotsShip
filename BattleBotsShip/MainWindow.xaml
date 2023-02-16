@@ -4,76 +4,25 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BattleBotsShip"
-        xmlns:usercontrols="clr-namespace:BattleBotsShip.UserControls"
         mc:Ignorable="d"
-        Title="Battle(bot)Ship" Height="550" Width="800" Loaded="Window_Loaded">
+        Title="Battle(bot)Ship" Height="550" Width="800">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="35"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
 
-        <StackPanel Orientation="Horizontal" Margin="5" Grid.ColumnSpan="3">
-            <Button x:Name="StartButton" Content="Start" Click="StartButton_Click" Width="100"/>
-            <Button x:Name="StopButton" Content="Stop" Click="StopButton_Click" Width="100" IsEnabled="False"/>
-            <StackPanel x:Name="DisablableSettings" Orientation="Horizontal">
-                <Label Content="Rounds:"/>
-                <TextBox x:Name="RoundsTextbox" Text="1" Width="100" VerticalContentAlignment="Center" PreviewTextInput="NumbersOnly_TextChanged"/>
-                <CheckBox x:Name="VisualizeCheckbox" Content="Visualize" VerticalAlignment="Center" IsChecked="True"/>
-                <Label Content="Refresh Rate:"/>
-                <TextBox x:Name="RefreshRateTextbox" Text="100" Width="100" VerticalContentAlignment="Center" PreviewTextInput="NumbersOnly_TextChanged"/>
-            </StackPanel>
+        <Canvas Background="Gray"/>
+        <StackPanel Orientation="Horizontal" Margin="5">
+            <Label Content="Battle(bot)Ships" Foreground="White"/>
+            <Separator Height="5" Width="10" Margin="5" Background="Black"/>
+            <Button x:Name="SingleBattlesButton" Content="Single Battles" Width="125" Click="SingleBattlesButton_Click"/>
+            <Separator Height="5" Width="10" Margin="5" Background="Black"/>
+            <Button x:Name="TurnamentsButton" Content="Turnament Battles" Width="125" Click="TurnamentsButton_Click"/>
         </StackPanel>
 
-        <Grid x:Name="DisablableGridTwo" Grid.Row="1" Grid.Column="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="35"/>
-                <RowDefinition Height="35"/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition Width="2*"/>
-            </Grid.ColumnDefinitions>
-
-            <Label Content="Attacker"/>
-            <ComboBox x:Name="AttackerNameCombobox" Grid.Column="1"/>
-            <Label Content="Defender" Grid.Row="1"/>
-            <ComboBox x:Name="DefenderNameCombobox" Grid.Column="1" Grid.Row="1"/>
-
-            <StackPanel x:Name="ResultsPanel" Grid.Row="2" Grid.ColumnSpan="2">
-                <Label Content="Results"/>
-            </StackPanel>
+        <Grid x:Name="MainViewGrid" Grid.Row="1">
+            
         </Grid>
-
-        <Grid x:Name="BoardSelectorGrid" Grid.Row="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="35"/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-
-            <Label Content="Selected Boards" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-
-            <ScrollViewer Grid.Row="1" Background="Gray">
-                <TreeView x:Name="LayoutSelector" Margin="5"/>
-            </ScrollViewer>
-        </Grid>
-
-        <Grid Grid.Row="1" Grid.Column="2">
-            <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-
-            <usercontrols:VisualBoardModel x:Name="VisualAttackerModel" Margin="10" Background="LightGray"/>
-            <usercontrols:VisualBoardModel x:Name="VisualDefenderModel" Grid.Row="1" Margin="10" Background="LightGray"/>
-
-        </Grid>
-
     </Grid>
 </Window>

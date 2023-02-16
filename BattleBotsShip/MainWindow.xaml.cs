@@ -135,6 +135,9 @@ namespace BattleBotsShip
             {
                 Content = $"Attackers won {attackerWon} times and defender {defenderWon} times"
             });
+
+            StartButton.IsEnabled = true;
+            StopButton.IsEnabled = false;
         }
     }
 }

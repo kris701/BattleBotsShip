@@ -1,4 +1,5 @@
 ﻿using BattleBotsShip.Models;
+using BattleBotsShip.Tools;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,13 +24,8 @@ namespace BattleBotsShip.Bots
         {
             if (!_isCrosshairState)
             {
-                Random rnd = new Random();
-                Point firePoint = new Point(rnd.Next(0, opponentBoard.Width), rnd.Next(0, opponentBoard.Height));
-                while (opponentBoard.Shots.Contains(firePoint))
-                {
-                    firePoint = new Point(rnd.Next(0, opponentBoard.Width), rnd.Next(0, opponentBoard.Height));
-                }
-                if (opponentBoard.IsHit(firePoint))
+                Point firePoint = RndTools.GetRndNewPoint(opponentBoard);
+                if (opponentBoard.IsHit(firePoint) == BoardModel.HitState.Hit)
                 {
                     _lastHit = firePoint;
                     _fireState = 0;
@@ -40,95 +36,49 @@ namespace BattleBotsShip.Bots
             else
             {
                 Point firePoint;
+
                 while (true)
                 {
                     if (_fireState == 0)
-                    {
                         firePoint = new Point(_lastHit.X, _lastHit.Y - _reach);
-                        if (IsValid(opponentBoard, firePoint))
-                        {
-                            _reach++;
-                            if (!opponentBoard.Shots.Contains(firePoint))
-                                break;
-                            else if (!opponentBoard.Hits.Contains(firePoint))
-                            {
-                                _fireState++;
-                                _reach = 1;
-                            }
-                        }
-                        else
-                        {
-                            _fireState++;
-                            _reach = 1;
-                        }
-                    }
                     else if (_fireState == 1)
-                    {
                         firePoint = new Point(_lastHit.X + _reach, _lastHit.Y);
-                        if (IsValid(opponentBoard, firePoint))
-                        {
-                            _reach++;
-                            if (!opponentBoard.Shots.Contains(firePoint))
-                                break;
-                            if (!opponentBoard.Hits.Contains(firePoint))
-                            {
-                                _fireState++;
-                                _reach = 1;
-                            }
-                        }
-                        else
-                        {
-                            _fireState++;
-                            _reach = 1;
-                        }
-                    }
                     else if (_fireState == 2)
-                    {
                         firePoint = new Point(_lastHit.X, _lastHit.Y + _reach);
-                        if (IsValid(opponentBoard, firePoint))
-                        {
-                            _reach++;
-                            if (!opponentBoard.Shots.Contains(firePoint))
-                                break;
-                            if (!opponentBoard.Hits.Contains(firePoint))
-                            {
-                                _fireState++;
-                                _reach = 1;
-                            }
-                        }
-                        else
+                    else if (_fireState == 3)
+                        firePoint = new Point(_lastHit.X - _reach, _lastHit.Y);
+
+                    if (BoundTools.IsWithinBounds(opponentBoard, firePoint))
+                    {
+                        _reach++;
+                        if (!opponentBoard.Shots.Contains(firePoint))
+                            break;
+                        else if (!opponentBoard.Hits.Contains(firePoint))
                         {
                             _fireState++;
                             _reach = 1;
                         }
                     }
-                    else if (_fireState == 3)
+                    else
                     {
-                        firePoint = new Point(_lastHit.X - _reach, _lastHit.Y);
-                        if (IsValid(opponentBoard, firePoint))
-                        {
-                            _reach++;
-                            if (!opponentBoard.Shots.Contains(firePoint))
-                                break;
-                            if (!opponentBoard.Hits.Contains(firePoint))
-                            {
-                                Reset();
-                                return;
-                            }
-                        }
-                        else
-                        {
-                            Reset();
-                            return;
-                        }
+                        _fireState++;
+                        _reach = 1;
+                    }
+
+                    if (_fireState >= 4)
+                    {
+                        Reset();
+                        return;
                     }
                 }
-                if (!opponentBoard.IsHit(firePoint))
+                var hitRes = opponentBoard.IsHit(firePoint);
+                if (hitRes == BoardModel.HitState.Sunk)
                 {
+                    Reset();
+                } 
+                else if (hitRes == BoardModel.HitState.None) {
                     _fireState++;
                     _reach = 1;
-                    if (_fireState >= 4)
-                        Reset();
                 }
             }
         }
@@ -138,19 +88,6 @@ namespace BattleBotsShip.Bots
             _isCrosshairState = false;
             _fireState = 0;
             _reach = 1;
-        }
-
-        private bool IsValid(BoardModel board, Point point)
-        {
-            if (point.X < 0)
-                return false;
-            if (point.X >= board.Width)
-                return false;
-            if (point.Y < 0)
-                return false;
-            if (point.Y >= board.Height)
-                return false;
-            return true;
         }
     }
 }

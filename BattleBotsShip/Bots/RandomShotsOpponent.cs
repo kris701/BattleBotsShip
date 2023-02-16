@@ -1,4 +1,5 @@
 ﻿using BattleBotsShip.Models;
+using BattleBotsShip.Tools;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,17 +9,11 @@ using System.Windows;
 
 namespace BattleBotsShip.Bots
 {
-    internal class RandomShotsOpponent : IOpponent
+    public class RandomShotsOpponent : IOpponent
     {
         public void FireOn(BoardModel opponentBoard)
         {
-            Random rnd = new Random();
-            Point firePoint = new Point(rnd.Next(0, opponentBoard.Width), rnd.Next(0, opponentBoard.Height));
-            while (opponentBoard.Shots.Contains(firePoint))
-            {
-                firePoint = new Point(rnd.Next(0, opponentBoard.Width), rnd.Next(0, opponentBoard.Height));
-            }
-            opponentBoard.IsHit(firePoint);
+            opponentBoard.IsHit(RndTools.GetRndNewPoint(opponentBoard));
         }
 
         public void Reset()

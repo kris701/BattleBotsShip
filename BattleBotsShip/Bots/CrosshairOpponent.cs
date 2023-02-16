@@ -1,4 +1,5 @@
 ﻿using BattleBotsShip.Models;
+using BattleBotsShip.Tools;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,13 +22,8 @@ namespace BattleBotsShip.Bots
         {
             if (!_isCrosshairState)
             {
-                Random rnd = new Random();
-                Point firePoint = new Point(rnd.Next(0, opponentBoard.Width), rnd.Next(0, opponentBoard.Height));
-                while (opponentBoard.Shots.Contains(firePoint))
-                {
-                    firePoint = new Point(rnd.Next(0, opponentBoard.Width), rnd.Next(0, opponentBoard.Height));
-                }
-                if (opponentBoard.IsHit(firePoint))
+                Point firePoint = RndTools.GetRndNewPoint(opponentBoard);
+                if (opponentBoard.IsHit(firePoint) >= BoardModel.HitState.Hit)
                 {
                     _lastHit = firePoint;
                     _fireState = 0;
@@ -38,45 +34,29 @@ namespace BattleBotsShip.Bots
             {
                 Point firePoint;
 
-                bool canFire = false;
-                while (!canFire)
+                while (true)
                 {
                     if (_fireState == 0)
-                    {
                         firePoint = new Point(_lastHit.X, _lastHit.Y - 1);
-                        if (IsValid(opponentBoard, firePoint))
-                            if (!opponentBoard.Shots.Contains(firePoint))
-                                canFire = true;
-                    } 
                     else if (_fireState == 1)
-                    {
                         firePoint = new Point(_lastHit.X + 1, _lastHit.Y);
-                        if (IsValid(opponentBoard, firePoint))
-                            if (!opponentBoard.Shots.Contains(firePoint))
-                                canFire = true;
-                    }
                     else if (_fireState == 2)
-                    {
                         firePoint = new Point(_lastHit.X, _lastHit.Y + 1);
-                        if (IsValid(opponentBoard, firePoint))
-                            if (!opponentBoard.Shots.Contains(firePoint))
-                                canFire = true;
-                    }
                     else if (_fireState == 3)
-                    {
                         firePoint = new Point(_lastHit.X - 1, _lastHit.Y);
-                        if (IsValid(opponentBoard, firePoint))
-                            if (!opponentBoard.Shots.Contains(firePoint))
-                                canFire = true;
-                    } 
                     else if (_fireState > 4)
                     {
-                        _isCrosshairState = false;
-                        _fireState = 0;
+                        Reset();
                         return;
                     }
+
+                    if (BoundTools.IsWithinBounds(opponentBoard, firePoint))
+                        if (!opponentBoard.Shots.Contains(firePoint))
+                            break;
+
                     _fireState++;
                 }
+
                 opponentBoard.IsHit(firePoint);
             }
         }
@@ -85,19 +65,6 @@ namespace BattleBotsShip.Bots
         {
             _isCrosshairState = false;
             _fireState = 0;
-        }
-
-        private bool IsValid(BoardModel board, Point point)
-        {
-            if (point.X < 0)
-                return false;
-            if (point.X >= board.Width)
-                return false;
-            if (point.Y < 0)
-                return false;
-            if (point.Y >= board.Height)
-                return false;
-            return true;
         }
     }
 }

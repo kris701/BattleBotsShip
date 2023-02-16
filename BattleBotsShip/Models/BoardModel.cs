@@ -12,6 +12,8 @@ namespace BattleBotsShip.Models
 {
     public class BoardModel : IResetable
     {
+        public enum HitState { None, Hit, Sunk }
+
         public int Width { get; }
         public int Height { get; }
 
@@ -33,7 +35,7 @@ namespace BattleBotsShip.Models
             Hits = new List<Point>();
         }
 
-        public bool IsHit(Point location)
+        public HitState IsHit(Point location)
         {
             foreach(var ship in Ships)
             {
@@ -42,16 +44,19 @@ namespace BattleBotsShip.Models
                     var hitState = ship.IsHit(location);
                     if (hitState != ShipModel.HitState.None)
                     {
-                        if (hitState == ShipModel.HitState.Sunk)
-                            _lostShips++;
                         Hits.Add(location);
                         Shots.Add(location);
-                        return true;
+                        if (hitState == ShipModel.HitState.Sunk)
+                        {
+                            _lostShips++;
+                            return HitState.Sunk;
+                        }
+                        return HitState.Hit;
                     }
                 }
             }
             Shots.Add(location);
-            return false;
+            return HitState.None;
         }
 
         public void Reset()

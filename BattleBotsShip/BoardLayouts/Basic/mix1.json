@@ -1,0 +1,46 @@
+{
+  "Width": 10,
+  "Height": 10,
+  "Ships": [
+    {
+      "Length": 2,
+      "Orientation": 2,
+      "Location": {
+        "X": 5,
+        "Y": 2
+      }
+    },
+    {
+      "Length": 3,
+      "Orientation": 1,
+      "Location": {
+        "X": 7,
+        "Y": 6
+      }
+    },
+    {
+      "Length": 3,
+      "Orientation": 1,
+      "Location": {
+        "X": 0,
+        "Y": 0
+      }
+    },
+    {
+      "Length": 4,
+      "Orientation": 2,
+      "Location": {
+        "X": 2,
+        "Y": 8
+      }
+    },
+    {
+      "Length": 5,
+      "Orientation": 2,
+      "Location": {
+        "X": 4,
+        "Y": 0
+      }
+    }
+  ]
+}

@@ -26,6 +26,8 @@ namespace BattleBotsShip
         private int _rounds = 1;
         private int _refereshRate = 100;
         private bool _stopSimulation = false;
+        private Dictionary<string, BoardModel> _attackerBoards = new Dictionary<string, BoardModel>();
+        private Dictionary<string, BoardModel> _defenderBoards = new Dictionary<string, BoardModel>();
 
         public MainWindow()
         {
@@ -70,13 +72,15 @@ namespace BattleBotsShip
 
             for (int i = 0; i < _rounds; i++)
             {
+                game.AttackerBoard = _attackerBoards[GetRandomKey(_attackerBoards)];
+                game.DefenderBoard = _defenderBoards[GetRandomKey(_defenderBoards)];
                 var res = GameModel.WinnerState.None;
                 while (res == GameModel.WinnerState.None)
                 {
                     res = game.Update();
                 }
-                winners.Add(res);
                 game.Reset();
+                winners.Add(res);
             }
 
             Report(winners);
@@ -90,6 +94,8 @@ namespace BattleBotsShip
 
             for (int i = 0; i < _rounds; i++)
             {
+                game.AttackerBoard = _attackerBoards[GetRandomKey(_attackerBoards)];
+                game.DefenderBoard = _defenderBoards[GetRandomKey(_defenderBoards)];
                 var res = GameModel.WinnerState.None;
                 while (res == GameModel.WinnerState.None)
                 {
@@ -100,10 +106,10 @@ namespace BattleBotsShip
                     if (_stopSimulation)
                         break;
                 }
+                game.Reset();
                 if (_stopSimulation)
                     break;
                 winners.Add(res);
-                game.Reset();
             }
 
             Report(winners);
@@ -111,17 +117,10 @@ namespace BattleBotsShip
 
         private GameModel GetBoard()
         {
-            BoardModel board1 = JsonSerializer.Deserialize<BoardModel>(File.ReadAllText("BoardLayouts/basicCorner.json"));
-            BoardModel board2 = JsonSerializer.Deserialize<BoardModel>(File.ReadAllText("BoardLayouts/basicCorner.json"));
-
-            BoardValidator validator = new BoardValidator();
-            validator.ValidateBoard(board1);
-            validator.ValidateBoard(board2);
-
             return new GameModel(
-                board1,
+                null,
                 new RandomShotsOpponent(),
-                board2,
+                null,
                 new RandomShotsOpponent(),
                 GameModel.TurnState.Attacker);
         }
@@ -138,6 +137,87 @@ namespace BattleBotsShip
 
             StartButton.IsEnabled = true;
             StopButton.IsEnabled = false;
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            UpdateLayoutSelector();
+        }
+
+        private void UpdateLayoutSelector()
+        {
+            LayoutSelector.Items.Clear();
+            var root = new TreeViewItem() { 
+                Header = "Root",
+                IsExpanded = true
+            };
+            DirectoryInfo info = new DirectoryInfo("BoardLayouts");
+            AddOptions(root, info);
+            LayoutSelector.Items.Add(root);
+        }
+
+        private void AddOptions(TreeViewItem parentItem, DirectoryInfo directory)
+        {
+            var newItem = new TreeViewItem()
+            {
+                Header = directory.Name,
+                IsExpanded = true
+            };
+            foreach(var subDir in directory.EnumerateDirectories())
+            {
+                AddOptions(newItem, subDir);
+            }
+            foreach (var file in directory.EnumerateFiles())
+            {
+                var fileItem = new TreeViewItem()
+                {
+                    Header = file.Name,
+                    Tag = file.FullName,
+                    IsExpanded = true
+                };
+                fileItem.MouseDoubleClick += ToggleBoard_Click;
+                newItem.Items.Add(fileItem);
+            }
+            parentItem.Items.Add(newItem);
+        }
+
+        private void ToggleBoard_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is TreeViewItem item) {
+                if (item.Tag is string fullname) {
+                    if (_attackerBoards.ContainsKey(fullname))
+                    {
+                        _attackerBoards.Remove(fullname);
+                        _defenderBoards.Remove(fullname);
+                        item.Background = Brushes.Transparent;
+                    }
+                    else
+                    {
+                        BoardValidator validator = new BoardValidator();
+                        validator.ValidateBoard(GetBoard(fullname));
+
+                        _attackerBoards.Add(fullname, GetBoard(fullname));
+                        _defenderBoards.Add(fullname, GetBoard(fullname));
+                        item.Background = Brushes.LightGreen;
+                    }
+                    item.IsSelected = false;
+                }
+            }
+        }
+
+        private BoardModel GetBoard(string file)
+        {
+            var text = File.ReadAllText(file);
+            var model = JsonSerializer.Deserialize<BoardModel>(text);
+            if (model == null)
+                throw new ArgumentNullException("Invalid board!");
+            return model;
+        }
+
+        Random _rnd = new Random();
+        private string GetRandomKey(Dictionary<string, BoardModel> dict)
+        {
+            return dict.Keys.ToList()[_rnd.Next(0,dict.Keys.Count)];
         }
     }
 }

@@ -19,14 +19,25 @@ namespace BattleBotsShip.Validators
             {
                 if (ship.Location.X < 0)
                     throw new InvalidBoardException("Location of ship is outside of the board!");
-                if (ship.Location.X + ship.Length > board.Width)
-                    throw new InvalidBoardException("Location of ship is outside of the board!");
-                if (ship.Location.Y < 0)
-                    throw new InvalidBoardException("Location of ship is outside of the board!");
-                if (ship.Location.Y + ship.Length > board.Height)
+                if (ship.Orientation == ShipModel.OrientationDirection.EW)
+                {
+                    if (ship.Location.X + ship.Length > board.Width)
+                        throw new InvalidBoardException("Location of ship is outside of the board!");
+                }
+                else if (ship.Location.X > board.Width)
                     throw new InvalidBoardException("Location of ship is outside of the board!");
 
-                for(int i = 0; i < ship.Length; i++)
+                if (ship.Location.Y < 0)
+                    throw new InvalidBoardException("Location of ship is outside of the board!");
+                if (ship.Orientation == ShipModel.OrientationDirection.NS)
+                {
+                    if (ship.Location.Y + ship.Length > board.Height)
+                        throw new InvalidBoardException("Location of ship is outside of the board!");
+                }
+                else if (ship.Location.Y > board.Height)
+                    throw new InvalidBoardException("Location of ship is outside of the board!");
+
+                for (int i = 0; i < ship.Length; i++)
                 {
                     var newPoint = new Point();
                     if (ship.Orientation == ShipModel.OrientationDirection.NS)

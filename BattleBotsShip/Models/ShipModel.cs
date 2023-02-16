@@ -33,13 +33,13 @@ namespace BattleBotsShip.Models
             if (IsSunk) 
                 return HitState.Sunk;
 
-            if (Orientation == ShipModel.OrientationDirection.NS)
+            if (Orientation == OrientationDirection.NS)
             {
                 if (Location.X == location.X)
                     if (location.Y >= Location.Y && location.Y < Location.Y + Length)
                         return RegisterHit(location);
             }
-            else if (Orientation == ShipModel.OrientationDirection.EW)
+            else if (Orientation == OrientationDirection.EW)
             {
                 if (Location.Y == location.Y)
                     if (location.X >= Location.X && location.X < Location.X + Length)

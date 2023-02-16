@@ -9,7 +9,8 @@ namespace BattleBotsShip.Bots
     public static class OpponentBuilder
     {
         private static Dictionary<string, IOpponent> _opponents = new Dictionary<string, IOpponent> {
-            { "Random", new RandomShotsOpponent() }
+            { "Random", new RandomShotsOpponent() },
+            { "Crosshair", new CrosshairOpponent() }
         };
 
         public static List<string> OpponentOptions() => _opponents.Keys.ToList();

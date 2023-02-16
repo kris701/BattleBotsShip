@@ -8,6 +8,9 @@ using System.Windows;
 
 namespace BattleBotsShip.Bots
 {
+    /// <summary>
+    /// A bot that what it hits something, it will try the adjacent points around it in the following rounds
+    /// </summary>
     public class CrosshairOpponent : IOpponent
     {
         private bool _isCrosshairState = false;

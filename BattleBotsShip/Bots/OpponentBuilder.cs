@@ -11,7 +11,8 @@ namespace BattleBotsShip.Bots
         private static Dictionary<string, IOpponent> _opponents = new Dictionary<string, IOpponent> {
             { "Random", new RandomShotsOpponent() },
             { "Crosshair", new CrosshairOpponent() },
-            { "LineExplosion", new LineExplosionOpponent() }
+            { "LineExplosion", new LineExplosionOpponent() },
+            { "ConditionalLineExplosion", new ConditionalLineExplosionOpponent() },
         };
 
         public static List<string> OpponentOptions() => _opponents.Keys.ToList();

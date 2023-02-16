@@ -9,9 +9,10 @@ using System.Windows;
 namespace BattleBotsShip.Bots
 {
     /// <summary>
-    /// When a ship is it, it will check in lines in each direction.
+    /// When a ship is it, it will check in lines in each direction, until it hits an empty space.
+    /// This basically means it will always remove a ship, if it hits it.
     /// </summary>
-    public class LineExplosionOpponent : IOpponent
+    public class ConditionalLineExplosionOpponent : IOpponent
     {
         private bool _isCrosshairState = false;
         private Point _lastHit;
@@ -49,6 +50,11 @@ namespace BattleBotsShip.Bots
                             _reach++;
                             if (!opponentBoard.Shots.Contains(firePoint))
                                 break;
+                            else if (!opponentBoard.Hits.Contains(firePoint))
+                            {
+                                _fireState++;
+                                _reach = 1;
+                            }
                         }
                         else
                         {
@@ -64,6 +70,11 @@ namespace BattleBotsShip.Bots
                             _reach++;
                             if (!opponentBoard.Shots.Contains(firePoint))
                                 break;
+                            if (!opponentBoard.Hits.Contains(firePoint))
+                            {
+                                _fireState++;
+                                _reach = 1;
+                            }
                         }
                         else
                         {
@@ -79,6 +90,11 @@ namespace BattleBotsShip.Bots
                             _reach++;
                             if (!opponentBoard.Shots.Contains(firePoint))
                                 break;
+                            if (!opponentBoard.Hits.Contains(firePoint))
+                            {
+                                _fireState++;
+                                _reach = 1;
+                            }
                         }
                         else
                         {
@@ -94,6 +110,11 @@ namespace BattleBotsShip.Bots
                             _reach++;
                             if (!opponentBoard.Shots.Contains(firePoint))
                                 break;
+                            if (!opponentBoard.Hits.Contains(firePoint))
+                            {
+                                Reset();
+                                return;
+                            }
                         }
                         else
                         {
@@ -102,7 +123,13 @@ namespace BattleBotsShip.Bots
                         }
                     }
                 }
-                opponentBoard.IsHit(firePoint);
+                if (!opponentBoard.IsHit(firePoint))
+                {
+                    _fireState++;
+                    _reach = 1;
+                    if (_fireState >= 4)
+                        Reset();
+                }
             }
         }
 

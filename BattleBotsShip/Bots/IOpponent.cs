@@ -9,6 +9,6 @@ namespace BattleBotsShip.Bots
 {
     public interface IOpponent : IResetable
     {
-        public void FireOn(BoardModel opponentBoard);
+        public void DoMoveOn(BoardModel opponentBoard);
     }
 }

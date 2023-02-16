@@ -35,7 +35,7 @@ namespace BattleBotsShip.Models
             Hits = new List<Point>();
         }
 
-        public HitState IsHit(Point location)
+        public HitState Fire(Point location)
         {
             foreach(var ship in Ships)
             {

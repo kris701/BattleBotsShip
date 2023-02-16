@@ -18,12 +18,12 @@ namespace BattleBotsShip.Bots
         private Point _lastHit;
         private int _fireState = 0;
 
-        public void FireOn(BoardModel opponentBoard)
+        public void DoMoveOn(BoardModel opponentBoard)
         {
             if (!_isCrosshairState)
             {
                 Point firePoint = RndTools.GetRndNewPoint(opponentBoard);
-                if (opponentBoard.IsHit(firePoint) >= BoardModel.HitState.Hit)
+                if (opponentBoard.Fire(firePoint) >= BoardModel.HitState.Hit)
                 {
                     _lastHit = firePoint;
                     _fireState = 0;
@@ -57,7 +57,7 @@ namespace BattleBotsShip.Bots
                     _fireState++;
                 }
 
-                opponentBoard.IsHit(firePoint);
+                opponentBoard.Fire(firePoint);
             }
         }
 

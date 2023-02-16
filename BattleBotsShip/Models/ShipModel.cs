@@ -58,7 +58,7 @@ namespace BattleBotsShip.Models
                 return HitState.Sunk;
             }
             else
-            return HitState.Hit;
+                return HitState.Hit;
         }
 
         public void Reset()

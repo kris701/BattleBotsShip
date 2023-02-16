@@ -35,13 +35,13 @@ namespace BattleBotsShip.Models
         public WinnerState Update()
         {
             if (Turn == TurnState.Attacker) {
-                AttackerBot.FireOn(DefenderBoard);
+                AttackerBot.DoMoveOn(DefenderBoard);
                 if (DefenderBoard.HaveLost)
                     return WinnerState.Attacker;
                 Turn = TurnState.Defender;
             } else
             {
-                DefenderBot.FireOn(AttackerBoard);
+                DefenderBot.DoMoveOn(AttackerBoard);
                 if (AttackerBoard.HaveLost)
                     return WinnerState.Defender;
                 Turn = TurnState.Attacker;

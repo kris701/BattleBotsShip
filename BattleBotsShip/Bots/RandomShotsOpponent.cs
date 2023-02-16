@@ -11,9 +11,9 @@ namespace BattleBotsShip.Bots
 {
     public class RandomShotsOpponent : IOpponent
     {
-        public void FireOn(BoardModel opponentBoard)
+        public void DoMoveOn(BoardModel opponentBoard)
         {
-            opponentBoard.IsHit(RndTools.GetRndNewPoint(opponentBoard));
+            opponentBoard.Fire(RndTools.GetRndNewPoint(opponentBoard));
         }
 
         public void Reset()

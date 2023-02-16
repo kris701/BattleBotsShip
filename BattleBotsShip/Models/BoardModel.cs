@@ -18,6 +18,8 @@ namespace BattleBotsShip.Models
         public List<ShipModel> Ships { get; }
         [JsonIgnore]
         public List<Point> Shots { get; }
+        [JsonIgnore]
+        public List<Point> Hits { get; }
         private int _lostShips = 0;
         [JsonIgnore]
         public bool HaveLost { get { return _lostShips >= Ships.Count; } }
@@ -28,20 +30,27 @@ namespace BattleBotsShip.Models
             Height = height;
             Ships = ships;
             Shots = new List<Point>();
+            Hits = new List<Point>();
         }
 
         public bool IsHit(Point location)
         {
             foreach(var ship in Ships)
             {
-                var hitState = ship.IsHit(location);
-                if (hitState != ShipModel.HitState.None)
+                if (!ship.IsSunk)
                 {
-                    if (hitState == ShipModel.HitState.Sunk)
-                        _lostShips++;
-                    return true;
+                    var hitState = ship.IsHit(location);
+                    if (hitState != ShipModel.HitState.None)
+                    {
+                        if (hitState == ShipModel.HitState.Sunk)
+                            _lostShips++;
+                        Hits.Add(location);
+                        Shots.Add(location);
+                        return true;
+                    }
                 }
             }
+            Shots.Add(location);
             return false;
         }
 
@@ -50,6 +59,7 @@ namespace BattleBotsShip.Models
             foreach (var ship in Ships)
                 ship.Reset();
             Shots.Clear();
+            Hits.Clear();
             _lostShips = 0;
         }
     }

@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -22,22 +23,43 @@ namespace BattleBotsShip
     public partial class MainWindow : Window
     {
         private int _rounds = 1;
+        private int _refereshRate = 100;
+        private bool _stopSimulation = false;
+        private bool _isRunning = false;
+
         public MainWindow()
         {
             InitializeComponent();
         }
 
-        private void StartButton_Click(object sender, RoutedEventArgs e)
+        private async void StartButton_Click(object sender, RoutedEventArgs e)
         {
+            StartButton.IsEnabled = false;
+            StopButton.IsEnabled = true;
+            _stopSimulation = false;
 
+            _rounds = Int32.Parse(RoundsTextbox.Text);
+            _refereshRate = Int32.Parse(RefreshRateTextbox.Text);
+
+            if (VisualizeCheckbox.IsChecked == true) {
+                await StartSimulationAsync();
+            } else if (VisualizeCheckbox.IsChecked == false)
+            {
+                StartSimulation();
+            }
         }
 
-        private void RoundsTextbox_TextChanged(object sender, TextChangedEventArgs e)
+        private void StopButton_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is TextBox box)
-            {
-                _rounds = Int32.Parse(box.Text);
-            }
+            StartButton.IsEnabled = true;
+            StopButton.IsEnabled = false;
+            _stopSimulation = true;
+        }
+
+        private void NumbersOnly_TextChanged(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
         }
 
         private void StartSimulation()
@@ -48,7 +70,7 @@ namespace BattleBotsShip
 
             for (int i = 0; i < _rounds; i++)
             {
-                var res = game.Update();
+                var res = GameModel.WinnerState.None;
                 while (res == GameModel.WinnerState.None)
                 {
                     res = game.Update();
@@ -57,13 +79,7 @@ namespace BattleBotsShip
                 game.Reset();
             }
 
-            int attackerWon = winners.Count(x => x == GameModel.WinnerState.Attacker);
-            int defenderWon = winners.Count(x => x == GameModel.WinnerState.Defender);
-
-            ResultsPanel.Children.Add(new Label()
-            {
-                Content = $"Attackers won {attackerWon} times and defender {defenderWon} times"
-            });
+            Report(winners);
         }
 
         private async Task StartSimulationAsync()
@@ -74,26 +90,23 @@ namespace BattleBotsShip
 
             for (int i = 0; i < _rounds; i++)
             {
-                var res = game.Update();
+                var res = GameModel.WinnerState.None;
                 while (res == GameModel.WinnerState.None)
                 {
                     res = game.Update();
                     VisualAttackerModel.Update(game.AttackerBoard);
                     VisualDefenderModel.Update(game.DefenderBoard);
-                    await Task.Delay(100);
+                    await Task.Delay(_refereshRate);
+                    if (_stopSimulation)
+                        break;
                 }
+                if (_stopSimulation)
+                    break;
                 winners.Add(res);
                 game.Reset();
-                await Task.Delay(1000);
             }
 
-            int attackerWon = winners.Count(x => x == GameModel.WinnerState.Attacker);
-            int defenderWon = winners.Count(x => x == GameModel.WinnerState.Defender);
-
-            ResultsPanel.Children.Add(new Label()
-            {
-                Content = $"Attackers won {attackerWon} times and defender {defenderWon} times"
-            });
+            Report(winners);
         }
 
         private GameModel GetBoard()
@@ -106,6 +119,17 @@ namespace BattleBotsShip
                 board2,
                 new RandomShotsOpponent(),
                 GameModel.TurnState.Attacker);
+        }
+
+        private void Report(List<GameModel.WinnerState> winners)
+        {
+            int attackerWon = winners.Count(x => x == GameModel.WinnerState.Attacker);
+            int defenderWon = winners.Count(x => x == GameModel.WinnerState.Defender);
+
+            ResultsPanel.Children.Add(new Label()
+            {
+                Content = $"Attackers won {attackerWon} times and defender {defenderWon} times"
+            });
         }
     }
 }

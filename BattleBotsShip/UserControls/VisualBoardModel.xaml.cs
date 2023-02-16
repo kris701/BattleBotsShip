@@ -34,6 +34,71 @@ namespace BattleBotsShip.UserControls
                 for (int i = 0; i < board.Height; i++)
                     MainGrid.RowDefinitions.Add(new RowDefinition());
             }
+
+            if (MainGrid.ColumnDefinitions.Count != board.Width)
+            {
+                MainGrid.ColumnDefinitions.Clear();
+                for (int i = 0; i < board.Width; i++)
+                    MainGrid.ColumnDefinitions.Add(new ColumnDefinition());
+            }
+
+            MainGrid.Children.Clear();
+            foreach (var hitPoint in board.Shots)
+            {
+                var canvas = new Canvas()
+                {
+                    Background = Brushes.Gray
+                };
+                Grid.SetRow(canvas, (int)hitPoint.Y);
+                Grid.SetColumn(canvas, (int)hitPoint.X);
+
+                MainGrid.Children.Add(canvas);
+            }
+
+            foreach (var hitPoint in board.Hits)
+            {
+                var canvas = new Canvas()
+                {
+                    Background = Brushes.Black
+                };
+                Grid.SetRow(canvas, (int)hitPoint.Y);
+                Grid.SetColumn(canvas, (int)hitPoint.X);
+
+                MainGrid.Children.Add(canvas);
+            }
+
+            foreach(var ship in board.Ships)
+            {
+                var color = Brushes.Blue;
+                if (ship.IsSunk)
+                    color = Brushes.Red;
+
+                if (ship.Orientation == ShipModel.OrientationDirection.EW)
+                {
+                    var canvas = new Canvas()
+                    {
+                        Background = color,
+                        Margin = new Thickness(5)
+                    };
+                    Grid.SetColumnSpan(canvas, ship.Length);
+                    Grid.SetRow(canvas, (int)ship.Location.Y);
+                    Grid.SetColumn(canvas, (int)ship.Location.X);
+
+                    MainGrid.Children.Add(canvas);
+                } else if (ship.Orientation == ShipModel.OrientationDirection.NS)
+                {
+                    var canvas = new Canvas()
+                    {
+                        Background = color,
+                        Margin = new Thickness(5)
+                    };
+                    Grid.SetRowSpan(canvas, ship.Length);
+                    Grid.SetRow(canvas, (int)ship.Location.Y);
+                    Grid.SetColumn(canvas, (int)ship.Location.X);
+
+                    MainGrid.Children.Add(canvas);
+                }
+            }
         }
     }
 }

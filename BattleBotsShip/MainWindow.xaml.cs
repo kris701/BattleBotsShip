@@ -1,5 +1,6 @@
 ﻿using BattleBotsShip.Bots;
 using BattleBotsShip.Models;
+using BattleBotsShip.Validators;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -25,7 +26,6 @@ namespace BattleBotsShip
         private int _rounds = 1;
         private int _refereshRate = 100;
         private bool _stopSimulation = false;
-        private bool _isRunning = false;
 
         public MainWindow()
         {
@@ -111,8 +111,13 @@ namespace BattleBotsShip
 
         private GameModel GetBoard()
         {
-            BoardModel board1 = JsonSerializer.Deserialize<BoardModel>(File.ReadAllText("board1.json"));
-            BoardModel board2 = JsonSerializer.Deserialize<BoardModel>(File.ReadAllText("board2.json"));
+            BoardModel board1 = JsonSerializer.Deserialize<BoardModel>(File.ReadAllText("BoardLayouts/basicCorner.json"));
+            BoardModel board2 = JsonSerializer.Deserialize<BoardModel>(File.ReadAllText("BoardLayouts/basicCorner.json"));
+
+            BoardValidator validator = new BoardValidator();
+            validator.ValidateBoard(board1);
+            validator.ValidateBoard(board2);
+
             return new GameModel(
                 board1,
                 new RandomShotsOpponent(),

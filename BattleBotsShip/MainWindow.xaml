@@ -19,6 +19,8 @@
             <Button x:Name="SingleBattlesButton" Content="Single Battles" Width="125" Click="SingleBattlesButton_Click"/>
             <Separator Height="5" Width="10" Margin="5" Background="Black"/>
             <Button x:Name="TurnamentsButton" Content="Turnament Battles" Width="125" Click="TurnamentsButton_Click"/>
+            <Separator Height="5" Width="10" Margin="5" Background="Black"/>
+            <Button x:Name="BoardDesignerButton" Content="Board Designer" Width="125" Click="BoardDesignerButton_Click"/>
         </StackPanel>
 
         <Grid x:Name="MainViewGrid" Grid.Row="1">

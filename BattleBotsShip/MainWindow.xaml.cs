@@ -20,5 +20,11 @@ namespace BattleBotsShip
         {
             MainViewGrid.Children.Clear();
         }
+
+        private void BoardDesignerButton_Click(object sender, RoutedEventArgs e)
+        {
+            MainViewGrid.Children.Clear();
+            MainViewGrid.Children.Add(new BoardDesignerView());
+        }
     }
 }

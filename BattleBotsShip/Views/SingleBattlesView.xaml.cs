@@ -29,7 +29,7 @@ namespace BattleBotsShip.Views
     /// </summary>
     public partial class SingleBattlesView : UserControl
     {
-        CancellationTokenSource _cts = new CancellationTokenSource();
+        private CancellationTokenSource _cts = new CancellationTokenSource();
 
         public SingleBattlesView()
         {

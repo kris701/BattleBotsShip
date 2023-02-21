@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BattleshipTools", "Battlesh
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BattleshipValidators", "BattleshipValidators\BattleshipValidators.csproj", "{CB49600B-7AAA-41CB-A48E-D20EC297C54E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BattleshipModels", "BattleshipModels\BattleshipModels.csproj", "{3F4CB73E-B008-4F89-A200-B4747BE199F2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BattleshipModels", "BattleshipModels\BattleshipModels.csproj", "{3F4CB73E-B008-4F89-A200-B4747BE199F2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BattleshipTurnaments", "BattleshipTurnaments\BattleshipTurnaments.csproj", "{64BE9F7A-B4DC-460D-9CF2-BB200A1C3E8D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{3F4CB73E-B008-4F89-A200-B4747BE199F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3F4CB73E-B008-4F89-A200-B4747BE199F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3F4CB73E-B008-4F89-A200-B4747BE199F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64BE9F7A-B4DC-460D-9CF2-BB200A1C3E8D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64BE9F7A-B4DC-460D-9CF2-BB200A1C3E8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64BE9F7A-B4DC-460D-9CF2-BB200A1C3E8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64BE9F7A-B4DC-460D-9CF2-BB200A1C3E8D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

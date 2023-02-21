@@ -101,14 +101,14 @@ namespace BattleBotsShip.Views
         {
             var game = GetBoard();
 
-            List<GameModel.WinnerState> winners = new List<GameModel.WinnerState>();
+            List<IGameSimulator.WinnerState> winners = new List<IGameSimulator.WinnerState>();
 
             for (int i = 0; i < _rounds; i++)
             {
                 game.AttackerBoard = new BoardSimulator(_attackerBoards[GetRandomKey(_attackerBoards)]);
                 game.DefenderBoard = new BoardSimulator(_defenderBoards[GetRandomKey(_defenderBoards)]);
-                var res = GameModel.WinnerState.None;
-                while (res == GameModel.WinnerState.None)
+                var res = IGameSimulator.WinnerState.None;
+                while (res == IGameSimulator.WinnerState.None)
                 {
                     res = game.Update();
                 }
@@ -127,14 +127,14 @@ namespace BattleBotsShip.Views
         {
             var game = GetBoard();
 
-            List<GameModel.WinnerState> winners = new List<GameModel.WinnerState>();
+            List<IGameSimulator.WinnerState> winners = new List<IGameSimulator.WinnerState>();
 
             for (int i = 0; i < _rounds; i++)
             {
                 game.AttackerBoard = new BoardSimulator(_attackerBoards[GetRandomKey(_attackerBoards)]);
                 game.DefenderBoard = new BoardSimulator(_defenderBoards[GetRandomKey(_defenderBoards)]);
-                var res = GameModel.WinnerState.None;
-                while (res == GameModel.WinnerState.None)
+                var res = IGameSimulator.WinnerState.None;
+                while (res == IGameSimulator.WinnerState.None)
                 {
                     res = game.Update();
                     VisualAttackerModel.Update(game.AttackerBoard);
@@ -156,20 +156,20 @@ namespace BattleBotsShip.Views
             _isRunning = false;
         }
 
-        private GameModel GetBoard()
+        private IGameSimulator GetBoard()
         {
             return new GameModel(
                 null,
                 OpponentBuilder.GetOpponent(AttackerNameCombobox.Text),
                 null,
                 OpponentBuilder.GetOpponent(DefenderNameCombobox.Text),
-                GameModel.TurnState.Attacker);
+                IGameSimulator.TurnState.Attacker);
         }
 
-        private void Report(List<GameModel.WinnerState> winners)
+        private void Report(List<IGameSimulator.WinnerState> winners)
         {
-            int attackerWon = winners.Count(x => x == GameModel.WinnerState.Attacker);
-            int defenderWon = winners.Count(x => x == GameModel.WinnerState.Defender);
+            int attackerWon = winners.Count(x => x == IGameSimulator.WinnerState.Attacker);
+            int defenderWon = winners.Count(x => x == IGameSimulator.WinnerState.Defender);
 
             ResultsPanel.Children.Add(new Label()
             {

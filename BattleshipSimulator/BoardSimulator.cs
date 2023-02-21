@@ -32,7 +32,8 @@ namespace BattleshipSimulator
 
         public IBoardSimulator.HitState Fire(Point location)
         {
-            if (Board.HitPositions.Keys.Contains(location))
+            Shots.Add(location);
+            if (Board.HitPositions.Keys.Contains(location) && !Hits.Contains(location))
             {
                 var ship = Board.HitPositions[location];
                 if (_shipHits.ContainsKey(ship))
@@ -48,7 +49,6 @@ namespace BattleshipSimulator
                 else
                     return IBoardSimulator.HitState.Hit;
             }
-            Shots.Add(location);
             return IBoardSimulator.HitState.None;
         }
 

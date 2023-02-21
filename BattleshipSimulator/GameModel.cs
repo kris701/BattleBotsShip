@@ -8,21 +8,16 @@ using BattleshipSimulator.DataModels;
 
 namespace BattleshipSimulator
 {
-    public class GameModel : IResetable
+    public class GameModel : IGameSimulator
     {
-        public enum WinnerState { None, Attacker, Defender }
-        public enum TurnState { None, Attacker, Defender }
-
-        public BoardSimulator AttackerBoard { get; set; }
-        [JsonIgnore]
+        public IBoardSimulator AttackerBoard { get; set; }
         public IOpponent AttackerBot { get; }
-        public BoardSimulator DefenderBoard { get; set; }
-        [JsonIgnore]
+        public IBoardSimulator DefenderBoard { get; set; }
         public IOpponent DefenderBot { get; }
-        private TurnState _originalTurn;
-        public TurnState Turn { get; internal set; }
+        private IGameSimulator.TurnState _originalTurn;
+        public IGameSimulator.TurnState Turn { get; internal set; }
 
-        public GameModel(BoardSimulator attackerBoard, IOpponent attackerBot, BoardSimulator defenderBoard, IOpponent defenderBot, TurnState turn)
+        public GameModel(IBoardSimulator attackerBoard, IOpponent attackerBot, IBoardSimulator defenderBoard, IOpponent defenderBot, IGameSimulator.TurnState turn)
         {
             AttackerBoard = attackerBoard;
             AttackerBot = attackerBot;
@@ -32,21 +27,21 @@ namespace BattleshipSimulator
             _originalTurn = turn;
         }
 
-        public WinnerState Update()
+        public IGameSimulator.WinnerState Update()
         {
-            if (Turn == TurnState.Attacker) {
+            if (Turn == IGameSimulator.TurnState.Attacker) {
                 AttackerBot.DoMoveOn(DefenderBoard);
                 if (DefenderBoard.HaveLost)
-                    return WinnerState.Attacker;
-                Turn = TurnState.Defender;
+                    return IGameSimulator.WinnerState.Attacker;
+                Turn = IGameSimulator.TurnState.Defender;
             } else
             {
                 DefenderBot.DoMoveOn(AttackerBoard);
                 if (AttackerBoard.HaveLost)
-                    return WinnerState.Defender;
-                Turn = TurnState.Attacker;
+                    return IGameSimulator.WinnerState.Defender;
+                Turn = IGameSimulator.TurnState.Attacker;
             }
-            return WinnerState.None;
+            return IGameSimulator.WinnerState.None;
         }
 
         public void Reset()

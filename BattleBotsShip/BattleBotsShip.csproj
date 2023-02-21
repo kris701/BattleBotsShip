@@ -8,16 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Update="BoardLayouts\Basic\mix1.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="BoardLayouts\Basic\invBasicCorner.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="BoardLayouts\Basic\basicCorner.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="BoardLayouts\RandomlyGenerated\Random-893772.json">
+    <None Update="BoardLayouts\**">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

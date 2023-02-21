@@ -23,7 +23,7 @@ namespace MyApp // Note: actual namespace depends on the project name.
                     {
                         newShips.Add(new ShipModel(
                             boardDefinition.Ships[j].Length,
-                            (IShip.OrientationDirection)rnd.Next((int)IShip.OrientationDirection.NS, (int)IShip.OrientationDirection.EW),
+                            (IShip.OrientationDirection)rnd.Next((int)IShip.OrientationDirection.NS, (int)IShip.OrientationDirection.EW + 1),
                             new Point(
                                 rnd.Next(0, boardDefinition.Width),
                                 rnd.Next(0, boardDefinition.Height)

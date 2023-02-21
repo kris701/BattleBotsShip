@@ -30,7 +30,6 @@ namespace BattleBotsShip.Views
     public partial class SingleBattlesView : UserControl
     {
         CancellationTokenSource _cts = new CancellationTokenSource();
-        private Dictionary<string, IBoard> _boards = new Dictionary<string, IBoard>();
 
         public SingleBattlesView()
         {
@@ -39,7 +38,7 @@ namespace BattleBotsShip.Views
 
         private async void StartButton_Click(object sender, RoutedEventArgs e)
         {
-            if (_boards.Count == 0)
+            if (BoardSelector.Boards.Count == 0)
             {
                 MessageBox.Show("Select at least one board!");
                 return;
@@ -56,7 +55,7 @@ namespace BattleBotsShip.Views
                     Int32.Parse(RoundsTextbox.Text),
                     OpponentBuilder.GetOpponent(AttackerNameCombobox.Text),
                     OpponentBuilder.GetOpponent(DefenderNameCombobox.Text),
-                    _boards.Values.ToList(),
+                    BoardSelector.Boards.Values.ToList(),
                     () => { return UpdateSimulationUI(simulator, Int32.Parse(RefreshRateTextbox.Text)); },
                     _cts.Token
                     );
@@ -68,7 +67,7 @@ namespace BattleBotsShip.Views
                     Int32.Parse(RoundsTextbox.Text),
                     OpponentBuilder.GetOpponent(AttackerNameCombobox.Text),
                     OpponentBuilder.GetOpponent(DefenderNameCombobox.Text),
-                    _boards.Values.ToList()
+                    BoardSelector.Boards.Values.ToList()
                     );
                 Report(result);
             }
@@ -126,8 +125,6 @@ namespace BattleBotsShip.Views
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            UpdateLayoutSelector();
-
             foreach (var name in OpponentBuilder.OpponentOptions())
             {
                 AttackerNameCombobox.Items.Add(name);
@@ -136,83 +133,6 @@ namespace BattleBotsShip.Views
 
             AttackerNameCombobox.SelectedIndex = 0;
             DefenderNameCombobox.SelectedIndex = 0;
-        }
-
-        private void UpdateLayoutSelector()
-        {
-            LayoutSelector.Items.Clear();
-            var root = new TreeViewItem()
-            {
-                Header = "Root",
-                IsExpanded = true
-            };
-            DirectoryInfo info = new DirectoryInfo("BoardLayouts");
-            AddOptions(root, info);
-            LayoutSelector.Items.Add(root);
-        }
-
-        private void AddOptions(TreeViewItem parentItem, DirectoryInfo directory)
-        {
-            var newItem = new TreeViewItem()
-            {
-                Header = directory.Name,
-                IsExpanded = true
-            };
-            foreach (var subDir in directory.EnumerateDirectories())
-            {
-                AddOptions(newItem, subDir);
-            }
-            foreach (var file in directory.EnumerateFiles())
-            {
-                var fileItem = new TreeViewItem()
-                {
-                    Header = file.Name,
-                    Tag = file.FullName,
-                    IsExpanded = true
-                };
-                fileItem.MouseDoubleClick += ToggleBoard_Click;
-                newItem.Items.Add(fileItem);
-            }
-            parentItem.Items.Add(newItem);
-        }
-
-        private void ToggleBoard_Click(object sender, RoutedEventArgs e)
-        {
-            if (sender is TreeViewItem item)
-            {
-                if (item.Tag is string fullname)
-                {
-                    if (_boards.ContainsKey(fullname))
-                    {
-                        _boards.Remove(fullname);
-                        item.Background = Brushes.Transparent;
-                    }
-                    else
-                    {
-                        BoardValidator validator = new BoardValidator();
-                        validator.ValidateBoard(GetBoard(fullname));
-
-                        _boards.Add(fullname, GetBoard(fullname));
-                        item.Background = Brushes.LightGreen;
-                    }
-                    item.IsSelected = false;
-                }
-            }
-        }
-
-        private IBoard GetBoard(string file)
-        {
-            var text = File.ReadAllText(file);
-            var model = JsonSerializer.Deserialize<BoardModel>(text);
-            if (model == null)
-                throw new ArgumentNullException("Invalid board!");
-            return model;
-        }
-
-        Random _rnd = new Random();
-        private string GetRandomKey(Dictionary<string, BoardModel> dict)
-        {
-            return dict.Keys.ToList()[_rnd.Next(0, dict.Keys.Count)];
         }
     }
 }

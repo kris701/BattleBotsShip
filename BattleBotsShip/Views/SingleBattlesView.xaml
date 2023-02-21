@@ -59,9 +59,7 @@
 
             <Label Content="Selected Boards" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
-            <ScrollViewer Grid.Row="1" Background="Gray">
-                <TreeView x:Name="LayoutSelector" Margin="5"/>
-            </ScrollViewer>
+            <usercontrols:FileSelectorControl x:Name="BoardSelector" Grid.Row="1"/>
         </Grid>
 
         <Grid Grid.Row="1" Grid.Column="2">

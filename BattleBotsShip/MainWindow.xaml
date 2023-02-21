@@ -16,7 +16,9 @@
         <StackPanel Orientation="Horizontal" Margin="5">
             <Label Content="Battle(bot)Ships" Foreground="White"/>
             <Separator Height="5" Width="10" Margin="5" Background="Black"/>
-            <Button x:Name="SingleBattlesButton" Content="Single Battles" Width="125" Click="SingleBattlesButton_Click"/>
+            <Button x:Name="SingleBattlesButton" Content="Single AI Battles" Width="125" Click="SingleBattlesButton_Click"/>
+            <Separator Height="5" Width="10" Margin="5" Background="Black"/>
+            <Button x:Name="SingleUserBattlesButton" Content="Single User Battles" Width="125" Click="SingleUserBattlesButton_Click"/>
             <Separator Height="5" Width="10" Margin="5" Background="Black"/>
             <Button x:Name="TurnamentsButton" Content="Turnament Battles" Width="125" Click="TurnamentsButton_Click"/>
             <Separator Height="5" Width="10" Margin="5" Background="Black"/>

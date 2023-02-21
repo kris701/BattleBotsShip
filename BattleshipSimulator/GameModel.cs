@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
-using BattleshipSimulator.DataModels;
-
-namespace BattleshipSimulator
+﻿namespace BattleshipSimulator
 {
     public class GameModel : IGameSimulator
     {
@@ -29,12 +21,14 @@ namespace BattleshipSimulator
 
         public IGameSimulator.WinnerState Update()
         {
-            if (Turn == IGameSimulator.TurnState.Attacker) {
+            if (Turn == IGameSimulator.TurnState.Attacker)
+            {
                 AttackerBot.DoMoveOn(DefenderBoard);
                 if (DefenderBoard.HaveLost)
                     return IGameSimulator.WinnerState.Attacker;
                 Turn = IGameSimulator.TurnState.Defender;
-            } else
+            }
+            else
             {
                 DefenderBot.DoMoveOn(AttackerBoard);
                 if (AttackerBoard.HaveLost)

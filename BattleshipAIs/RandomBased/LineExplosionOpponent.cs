@@ -1,5 +1,4 @@
 ﻿using BattleshipSimulator;
-using BattleshipSimulator.DataModels;
 using BattleshipTools;
 using System;
 using System.Collections.Generic;
@@ -16,6 +15,8 @@ namespace BattleshipAIs.RandomBased
     /// </summary>
     public class LineExplosionOpponent : IOpponent
     {
+        public string Name { get; } = "Line Explosion";
+
         private bool _isCrosshairState = false;
         private Point _lastHit;
         private int _fireState = 0;

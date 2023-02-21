@@ -1,6 +1,7 @@
 ﻿using BattleshipAIs;
+using BattleshipModels;
 using BattleshipSimulator;
-using BattleshipSimulator.DataModels;
+using BattleshipSimulator.Report;
 using BattleshipValidators;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -27,12 +29,8 @@ namespace BattleBotsShip.Views
     /// </summary>
     public partial class SingleBattlesView : UserControl
     {
-        private int _rounds = 1;
-        private int _refereshRate = 100;
-        private bool _stopSimulation = false;
-        private bool _isRunning = false;
-        private Dictionary<string, BoardModel> _attackerBoards = new Dictionary<string, BoardModel>();
-        private Dictionary<string, BoardModel> _defenderBoards = new Dictionary<string, BoardModel>();
+        CancellationTokenSource _cts = new CancellationTokenSource();
+        private Dictionary<string, IBoard> _boards = new Dictionary<string, IBoard>();
 
         public SingleBattlesView()
         {
@@ -41,36 +39,57 @@ namespace BattleBotsShip.Views
 
         private async void StartButton_Click(object sender, RoutedEventArgs e)
         {
-            if (_isRunning)
-                return;
-            if (_attackerBoards.Keys.Count == 0 || _defenderBoards.Keys.Count == 0)
+            if (_boards.Count == 0)
             {
                 MessageBox.Show("Select at least one board!");
                 return;
             }
 
             DisableSettings();
-            _stopSimulation = false;
 
-            _rounds = Int32.Parse(RoundsTextbox.Text);
-            _refereshRate = Int32.Parse(RefreshRateTextbox.Text);
-
-            _isRunning = true;
+            IBattleshipSimulator simulator = new BattleshipSimulator.BattleshipSimulator(IBattleshipSimulator.BoardSelectionMethod.Random);
+            _cts = new CancellationTokenSource();
 
             if (VisualizeCheckbox.IsChecked == true)
             {
-                await StartSimulationAsync();
+                var result = await simulator.RunSumulationAsync(
+                    Int32.Parse(RoundsTextbox.Text),
+                    OpponentBuilder.GetOpponent(AttackerNameCombobox.Text),
+                    OpponentBuilder.GetOpponent(DefenderNameCombobox.Text),
+                    _boards.Values.ToList(),
+                    () => { return UpdateSimulationUI(simulator, Int32.Parse(RefreshRateTextbox.Text)); },
+                    _cts.Token
+                    );
+                Report(result);
             }
             else if (VisualizeCheckbox.IsChecked == false)
             {
-                StartSimulation();
+                var result = simulator.RunSumulation(
+                    Int32.Parse(RoundsTextbox.Text),
+                    OpponentBuilder.GetOpponent(AttackerNameCombobox.Text),
+                    OpponentBuilder.GetOpponent(DefenderNameCombobox.Text),
+                    _boards.Values.ToList()
+                    );
+                Report(result);
             }
+
+            EnableSettings();
+        }
+
+        private async Task UpdateSimulationUI(IBattleshipSimulator simulator, int refreshRate)
+        {
+            if (simulator.CurrentGame != null)
+            {
+                VisualAttackerModel.Update(simulator.CurrentGame.AttackerBoard);
+                VisualDefenderModel.Update(simulator.CurrentGame.DefenderBoard);
+            }
+            await Task.Delay(refreshRate);
         }
 
         private void StopButton_Click(object sender, RoutedEventArgs e)
         {
+            _cts.Cancel();
             EnableSettings();
-            _stopSimulation = true;
         }
 
         private void DisableSettings()
@@ -97,83 +116,11 @@ namespace BattleBotsShip.Views
             e.Handled = regex.IsMatch(e.Text);
         }
 
-        private void StartSimulation()
+        private void Report(IReport report)
         {
-            var game = GetBoard();
-
-            List<IGameSimulator.WinnerState> winners = new List<IGameSimulator.WinnerState>();
-
-            for (int i = 0; i < _rounds; i++)
-            {
-                game.AttackerBoard = new BoardSimulator(_attackerBoards[GetRandomKey(_attackerBoards)]);
-                game.DefenderBoard = new BoardSimulator(_defenderBoards[GetRandomKey(_defenderBoards)]);
-                var res = IGameSimulator.WinnerState.None;
-                while (res == IGameSimulator.WinnerState.None)
-                {
-                    res = game.Update();
-                }
-                game.Reset();
-                winners.Add(res);
-            }
-
-            Report(winners);
-
-            EnableSettings();
-
-            _isRunning = false;
-        }
-
-        private async Task StartSimulationAsync()
-        {
-            var game = GetBoard();
-
-            List<IGameSimulator.WinnerState> winners = new List<IGameSimulator.WinnerState>();
-
-            for (int i = 0; i < _rounds; i++)
-            {
-                game.AttackerBoard = new BoardSimulator(_attackerBoards[GetRandomKey(_attackerBoards)]);
-                game.DefenderBoard = new BoardSimulator(_defenderBoards[GetRandomKey(_defenderBoards)]);
-                var res = IGameSimulator.WinnerState.None;
-                while (res == IGameSimulator.WinnerState.None)
-                {
-                    res = game.Update();
-                    VisualAttackerModel.Update(game.AttackerBoard);
-                    VisualDefenderModel.Update(game.DefenderBoard);
-                    await Task.Delay(_refereshRate);
-                    if (_stopSimulation)
-                        break;
-                }
-                game.Reset();
-                if (_stopSimulation)
-                    break;
-                winners.Add(res);
-            }
-
-            Report(winners);
-
-            EnableSettings();
-
-            _isRunning = false;
-        }
-
-        private IGameSimulator GetBoard()
-        {
-            return new GameModel(
-                null,
-                OpponentBuilder.GetOpponent(AttackerNameCombobox.Text),
-                null,
-                OpponentBuilder.GetOpponent(DefenderNameCombobox.Text),
-                IGameSimulator.TurnState.Attacker);
-        }
-
-        private void Report(List<IGameSimulator.WinnerState> winners)
-        {
-            int attackerWon = winners.Count(x => x == IGameSimulator.WinnerState.Attacker);
-            int defenderWon = winners.Count(x => x == IGameSimulator.WinnerState.Defender);
-
             ResultsPanel.Children.Add(new Label()
             {
-                Content = $"Attackers won {attackerWon} times and defender {defenderWon} times"
+                Content = $"Attacker ({report.AttackerName}) won {report.AttackerWon} times and defender ({report.DefenderName}) {report.DefenderWon} times"
             });
         }
 
@@ -235,10 +182,9 @@ namespace BattleBotsShip.Views
             {
                 if (item.Tag is string fullname)
                 {
-                    if (_attackerBoards.ContainsKey(fullname))
+                    if (_boards.ContainsKey(fullname))
                     {
-                        _attackerBoards.Remove(fullname);
-                        _defenderBoards.Remove(fullname);
+                        _boards.Remove(fullname);
                         item.Background = Brushes.Transparent;
                     }
                     else
@@ -246,8 +192,7 @@ namespace BattleBotsShip.Views
                         BoardValidator validator = new BoardValidator();
                         validator.ValidateBoard(GetBoard(fullname));
 
-                        _attackerBoards.Add(fullname, GetBoard(fullname));
-                        _defenderBoards.Add(fullname, GetBoard(fullname));
+                        _boards.Add(fullname, GetBoard(fullname));
                         item.Background = Brushes.LightGreen;
                     }
                     item.IsSelected = false;
@@ -255,7 +200,7 @@ namespace BattleBotsShip.Views
             }
         }
 
-        private BoardModel GetBoard(string file)
+        private IBoard GetBoard(string file)
         {
             var text = File.ReadAllText(file);
             var model = JsonSerializer.Deserialize<BoardModel>(text);

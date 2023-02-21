@@ -7,7 +7,7 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace BattleshipSimulator.DataModels
+namespace BattleshipModels
 {
     public class ShipModel : IShip
     {

@@ -1,12 +1,5 @@
-﻿using BattleshipSimulator.DataModels;
-using System;
-using System.Collections.Generic;
+﻿using BattleshipModels;
 using System.Drawing;
-using System.Linq;
-using System.Runtime.InteropServices.JavaScript;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace BattleshipSimulator
 {
@@ -19,7 +12,7 @@ namespace BattleshipSimulator
         public List<Point> Hits { get; }
 
         public IBoard Board { get; }
-        
+
         public HitState Fire(Point location);
     }
 }

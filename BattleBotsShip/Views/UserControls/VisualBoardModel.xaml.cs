@@ -1,5 +1,5 @@
-﻿using BattleshipSimulator;
-using BattleshipSimulator.DataModels;
+﻿using BattleshipModels;
+using BattleshipSimulator;
 using System;
 using System.Collections.Generic;
 using System.Linq;

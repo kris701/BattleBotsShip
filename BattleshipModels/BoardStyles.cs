@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BattleshipSimulator
+namespace BattleshipModels
 {
     /// <summary>
     /// Basic: 1 ship(s) of size 2

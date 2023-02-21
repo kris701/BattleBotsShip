@@ -21,5 +21,12 @@ namespace BattleshipModels
             Orientation = orientation;
             Location = location;
         }
+
+        public ShipModel(int length)
+        {
+            Length = length;
+            Orientation = IShip.OrientationDirection.EW;
+            Location = new Point(0,0);
+        }
     }
 }

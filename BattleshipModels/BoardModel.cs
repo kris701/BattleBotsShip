@@ -18,13 +18,13 @@ namespace BattleshipModels
         public int Width { get; }
         public int Height { get; }
 
-        public BoardStyles Style { get; }
+        public BoardStyles.Styles Style { get; }
         public List<ShipModel> Ships { get; }
 
         [JsonIgnore]
         public Dictionary<Point, IShip> HitPositions { get; }
 
-        public BoardModel(List<ShipModel> ships, int width, int height, BoardStyles style, string name, string description)
+        public BoardModel(List<ShipModel> ships, int width, int height, BoardStyles.Styles style, string name, string description)
         {
             Width = width;
             Height = height;

@@ -15,7 +15,7 @@ namespace BattleshipModels
         public int Width { get; }
         public int Height { get; }
 
-        public BoardStyles Style { get; }
+        public BoardStyles.Styles Style { get; }
         public List<ShipModel> Ships { get; }
 
         public Dictionary<Point, IShip> HitPositions { get; }

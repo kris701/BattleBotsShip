@@ -91,8 +91,11 @@ namespace BattleBotsShip.Views.UserControls
                 {
                     if (!Boards.ContainsKey(fullname))
                     {
-                        BoardValidator validator = new BoardValidator();
-                        validator.ValidateBoard(GetBoard(fullname));
+                        if (!BoardValidator.ValidateBoard(GetBoard(fullname)))
+                        {
+                            MessageBox.Show("Invalid board!");
+                            return;
+                        }
 
                         Boards.Add(fullname, GetBoard(fullname));
                     }

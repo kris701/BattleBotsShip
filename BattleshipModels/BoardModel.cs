@@ -1,6 +1,6 @@
-﻿using System;
+﻿using BattleshipTools;
+using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -22,7 +22,8 @@ namespace BattleshipModels
         public List<ShipModel> Ships { get; }
 
         [JsonIgnore]
-        public Dictionary<Point, IShip> HitPositions { get; }
+        private Dictionary<Point, IShip> _hitPositions;
+        public Dictionary<Point, IShip> GetHitPositions() => _hitPositions;
 
         public BoardModel(List<ShipModel> ships, int width, int height, BoardStyles.Styles style, string name, string description)
         {
@@ -32,15 +33,27 @@ namespace BattleshipModels
             Style = style;
             Name = name;
             Description = description;
-            HitPositions = new Dictionary<Point, IShip>();
+            _hitPositions = new Dictionary<Point, IShip>();
             foreach(var ship in ships)
             {
                 if (ship.Orientation == IShip.OrientationDirection.NS)
+                {
                     for (int i = 0; i < ship.Length; i++)
-                        HitPositions.Add(new Point(ship.Location.X, ship.Location.Y + i), ship);
+                    {
+                        var newPoint = new Point(ship.Location.X, ship.Location.Y + i);
+                        if (!_hitPositions.ContainsKey(newPoint))
+                            _hitPositions.Add(newPoint, ship);
+                    }
+                }
                 else if (ship.Orientation == IShip.OrientationDirection.EW)
+                {
                     for (int i = 0; i < ship.Length; i++)
-                        HitPositions.Add(new Point(ship.Location.X + i, ship.Location.Y), ship);
+                    {
+                        var newPoint = new Point(ship.Location.X + i, ship.Location.Y);
+                        if (!_hitPositions.ContainsKey(newPoint))
+                            _hitPositions.Add(newPoint, ship);
+                    }
+                }
             }
         }
     }

@@ -1,7 +1,7 @@
 ﻿using BattleshipSimulator;
+using BattleshipTools;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,7 +26,7 @@ namespace BattleshipAIs
                 if (token.IsCancellationRequested)
                     return;
             }
-            opponentBoard.Fire((Point)FireAt);
+            opponentBoard.Fire(FireAt);
             FireAt = null;
         }
 

@@ -1,6 +1,6 @@
-﻿using System;
+﻿using BattleshipTools;
+using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,6 +18,6 @@ namespace BattleshipModels
         public BoardStyles.Styles Style { get; }
         public List<ShipModel> Ships { get; }
 
-        public Dictionary<Point, IShip> HitPositions { get; }
+        public Dictionary<Point, IShip> GetHitPositions();
     }
 }

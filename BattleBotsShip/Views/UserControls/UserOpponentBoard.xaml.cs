@@ -4,7 +4,6 @@ using BattleshipSimulator;
 using BattleshipValidators;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -176,7 +175,7 @@ namespace BattleBotsShip.Views.UserControls
                         int x = Grid.GetColumn(button);
                         int y = Grid.GetRow(button);
 
-                        _user.FireAt = new System.Drawing.Point(x, y);
+                        _user.FireAt = new BattleshipTools.Point(x, y);
 
                         button.IsEnabled = false;
                     }

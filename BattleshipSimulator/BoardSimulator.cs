@@ -1,5 +1,5 @@
 ﻿using BattleshipModels;
-using System.Drawing;
+using BattleshipTools;
 
 namespace BattleshipSimulator
 {
@@ -27,9 +27,9 @@ namespace BattleshipSimulator
         public IBoardSimulator.HitState Fire(Point location)
         {
             Shots.Add(location);
-            if (Board.HitPositions.Keys.Contains(location) && !Hits.Contains(location))
+            if (Board.GetHitPositions().Keys.Contains(location) && !Hits.Contains(location))
             {
-                var ship = Board.HitPositions[location];
+                var ship = Board.GetHitPositions()[location];
                 if (_shipHits.ContainsKey(ship))
                     _shipHits[ship]++;
                 else

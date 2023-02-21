@@ -17,6 +17,9 @@
     <None Update="BoardLayouts\Basic\basicCorner.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="BoardLayouts\RandomlyGenerated\Random-893772.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>

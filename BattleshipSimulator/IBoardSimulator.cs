@@ -1,5 +1,5 @@
 ﻿using BattleshipModels;
-using System.Drawing;
+using BattleshipTools;
 
 namespace BattleshipSimulator
 {

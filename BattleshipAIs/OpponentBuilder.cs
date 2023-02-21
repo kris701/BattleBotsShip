@@ -22,5 +22,6 @@ namespace BattleshipAIs
         {
             return _opponents[name];
         }
+        public static List<IOpponent> GetAllOpponents() => _opponents.Values.ToList();
     }
 }

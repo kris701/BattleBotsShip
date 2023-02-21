@@ -49,7 +49,7 @@ namespace BattleshipSimulator
             return report;
         }
 
-        public async Task<IReport> RunSumulationAsync(int rounds, IOpponent attacker, IOpponent defender, List<IBoard> boardOptions, Func<Task> updateFunc, CancellationToken cancellationToken)
+        public async Task<IReport> RunSumulationAsync(int rounds, IOpponent attacker, IOpponent defender, List<IBoard> boardOptions, Func<Task>? updateFunc, CancellationToken cancellationToken)
         {
             CheckBoardOptions(boardOptions);
 
@@ -67,7 +67,8 @@ namespace BattleshipSimulator
                 while (res == IGameSimulator.WinnerState.None)
                 {
                     res = await CurrentGame.UpdateAsync(cancellationToken);
-                    await updateFunc();
+                    if (updateFunc != null)
+                        await updateFunc();
                     if (cancellationToken.IsCancellationRequested) break;
                 }
                 if (cancellationToken.IsCancellationRequested) break;

@@ -11,14 +11,20 @@ namespace BattleshipTurnaments.TurnamentStyles
 {
     public class TwoLayerLoop : ITurnament
     {
+        public int TotalRuns { get; internal set; } = 0;
+        public int CurrentRun { get; internal set; } = 0;
+
         private CancellationTokenSource _cts = new CancellationTokenSource();
 
         public IReport RunTurnament(int rounds, List<IOpponent> opponents, List<IBoard> boardOptions)
         {
-            Dictionary<string, double> winRates = new Dictionary<string, double>();
-            Dictionary<string, int> opponentRounds = new Dictionary<string, int>();
+            Dictionary<string, int> wins = new Dictionary<string, int>();
+            Dictionary<string, int> looses = new Dictionary<string, int>();
+            Dictionary<string, int> totalRounds = new Dictionary<string, int>();
             IBattleshipSimulator simulator = new BattleshipSimulator.BattleshipSimulator(IBattleshipSimulator.BoardSelectionMethod.Random);
-            
+            TotalRuns = opponents.Count * opponents.Count - opponents.Count;
+            CurrentRun = 0;
+
             foreach (var opponentA in opponents)
             {
                 foreach (var opponentB in opponents)
@@ -31,28 +37,37 @@ namespace BattleshipTurnaments.TurnamentStyles
                             boardOptions
                             );
 
-                        AddOrIncrement(opponentRounds, opponentA.Name);
-                        AddOrIncrement(opponentRounds, opponentB.Name);
+                        AddOrIncrement(totalRounds, opponentA.Name, rounds);
+                        AddOrIncrement(totalRounds, opponentB.Name, rounds);
 
-                        AddOrIncrement(winRates, opponentA.Name, result.AttackerWon);
-                        AddOrIncrement(winRates, opponentB.Name, result.DefenderWon);
+                        AddOrIncrement(wins, opponentA.Name, result.AttackerWon);
+                        AddOrIncrement(wins, opponentB.Name, result.DefenderWon);
+
+                        AddOrIncrement(looses, opponentA.Name, rounds - result.AttackerWon);
+                        AddOrIncrement(looses, opponentB.Name, rounds - result.DefenderWon);
+
+                        CurrentRun++;
                     }
                 }
             }
 
-            foreach(var key in winRates.Keys)
+            Dictionary<string, double> winRate = new Dictionary<string, double>();
+            foreach (var key in wins.Keys)
             {
-                winRates[key] = winRates[key] / (double)opponentRounds[key];
+                winRate.Add(key, Math.Round(((double)wins[key] / (double)totalRounds[key]) * 100, 2));
             }
 
-            return new Report.Report(rounds, winRates);
+            return new Report.Report(rounds, wins, looses, winRate);
         }
 
-        public async Task<IReport> RunTurnamentAsync(int rounds, List<IOpponent> opponents, List<IBoard> boardOptions, Func<Task> updateFunc, CancellationToken cancellationToken)
+        public async Task<IReport> RunTurnamentAsync(int rounds, List<IOpponent> opponents, List<IBoard> boardOptions, Func<Task>? updateFunc, CancellationToken cancellationToken)
         {
-            Dictionary<string, double> winRates = new Dictionary<string, double>();
-            Dictionary<string, int> opponentRounds = new Dictionary<string, int>();
+            Dictionary<string, int> wins = new Dictionary<string, int>();
+            Dictionary<string, int> looses = new Dictionary<string, int>();
+            Dictionary<string, int> totalRounds = new Dictionary<string, int>();
             IBattleshipSimulator simulator = new BattleshipSimulator.BattleshipSimulator(IBattleshipSimulator.BoardSelectionMethod.Random);
+            TotalRuns = opponents.Count * opponents.Count - opponents.Count;
+            CurrentRun = 0;
 
             foreach (var opponentA in opponents)
             {
@@ -64,41 +79,39 @@ namespace BattleshipTurnaments.TurnamentStyles
                             rounds,
                             opponentA,
                             opponentB,
-                            boardOptions
-                            );
+                            boardOptions);
 
                         if (cancellationToken.IsCancellationRequested)
-                            return new Report.Report(-1, new Dictionary<string, double>());
+                            return new Report.Report(-1, new Dictionary<string, int>(), new Dictionary<string, int>(), new Dictionary<string, double>());
 
-                        AddOrIncrement(opponentRounds, opponentA.Name);
-                        AddOrIncrement(opponentRounds, opponentB.Name);
+                        AddOrIncrement(totalRounds, opponentA.Name, rounds);
+                        AddOrIncrement(totalRounds, opponentB.Name, rounds);
 
-                        AddOrIncrement(winRates, opponentA.Name, result.AttackerWon);
-                        AddOrIncrement(winRates, opponentB.Name, result.DefenderWon);
+                        AddOrIncrement(wins, opponentA.Name, result.AttackerWon);
+                        AddOrIncrement(wins, opponentB.Name, result.DefenderWon);
+
+                        AddOrIncrement(looses, opponentA.Name, rounds - result.AttackerWon);
+                        AddOrIncrement(looses, opponentB.Name, rounds - result.DefenderWon);
+
+                        CurrentRun++;
+
+                        if (updateFunc != null)
+                            await updateFunc();
                     }
                 }
-
-                await updateFunc();
             }
 
-            foreach (var key in winRates.Keys)
+            Dictionary<string, double> winRate = new Dictionary<string, double>();
+            foreach (var key in wins.Keys)
             {
-                winRates[key] = winRates[key] / (double)opponentRounds[key];
+                winRate.Add(key, Math.Round(((double)wins[key] / (double)totalRounds[key]) * 100, 2));
             }
 
-            return new Report.Report(rounds, winRates);
+            return new Report.Report(rounds, wins, looses, winRate);
         }
 
 
         private void AddOrIncrement(Dictionary<string, int> dict, string key, int by = 1)
-        {
-            if (dict.ContainsKey(key))
-                dict[key] += by;
-            else
-                dict.Add(key, by);
-        }
-
-        private void AddOrIncrement(Dictionary<string, double> dict, string key, double by = 1)
         {
             if (dict.ContainsKey(key))
                 dict[key] += by;

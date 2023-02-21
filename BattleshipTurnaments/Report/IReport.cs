@@ -9,6 +9,8 @@ namespace BattleshipTurnaments.Report
     public interface IReport
     {
         public int Rounds { get; set; }
-        public Dictionary<string, double> WinRates { get; set; }
+        public Dictionary<string, int> Wins { get; set; }
+        public Dictionary<string, int> Losses { get; set; }
+        public Dictionary<string, double> WinRate { get; set; }
     }
 }

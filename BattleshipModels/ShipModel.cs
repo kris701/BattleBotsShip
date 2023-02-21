@@ -15,6 +15,7 @@ namespace BattleshipModels
         public IShip.OrientationDirection Orientation { get; }
         public Point Location { get; }
 
+        [JsonConstructor]
         public ShipModel(int length, IShip.OrientationDirection orientation, Point location)
         {
             Length = length;

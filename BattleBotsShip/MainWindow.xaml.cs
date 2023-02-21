@@ -19,6 +19,7 @@ namespace BattleBotsShip
         private void TurnamentsButton_Click(object sender, RoutedEventArgs e)
         {
             MainViewGrid.Children.Clear();
+            MainViewGrid.Children.Add(new TurnamentBattlesView());
         }
 
         private void BoardDesignerButton_Click(object sender, RoutedEventArgs e)

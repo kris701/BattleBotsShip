@@ -36,9 +36,11 @@
 
             <ProgressBar x:Name="TurnamentProgressBar"/>
 
-            <StackPanel x:Name="ResultsPanel" Grid.Row="1">
-                <Label Content="Results"/>
-            </StackPanel>
+            <ScrollViewer Grid.Row="1">
+                <StackPanel x:Name="ResultsPanel">
+                    <Label Content="Results"/>
+                </StackPanel>
+            </ScrollViewer>
         </Grid>
 
         <Grid x:Name="BoardSelectorGrid" Grid.Row="1">

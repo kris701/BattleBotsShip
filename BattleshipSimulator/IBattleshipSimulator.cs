@@ -11,6 +11,6 @@ namespace BattleshipSimulator
         public IGameSimulator? CurrentGame { get; }
 
         public IReport RunSumulation(int rounds, IOpponent attacker, IOpponent defender, List<IBoard> boardOptions);
-        public Task<IReport> RunSumulationAsync(int rounds, IOpponent attacker, IOpponent defender, List<IBoard> boardOptions, Func<Task> updateFunc, CancellationToken cancellationToken);
+        public Task<IReport> RunSumulationAsync(int rounds, IOpponent attacker, IOpponent defender, List<IBoard> boardOptions, Func<Task>? updateFunc, CancellationToken cancellationToken);
     }
 }

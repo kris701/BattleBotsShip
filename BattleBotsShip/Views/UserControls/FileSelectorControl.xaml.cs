@@ -9,6 +9,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -70,38 +71,45 @@ namespace BattleBotsShip.Views.UserControls
             }
             foreach (var file in directory.EnumerateFiles())
             {
-                var fileItem = new TreeViewItem()
+                var fileItem = new CheckBox()
                 {
-                    Header = file.Name,
+                    Content = file.Name,
                     Tag = file.FullName,
-                    IsExpanded = true
                 };
-                fileItem.MouseDoubleClick += ToggleBoard_Click;
+                fileItem.Checked += Board_Checked;
+                fileItem.Unchecked += Board_Unchecked;
                 newItem.Items.Add(fileItem);
             }
             parentItem.Items.Add(newItem);
         }
 
-        private void ToggleBoard_Click(object sender, RoutedEventArgs e)
+        private void Board_Checked(object sender, RoutedEventArgs e)
         {
-            if (sender is TreeViewItem item)
+            if (sender is CheckBox item)
+            {
+                if (item.Tag is string fullname)
+                {
+                    if (!Boards.ContainsKey(fullname))
+                    {
+                        BoardValidator validator = new BoardValidator();
+                        validator.ValidateBoard(GetBoard(fullname));
+
+                        Boards.Add(fullname, GetBoard(fullname));
+                    }
+                }
+            }
+        }
+
+        private void Board_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (sender is CheckBox item)
             {
                 if (item.Tag is string fullname)
                 {
                     if (Boards.ContainsKey(fullname))
                     {
                         Boards.Remove(fullname);
-                        item.Background = Brushes.Transparent;
                     }
-                    else
-                    {
-                        BoardValidator validator = new BoardValidator();
-                        validator.ValidateBoard(GetBoard(fullname));
-
-                        Boards.Add(fullname, GetBoard(fullname));
-                        item.Background = Brushes.LightGreen;
-                    }
-                    item.IsSelected = false;
                 }
             }
         }
@@ -113,6 +121,37 @@ namespace BattleBotsShip.Views.UserControls
             if (model == null)
                 throw new ArgumentNullException("Invalid board!");
             return model;
+        }
+
+        private void SelectAllButton_Click(object sender, RoutedEventArgs e)
+        {
+            foreach(var item in LayoutSelector.Items)
+            {
+                if (item is TreeViewItem treeItem)
+                    SetSelfAndChildrenTo(treeItem, true);
+            }
+        }
+
+        private void UnSelectAllButton_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (var item in LayoutSelector.Items)
+            {
+                if (item is TreeViewItem treeItem)
+                    SetSelfAndChildrenTo(treeItem, false);
+            }
+        }
+
+        private void SetSelfAndChildrenTo(TreeViewItem parentItem, bool value)
+        {
+            foreach(var item in parentItem.Items)
+            {
+                if (item is TreeViewItem treeItem)
+                    SetSelfAndChildrenTo(treeItem, value);
+                else if (item is CheckBox box)
+                {
+                    box.IsChecked = value;
+                }
+            }
         }
     }
 }

@@ -14,8 +14,6 @@ namespace BattleshipTurnaments.TurnamentStyles
         public int TotalRuns { get; internal set; } = 0;
         public int CurrentRun { get; internal set; } = 0;
 
-        private CancellationTokenSource _cts = new CancellationTokenSource();
-
         public IReport RunTurnament(int rounds, List<IOpponent> opponents, List<IBoard> boardOptions)
         {
             Dictionary<string, int> wins = new Dictionary<string, int>();

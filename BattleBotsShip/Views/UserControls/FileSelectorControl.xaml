@@ -12,8 +12,10 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Horizontal">
+        <StackPanel Orientation="Horizontal" Margin="3">
             <Button x:Name="ReloadButton" Content="Reload" Click="ReloadButton_Click"/>
+            <Button x:Name="SelectAllButton" Content="Select All" Click="SelectAllButton_Click"/>
+            <Button x:Name="UnSelectAllButton" Content="Unselect All" Click="UnSelectAllButton_Click"/>
         </StackPanel>
         
         <ScrollViewer Grid.Row="1" Background="Gray">

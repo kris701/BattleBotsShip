@@ -1,1 +1,49 @@
-{"Width":10,"Height":10,"Ships":[{"Length":2,"Orientation":2,"Location":{"X":0,"Y":0}},{"Length":3,"Orientation":2,"Location":{"X":0,"Y":1}},{"Length":3,"Orientation":2,"Location":{"X":0,"Y":2}},{"Length":4,"Orientation":2,"Location":{"X":0,"Y":3}},{"Length":5,"Orientation":2,"Location":{"X":0,"Y":4}}]}
+{
+  "Name": "basicCorner",
+  "Description": "desc",
+  "Style": 1,
+  "Width": 10,
+  "Height": 10,
+  "Ships": [
+    {
+      "Length": 2,
+      "Orientation": 2,
+      "Location": {
+        "X": 0,
+        "Y": 0
+      }
+    },
+    {
+      "Length": 3,
+      "Orientation": 2,
+      "Location": {
+        "X": 0,
+        "Y": 1
+      }
+    },
+    {
+      "Length": 3,
+      "Orientation": 2,
+      "Location": {
+        "X": 0,
+        "Y": 2
+      }
+    },
+    {
+      "Length": 4,
+      "Orientation": 2,
+      "Location": {
+        "X": 0,
+        "Y": 3
+      }
+    },
+    {
+      "Length": 5,
+      "Orientation": 2,
+      "Location": {
+        "X": 0,
+        "Y": 4
+      }
+    }
+  ]
+}

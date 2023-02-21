@@ -1,4 +1,5 @@
 ﻿using BattleshipSimulator;
+using BattleshipSimulator.DataModels;
 using BattleshipTools;
 using System;
 using System.Collections.Generic;
@@ -11,9 +12,9 @@ namespace BattleshipAIs.RandomBased
 {
     public class RandomShotsOpponent : IOpponent
     {
-        public void DoMoveOn(BoardModel opponentBoard)
+        public void DoMoveOn(IBoardSimulator opponentBoard)
         {
-            opponentBoard.Fire(RndTools.GetRndNewPoint(opponentBoard.Width, opponentBoard.Height, opponentBoard.Shots));
+            opponentBoard.Fire(RndTools.GetRndNewPoint(opponentBoard.Board.Width, opponentBoard.Board.Height, opponentBoard.Shots));
         }
 
         public void Reset()

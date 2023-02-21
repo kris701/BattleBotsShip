@@ -37,6 +37,16 @@ namespace BattleBotsShip.Views
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             GenerateGrid();
+
+            Label dragLabel = new Label()
+            {
+
+            };
+            dragLabel.MouseDown += (o, e) =>
+            {
+
+            };
+
             _isLoaded = true;
         }
 

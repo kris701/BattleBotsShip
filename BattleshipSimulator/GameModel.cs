@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using BattleshipSimulator.DataModels;
 
 namespace BattleshipSimulator
 {
@@ -12,16 +13,16 @@ namespace BattleshipSimulator
         public enum WinnerState { None, Attacker, Defender }
         public enum TurnState { None, Attacker, Defender }
 
-        public BoardModel AttackerBoard { get; set; }
+        public BoardSimulator AttackerBoard { get; set; }
         [JsonIgnore]
         public IOpponent AttackerBot { get; }
-        public BoardModel DefenderBoard { get; set; }
+        public BoardSimulator DefenderBoard { get; set; }
         [JsonIgnore]
         public IOpponent DefenderBot { get; }
         private TurnState _originalTurn;
         public TurnState Turn { get; internal set; }
 
-        public GameModel(BoardModel attackerBoard, IOpponent attackerBot, BoardModel defenderBoard, IOpponent defenderBot, TurnState turn)
+        public GameModel(BoardSimulator attackerBoard, IOpponent attackerBot, BoardSimulator defenderBoard, IOpponent defenderBot, TurnState turn)
         {
             AttackerBoard = attackerBoard;
             AttackerBot = attackerBot;

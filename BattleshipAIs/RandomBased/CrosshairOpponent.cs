@@ -1,4 +1,5 @@
 ﻿using BattleshipSimulator;
+using BattleshipSimulator.DataModels;
 using BattleshipTools;
 using System;
 using System.Collections.Generic;
@@ -19,12 +20,12 @@ namespace BattleshipAIs.RandomBased
         private Point _lastHit;
         private int _fireState = 0;
 
-        public void DoMoveOn(BoardModel opponentBoard)
+        public void DoMoveOn(IBoardSimulator opponentBoard)
         {
             if (!_isCrosshairState)
             {
-                Point firePoint = RndTools.GetRndNewPoint(opponentBoard.Width, opponentBoard.Height, opponentBoard.Shots);
-                if (opponentBoard.Fire(firePoint) >= BoardModel.HitState.Hit)
+                Point firePoint = RndTools.GetRndNewPoint(opponentBoard.Board.Width, opponentBoard.Board.Height, opponentBoard.Shots);
+                if (opponentBoard.Fire(firePoint) >= IBoardSimulator.HitState.Hit)
                 {
                     _lastHit = firePoint;
                     _fireState = 0;
@@ -51,7 +52,7 @@ namespace BattleshipAIs.RandomBased
                         return;
                     }
 
-                    if (BoundTools.IsWithinBounds(opponentBoard.Width, opponentBoard.Height, firePoint))
+                    if (BoundTools.IsWithinBounds(opponentBoard.Board.Width, opponentBoard.Board.Height, firePoint))
                         if (!opponentBoard.Shots.Contains(firePoint))
                             break;
 

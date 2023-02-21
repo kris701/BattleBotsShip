@@ -1,4 +1,7 @@
 {
+  "Name": "mix1",
+  "Description": "desc",
+  "Style": 1,
   "Width": 10,
   "Height": 10,
   "Ships": [

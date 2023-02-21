@@ -1,5 +1,6 @@
 ﻿using BattleshipAIs;
 using BattleshipSimulator;
+using BattleshipSimulator.DataModels;
 using BattleshipValidators;
 using System;
 using System.Collections.Generic;
@@ -104,8 +105,8 @@ namespace BattleBotsShip.Views
 
             for (int i = 0; i < _rounds; i++)
             {
-                game.AttackerBoard = _attackerBoards[GetRandomKey(_attackerBoards)];
-                game.DefenderBoard = _defenderBoards[GetRandomKey(_defenderBoards)];
+                game.AttackerBoard = new BoardSimulator(_attackerBoards[GetRandomKey(_attackerBoards)]);
+                game.DefenderBoard = new BoardSimulator(_defenderBoards[GetRandomKey(_defenderBoards)]);
                 var res = GameModel.WinnerState.None;
                 while (res == GameModel.WinnerState.None)
                 {
@@ -130,8 +131,8 @@ namespace BattleBotsShip.Views
 
             for (int i = 0; i < _rounds; i++)
             {
-                game.AttackerBoard = _attackerBoards[GetRandomKey(_attackerBoards)];
-                game.DefenderBoard = _defenderBoards[GetRandomKey(_defenderBoards)];
+                game.AttackerBoard = new BoardSimulator(_attackerBoards[GetRandomKey(_attackerBoards)]);
+                game.DefenderBoard = new BoardSimulator(_defenderBoards[GetRandomKey(_defenderBoards)]);
                 var res = GameModel.WinnerState.None;
                 while (res == GameModel.WinnerState.None)
                 {

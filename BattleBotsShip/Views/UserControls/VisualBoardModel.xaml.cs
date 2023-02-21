@@ -1,4 +1,5 @@
 ﻿using BattleshipSimulator;
+using BattleshipSimulator.DataModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,19 +27,19 @@ namespace BattleBotsShip.Views.UserControls
             InitializeComponent();
         }
 
-        public void Update(BoardModel board)
+        public void Update(IBoardSimulator board)
         {
-            if (MainGrid.RowDefinitions.Count != board.Height)
+            if (MainGrid.RowDefinitions.Count != board.Board.Height)
             {
                 MainGrid.RowDefinitions.Clear();
-                for (int i = 0; i < board.Height; i++)
+                for (int i = 0; i < board.Board.Height; i++)
                     MainGrid.RowDefinitions.Add(new RowDefinition());
             }
 
-            if (MainGrid.ColumnDefinitions.Count != board.Width)
+            if (MainGrid.ColumnDefinitions.Count != board.Board.Width)
             {
                 MainGrid.ColumnDefinitions.Clear();
-                for (int i = 0; i < board.Width; i++)
+                for (int i = 0; i < board.Board.Width; i++)
                     MainGrid.ColumnDefinitions.Add(new ColumnDefinition());
             }
 
@@ -67,13 +68,11 @@ namespace BattleBotsShip.Views.UserControls
                 MainGrid.Children.Add(canvas);
             }
 
-            foreach(var ship in board.Ships)
+            foreach(var ship in board.Board.Ships)
             {
                 var color = Brushes.Blue;
-                if (ship.IsSunk)
-                    color = Brushes.Red;
 
-                if (ship.Orientation == ShipModel.OrientationDirection.EW)
+                if (ship.Orientation == IShip.OrientationDirection.EW)
                 {
                     var canvas = new Canvas()
                     {
@@ -85,7 +84,7 @@ namespace BattleBotsShip.Views.UserControls
                     Grid.SetColumn(canvas, (int)ship.Location.X);
 
                     MainGrid.Children.Add(canvas);
-                } else if (ship.Orientation == ShipModel.OrientationDirection.NS)
+                } else if (ship.Orientation == IShip.OrientationDirection.NS)
                 {
                     var canvas = new Canvas()
                     {

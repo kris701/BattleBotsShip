@@ -66,7 +66,7 @@ namespace BattleshipSimulator
                 var res = IGameSimulator.WinnerState.None;
                 while (res == IGameSimulator.WinnerState.None)
                 {
-                    res = CurrentGame.Update();
+                    res = await CurrentGame.UpdateAsync(cancellationToken);
                     await updateFunc();
                     if (cancellationToken.IsCancellationRequested) break;
                 }

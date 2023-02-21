@@ -64,6 +64,11 @@ namespace BattleshipAIs.RandomBased
             }
         }
 
+        public async Task DoMoveOnAsync(IBoardSimulator opponentBoard, CancellationToken token)
+        {
+            await Task.Run(() => DoMoveOn(opponentBoard));
+        }
+
         public void Reset()
         {
             _isCrosshairState = false;

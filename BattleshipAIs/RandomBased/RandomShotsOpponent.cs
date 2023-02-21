@@ -18,6 +18,11 @@ namespace BattleshipAIs.RandomBased
             opponentBoard.Fire(RndTools.GetRndNewPoint(opponentBoard.Board.Width, opponentBoard.Board.Height, opponentBoard.Shots));
         }
 
+        public async Task DoMoveOnAsync(IBoardSimulator opponentBoard, CancellationToken token)
+        {
+            await Task.Run(() => DoMoveOn(opponentBoard));
+        }
+
         public void Reset()
         {
             

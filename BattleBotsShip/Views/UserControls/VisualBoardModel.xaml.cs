@@ -68,9 +68,11 @@ namespace BattleBotsShip.Views.UserControls
                 MainGrid.Children.Add(canvas);
             }
 
-            foreach(var ship in board.Board.Ships)
+            foreach (var ship in board.Board.Ships)
             {
                 var color = Brushes.Blue;
+                if (board.LostShips.Contains(ship))
+                    color = Brushes.Red;
 
                 if (ship.Orientation == IShip.OrientationDirection.EW)
                 {
@@ -84,7 +86,8 @@ namespace BattleBotsShip.Views.UserControls
                     Grid.SetColumn(canvas, (int)ship.Location.X);
 
                     MainGrid.Children.Add(canvas);
-                } else if (ship.Orientation == IShip.OrientationDirection.NS)
+                }
+                else if (ship.Orientation == IShip.OrientationDirection.NS)
                 {
                     var canvas = new Canvas()
                     {

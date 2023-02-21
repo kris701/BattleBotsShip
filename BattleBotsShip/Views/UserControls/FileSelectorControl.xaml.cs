@@ -49,9 +49,12 @@ namespace BattleBotsShip.Views.UserControls
                 Header = "Root",
                 IsExpanded = true
             };
-            DirectoryInfo info = new DirectoryInfo("BoardLayouts");
-            AddOptions(root, info);
-            LayoutSelector.Items.Add(root);
+            if (Directory.Exists("BoardLayouts"))
+            {
+                DirectoryInfo info = new DirectoryInfo("BoardLayouts");
+                AddOptions(root, info);
+                LayoutSelector.Items.Add(root);
+            }
         }
 
         private void AddOptions(TreeViewItem parentItem, DirectoryInfo directory)

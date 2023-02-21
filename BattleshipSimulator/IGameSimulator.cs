@@ -13,5 +13,6 @@
         public TurnState Turn { get; }
 
         public WinnerState Update();
+        public Task<WinnerState> UpdateAsync(CancellationToken token);
     }
 }

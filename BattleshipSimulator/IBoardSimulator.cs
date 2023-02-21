@@ -10,6 +10,7 @@ namespace BattleshipSimulator
         public bool HaveLost { get; }
         public List<Point> Shots { get; }
         public List<Point> Hits { get; }
+        public List<IShip> LostShips { get; }
 
         public IBoard Board { get; }
 

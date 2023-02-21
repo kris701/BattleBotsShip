@@ -10,8 +10,8 @@ namespace BattleshipSimulator
 
         public IBoard Board { get; }
 
-        private int _lostShips = 0;
-        public bool HaveLost { get { return _lostShips >= Board.Ships.Count; } }
+        public bool HaveLost { get { return LostShips.Count >= Board.Ships.Count; } }
+        public List<IShip> LostShips { get; }
 
         private Dictionary<IShip, int> _shipHits;
 
@@ -20,6 +20,7 @@ namespace BattleshipSimulator
             Board = board;
             Shots = new List<Point>();
             Hits = new List<Point>();
+            LostShips = new List<IShip>();
             _shipHits = new Dictionary<IShip, int>();
         }
 
@@ -36,7 +37,7 @@ namespace BattleshipSimulator
                 Hits.Add(location);
                 if (_shipHits[ship] == ship.Length)
                 {
-                    _lostShips++;
+                    LostShips.Add(ship);
                     return IBoardSimulator.HitState.Sunk;
                 }
                 else
@@ -49,8 +50,8 @@ namespace BattleshipSimulator
         {
             Shots.Clear();
             Hits.Clear();
+            LostShips.Clear();
             _shipHits.Clear();
-            _lostShips = 0;
         }
     }
 }

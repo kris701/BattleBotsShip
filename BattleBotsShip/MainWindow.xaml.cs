@@ -30,7 +30,7 @@ namespace BattleBotsShip
         private void SingleUserBattlesButton_Click(object sender, RoutedEventArgs e)
         {
             MainViewGrid.Children.Clear();
-            //MainViewGrid.Children.Add(new BoardDesignerView());
+            MainViewGrid.Children.Add(new SingleUserBattlesView());
         }
     }
 }

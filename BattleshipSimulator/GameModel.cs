@@ -38,6 +38,25 @@
             return IGameSimulator.WinnerState.None;
         }
 
+        public async Task<IGameSimulator.WinnerState> UpdateAsync(CancellationToken token)
+        {
+            if (Turn == IGameSimulator.TurnState.Attacker)
+            {
+                await AttackerBot.DoMoveOnAsync(DefenderBoard, token);
+                if (DefenderBoard.HaveLost)
+                    return IGameSimulator.WinnerState.Attacker;
+                Turn = IGameSimulator.TurnState.Defender;
+            }
+            else
+            {
+                await DefenderBot.DoMoveOnAsync(AttackerBoard, token);
+                if (AttackerBoard.HaveLost)
+                    return IGameSimulator.WinnerState.Defender;
+                Turn = IGameSimulator.TurnState.Attacker;
+            }
+            return IGameSimulator.WinnerState.None;
+        }
+
         public void Reset()
         {
             AttackerBoard.Reset();

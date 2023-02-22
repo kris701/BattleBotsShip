@@ -1,4 +1,5 @@
-﻿using BattleshipAIs.ProbabilityBased;
+﻿using BattleshipAIs.PatternBased;
+using BattleshipAIs.ProbabilityBased;
 using BattleshipAIs.RandomBased;
 using BattleshipSimulator;
 using System;
@@ -12,12 +13,17 @@ namespace BattleshipAIs
     public static class OpponentBuilder
     {
         private static Dictionary<string, IOpponent> _opponents = new Dictionary<string, IOpponent> {
+            // Random Based
             { "Random", new RandomShotsOpponent() },
             { "Crosshair", new CrosshairOpponent() },
             { "LineExplosion", new LineExplosionOpponent() },
             { "ConditionalLineExplosion", new ConditionalLineExplosionOpponent() },
 
-            { "ProbableShots", new ProbableShotsOpponent() },
+            // Probability Based
+            //{ "ProbableShots", new ProbableShotsOpponent() },
+
+            // Pattern Based
+            { "GridCLE", new GridCLEOpponent() },
         };
 
         public static List<string> OpponentOptions() => _opponents.Keys.ToList();

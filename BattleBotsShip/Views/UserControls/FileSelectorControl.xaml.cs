@@ -94,6 +94,7 @@ namespace BattleBotsShip.Views.UserControls
                         if (!BoardValidator.ValidateBoard(GetBoard(fullname)))
                         {
                             MessageBox.Show("Invalid board!");
+                            item.IsChecked = false;
                             return;
                         }
 

@@ -21,7 +21,6 @@ namespace BattleshipModels
         public BoardStyles.Styles Style { get; }
         public List<ShipModel> Ships { get; }
 
-        [JsonIgnore]
         private Dictionary<Point, IShip> _hitPositions;
         public Dictionary<Point, IShip> GetHitPositions() => _hitPositions;
 

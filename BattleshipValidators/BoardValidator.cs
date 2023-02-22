@@ -16,6 +16,7 @@ namespace BattleshipValidators
         {
             List<Point> occupiedPoints = new List<Point>();
 
+            // Location validation
             foreach(var ship in board.Ships)
             {
                 if (ship.Location.X < 0)
@@ -51,6 +52,33 @@ namespace BattleshipValidators
                     occupiedPoints.Add(newPoint);
                 }
             }
+
+            // Style validation
+            var styleBoard = BoardStyles.GetStyleDefinition(board.Style);
+            if (styleBoard.Width != board.Width)
+                return false;
+            if (styleBoard.Height != board.Height)
+                return false;
+            if (styleBoard.Ships.Count != board.Ships.Count)
+                return false;
+
+            List<ShipModel> ships = new List<ShipModel>(board.Ships);
+            for (int i = 0; i < styleBoard.Ships.Count; i++)
+            {
+                bool foundAny = false;
+                for (int j = 0; j < ships.Count; j++)
+                {
+                    if (styleBoard.Ships[i].Length == ships[j].Length)
+                    {
+                        foundAny = true;
+                        ships.RemoveAt(j);
+                        break;
+                    }
+                }
+                if (!foundAny)
+                    return false;
+            }
+
             return true;
         }
     }

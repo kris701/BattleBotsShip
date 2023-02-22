@@ -75,7 +75,9 @@ namespace BattleBotsShip.Views
                     ));
             }
 
-            ResultsGrid.ItemsSource = reports;
+            List<TurnamentReport> SortedList = reports.OrderByDescending(o => o.Winrate).ToList();
+
+            ResultsGrid.ItemsSource = SortedList;
         }
 
         private void StopButton_Click(object sender, RoutedEventArgs e)

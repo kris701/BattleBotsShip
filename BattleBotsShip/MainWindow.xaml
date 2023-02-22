@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BattleBotsShip"
         mc:Ignorable="d"
-        Title="Battle(bot)Ship" Height="550" Width="800">
+        Title="Battle(bot)Ship" Height="550" Width="1000">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="35"/>

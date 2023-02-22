@@ -12,26 +12,27 @@ namespace BattleshipAIs
 {
     public static class OpponentBuilder
     {
-        private static Dictionary<string, IOpponent> _opponents = new Dictionary<string, IOpponent> {
+        private static Dictionary<string, Func<IOpponent>> _opponents = new Dictionary<string, Func<IOpponent>> {
             // Random Based
-            { "Random", new RandomShotsOpponent() },
-            { "Crosshair", new CrosshairOpponent() },
-            { "LineExplosion", new LineExplosionOpponent() },
-            { "ConditionalLineExplosion", new ConditionalLineExplosionOpponent() },
+            { "Random", () => { return new RandomShotsOpponent(); } },
+            { "Crosshair", () => { return new CrosshairOpponent(); } },
+            { "LineExplosion", () => { return new LineExplosionOpponent(); } },
+            { "ContinousLineExplosion", () => { return new ContinousLineExplosionOpponent(); } },
+            { "ConditionalLineExplosion", () => { return new ConditionalLineExplosionOpponent(); } },
 
             // Probability Based
             //{ "ProbableShots", new ProbableShotsOpponent() },
-            { "FurthestShotCLE", new FurthestShotCLEOpponent() },
+            { "FurthestShotCLE", () => { return new FurthestShotCLEOpponent(); } },
 
             // Pattern Based
-            { "GridCLE", new GridCLEOpponent() },
+            { "GridCLE", () => { return new GridCLEOpponent(); } },
         };
 
         public static List<string> OpponentOptions() => _opponents.Keys.ToList();
         public static IOpponent GetOpponent(string name)
         {
-            return _opponents[name];
+            return _opponents[name]();
         }
-        public static List<IOpponent> GetAllOpponents() => _opponents.Values.ToList();
+        public static List<string> GetAllOpponentNames() => _opponents.Keys.ToList();
     }
 }

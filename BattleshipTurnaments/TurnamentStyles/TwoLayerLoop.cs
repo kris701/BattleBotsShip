@@ -1,4 +1,5 @@
-﻿using BattleshipModels;
+﻿using BattleshipAIs;
+using BattleshipModels;
 using BattleshipSimulator;
 using BattleshipTurnaments.Report;
 using System;
@@ -13,7 +14,7 @@ namespace BattleshipTurnaments.TurnamentStyles
 {
     public class TwoLayerLoop : ITurnament
     {
-        public IReport RunTurnament(int rounds, List<IOpponent> opponents, List<IBoard> boardOptions)
+        public IReport RunTurnament(int rounds, List<string> opponents, List<IBoard> boardOptions)
         {
             List<Task<BattleshipSimulator.Report.IReport>> tasks = GenerateTasks(rounds, opponents, boardOptions, new CancellationToken());
 
@@ -23,7 +24,7 @@ namespace BattleshipTurnaments.TurnamentStyles
             return GenerateReport(rounds, tasks);
         }
 
-        public async Task<IReport> RunTurnamentAsync(int rounds, List<IOpponent> opponents, List<IBoard> boardOptions, CancellationToken cancellationToken)
+        public async Task<IReport> RunTurnamentAsync(int rounds, List<string> opponents, List<IBoard> boardOptions, CancellationToken cancellationToken)
         {
             List<Task<BattleshipSimulator.Report.IReport>> tasks = GenerateTasks(rounds, opponents, boardOptions, cancellationToken);
 
@@ -33,7 +34,7 @@ namespace BattleshipTurnaments.TurnamentStyles
             return GenerateReport(rounds, tasks);
         }
 
-        private List<Task<BattleshipSimulator.Report.IReport>> GenerateTasks(int rounds, List<IOpponent> opponents, List<IBoard> boardOptions, CancellationToken cancellationToken)
+        private List<Task<BattleshipSimulator.Report.IReport>> GenerateTasks(int rounds, List<string> opponents, List<IBoard> boardOptions, CancellationToken cancellationToken)
         {
             List<Task<BattleshipSimulator.Report.IReport>> tasks = new List<Task<BattleshipSimulator.Report.IReport>>();
 
@@ -41,7 +42,7 @@ namespace BattleshipTurnaments.TurnamentStyles
             {
                 foreach (var opponentB in opponents)
                 {
-                    if (opponentA.Name != opponentB.Name)
+                    if (opponentA != opponentB)
                     {
                         tasks.Add(new Task<BattleshipSimulator.Report.IReport>(() =>
                         {
@@ -50,8 +51,8 @@ namespace BattleshipTurnaments.TurnamentStyles
                                 return new BattleshipSimulator.Report.Report();
                             return simulator.RunSumulation(
                                             rounds,
-                                            opponentA,
-                                            opponentB,
+                                            OpponentBuilder.GetOpponent(opponentA),
+                                            OpponentBuilder.GetOpponent(opponentB),
                                             boardOptions,
                                             boardOptions
                                             );

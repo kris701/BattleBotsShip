@@ -45,7 +45,7 @@ namespace BattleBotsShip.Views
             DisableSettings();
 
             var turnament = TurnamentBuilder.GetTurnament(TurnamentStyleCombobox.Text);
-            var allOpponents = OpponentBuilder.GetAllOpponents();
+            var allOpponents = OpponentBuilder.GetAllOpponentNames();
             _cts = new CancellationTokenSource();
 
             var result = await turnament.RunTurnamentAsync(

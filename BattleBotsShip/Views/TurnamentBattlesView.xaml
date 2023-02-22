@@ -24,22 +24,16 @@
                 <Label Content="Rounds:"/>
                 <TextBox x:Name="RoundsTextbox" Text="1" Width="100" VerticalContentAlignment="Center" PreviewTextInput="NumbersOnly_TextChanged"/>
                 <Label Content="Turnament Strategy"/>
-                <ComboBox x:Name="TurnamentStyleCombobox" Width="100"/>
+                <ComboBox x:Name="TurnamentStyleCombobox" Width="200"/>
             </StackPanel>
         </StackPanel>
 
         <Grid x:Name="DisablableGridTwo" Grid.Row="1" Grid.Column="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="35"/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
 
-            <ProgressBar x:Name="TurnamentProgressBar"/>
+            <ScrollViewer>
+                <DataGrid x:Name="ResultsGrid">
 
-            <ScrollViewer Grid.Row="1">
-                <StackPanel x:Name="ResultsPanel">
-                    <Label Content="Results"/>
-                </StackPanel>
+                </DataGrid>
             </ScrollViewer>
         </Grid>
 

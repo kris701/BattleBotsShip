@@ -12,5 +12,7 @@ namespace BattleshipTurnaments.Report
         public Dictionary<string, int> Wins { get; set; }
         public Dictionary<string, int> Losses { get; set; }
         public Dictionary<string, double> WinRate { get; set; }
+
+        public Dictionary<string, long> ProcessingTime { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using BattleshipModels;
 using BattleshipSimulator.Report;
+using System.Diagnostics;
 using static BattleshipSimulator.IBattleshipSimulator;
 
 namespace BattleshipSimulator
@@ -20,7 +21,7 @@ namespace BattleshipSimulator
         {
             CheckBoardOptions(boardOptions);
 
-            var report = new Report.Report(rounds, attacker.Name, 0, defender.Name, 0);
+            var report = new Report.Report(rounds, attacker.Name, 0, 0, defender.Name, 0, 0);
 
             CurrentGame = GetGame(attacker, defender);
 
@@ -33,7 +34,14 @@ namespace BattleshipSimulator
                 var res = IGameSimulator.WinnerState.None;
                 while (res == IGameSimulator.WinnerState.None)
                 {
+                    Stopwatch watch = new Stopwatch();
+                    watch.Start();
                     res = CurrentGame.Update();
+                    watch.Stop();
+                    if (CurrentGame.Turn == IGameSimulator.TurnState.Attacker)
+                        report.DefenderProcessingTime += watch.ElapsedMilliseconds;
+                    else
+                        report.AttackerProcessingTime += watch.ElapsedMilliseconds;
                 }
 
                 if (res == IGameSimulator.WinnerState.Attacker)
@@ -53,7 +61,7 @@ namespace BattleshipSimulator
         {
             CheckBoardOptions(boardOptions);
 
-            var report = new Report.Report(rounds, attacker.Name, 0, defender.Name, 0);
+            var report = new Report.Report(rounds, attacker.Name, 0, 0, defender.Name, 0, 0);
 
             CurrentGame = GetGame(attacker, defender);
 
@@ -66,7 +74,15 @@ namespace BattleshipSimulator
                 var res = IGameSimulator.WinnerState.None;
                 while (res == IGameSimulator.WinnerState.None)
                 {
+                    Stopwatch watch = new Stopwatch();
+                    watch.Start();
                     res = await CurrentGame.UpdateAsync(cancellationToken);
+                    watch.Stop();
+                    if (CurrentGame.Turn == IGameSimulator.TurnState.Attacker)
+                        report.DefenderProcessingTime += watch.ElapsedMilliseconds;
+                    else
+                        report.AttackerProcessingTime += watch.ElapsedMilliseconds;
+
                     if (updateFunc != null)
                         await updateFunc();
                     if (cancellationToken.IsCancellationRequested) break;

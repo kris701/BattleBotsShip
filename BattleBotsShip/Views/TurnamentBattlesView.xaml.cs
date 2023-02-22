@@ -1,4 +1,5 @@
-﻿using BattleshipAIs;
+﻿using BattleBotsShip.Views.Models;
+using BattleshipAIs;
 using BattleshipSimulator;
 using BattleshipTurnaments;
 using System;
@@ -32,7 +33,7 @@ namespace BattleBotsShip.Views
             InitializeComponent();
         }
 
-        private async void StartButton_Click(object sender, RoutedEventArgs e)
+        private void StartButton_Click(object sender, RoutedEventArgs e)
         {
             if (BoardSelector.Boards.Count == 0)
             {
@@ -44,43 +45,33 @@ namespace BattleBotsShip.Views
 
             var turnament = TurnamentBuilder.GetTurnament(TurnamentStyleCombobox.Text);
             var allOpponents = OpponentBuilder.GetAllOpponents();
-            TurnamentProgressBar.Maximum = allOpponents.Count;
-            TurnamentProgressBar.Value = 0;
 
-            var result = await turnament.RunTurnamentAsync(
+            var result = turnament.RunTurnament(
                 Int32.Parse(RoundsTextbox.Text),
                 allOpponents,
-                BoardSelector.Boards.Values.ToList(),
-                () => { return UpdateSimulationUI(turnament); },
-                _cts.Token
+                BoardSelector.Boards.Values.ToList()
                 );
 
-            TurnamentProgressBar.Value = 0;
             EnableSettings();
 
             WriteReport(result);
         }
 
-        private async Task UpdateSimulationUI(ITurnament turnament)
-        {
-            TurnamentProgressBar.Maximum = turnament.TotalRuns;
-            TurnamentProgressBar.Value = turnament.CurrentRun;
-            await Task.Delay(100);
-        }
-
         private void WriteReport(BattleshipTurnaments.Report.IReport report)
         {
-            string outStr = $"Results from turnament, after {report.Rounds} rounds:" + Environment.NewLine;
-
+            List<TurnamentReport> reports = new List<TurnamentReport>();
             foreach(var key in report.WinRate.Keys)
             {
-                outStr += $"\t{key}: {report.Wins[key]} wins, {report.Losses[key]} looses, {report.WinRate[key]}% win rate" + Environment.NewLine;
+                reports.Add(new TurnamentReport(
+                    key,
+                    report.Wins[key],
+                    report.Losses[key],
+                    report.WinRate[key],
+                    report.ProcessingTime[key]
+                    ));
             }
 
-            ResultsPanel.Children.Add(new Label()
-            {
-                Content = outStr
-            });
+            ResultsGrid.ItemsSource = reports;
         }
 
         private void StopButton_Click(object sender, RoutedEventArgs e)

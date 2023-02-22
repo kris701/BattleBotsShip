@@ -1,4 +1,5 @@
-﻿using BattleshipAIs.RandomBased;
+﻿using BattleshipAIs.ProbabilityBased;
+using BattleshipAIs.RandomBased;
 using BattleshipSimulator;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,8 @@ namespace BattleshipAIs
             { "Crosshair", new CrosshairOpponent() },
             { "LineExplosion", new LineExplosionOpponent() },
             { "ConditionalLineExplosion", new ConditionalLineExplosionOpponent() },
+
+            { "ProbableShots", new ProbableShotsOpponent() },
         };
 
         public static List<string> OpponentOptions() => _opponents.Keys.ToList();

@@ -21,6 +21,7 @@ namespace BattleshipAIs
 
             // Probability Based
             //{ "ProbableShots", new ProbableShotsOpponent() },
+            { "FurthestShotCLE", new FurthestShotCLEOpponent() },
 
             // Pattern Based
             { "GridCLE", new GridCLEOpponent() },

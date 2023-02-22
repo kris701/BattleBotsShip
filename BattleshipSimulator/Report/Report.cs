@@ -22,5 +22,17 @@
             DefenderWon = defenderWon;
             DefenderProcessingTime = defenderProcessingTime;
         }
+
+        public Report()
+        {
+            Rounds = 0;
+            AttackerName = "";
+            AttackerWon = 0;
+            AttackerProcessingTime = 0;
+
+            DefenderName = "";
+            DefenderWon = 0;
+            DefenderProcessingTime = 0;
+        }
     }
 }

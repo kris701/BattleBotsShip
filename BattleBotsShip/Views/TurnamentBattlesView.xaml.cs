@@ -33,28 +33,32 @@ namespace BattleBotsShip.Views
             InitializeComponent();
         }
 
-        private void StartButton_Click(object sender, RoutedEventArgs e)
+        private async void StartButton_Click(object sender, RoutedEventArgs e)
         {
             if (BoardSelector.Boards.Count == 0)
             {
                 MessageBox.Show("Select at least one board!");
                 return;
             }
+            ResultsGrid.ItemsSource = null;
 
             DisableSettings();
 
             var turnament = TurnamentBuilder.GetTurnament(TurnamentStyleCombobox.Text);
             var allOpponents = OpponentBuilder.GetAllOpponents();
+            _cts = new CancellationTokenSource();
 
-            var result = turnament.RunTurnament(
+            var result = await turnament.RunTurnamentAsync(
                 Int32.Parse(RoundsTextbox.Text),
                 allOpponents,
-                BoardSelector.Boards.Values.ToList()
+                BoardSelector.Boards.Values.ToList(),
+                _cts.Token
                 );
 
             EnableSettings();
 
-            WriteReport(result);
+            if (!_cts.IsCancellationRequested)
+                WriteReport(result);
         }
 
         private void WriteReport(BattleshipTurnaments.Report.IReport report)

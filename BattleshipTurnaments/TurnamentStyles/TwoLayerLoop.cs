@@ -52,6 +52,7 @@ namespace BattleshipTurnaments.TurnamentStyles
                                             rounds,
                                             opponentA,
                                             opponentB,
+                                            boardOptions,
                                             boardOptions
                                             );
                         }));

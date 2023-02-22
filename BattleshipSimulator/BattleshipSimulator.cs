@@ -17,9 +17,11 @@ namespace BattleshipSimulator
             SelectionMethod = selectionMethod;
         }
 
-        public IReport RunSumulation(int rounds, IOpponent attacker, IOpponent defender, List<IBoard> boardOptions)
+        public IReport RunSumulation(int rounds, IOpponent attacker, IOpponent defender, List<IBoard> attackerBoardOptions, List<IBoard> defenderBoardOptions)
         {
-            CheckBoardOptions(boardOptions);
+            var allBoards = new List<IBoard>(attackerBoardOptions);
+            allBoards.AddRange(defenderBoardOptions);
+            CheckBoardOptions(allBoards);
 
             var report = new Report.Report(rounds, attacker.Name, 0, 0, defender.Name, 0, 0);
 
@@ -27,7 +29,7 @@ namespace BattleshipSimulator
 
             for (int i = 0; i < rounds; i++)
             {
-                var boards = GetBoards(boardOptions);
+                var boards = GetBoards(attackerBoardOptions, defenderBoardOptions);
 
                 CurrentGame.AttackerBoard = new BoardSimulator(boards.Item1);
                 CurrentGame.DefenderBoard = new BoardSimulator(boards.Item2);
@@ -57,9 +59,11 @@ namespace BattleshipSimulator
             return report;
         }
 
-        public async Task<IReport> RunSumulationAsync(int rounds, IOpponent attacker, IOpponent defender, List<IBoard> boardOptions, Func<Task>? updateFunc, CancellationToken cancellationToken)
+        public async Task<IReport> RunSumulationAsync(int rounds, IOpponent attacker, IOpponent defender, List<IBoard> attackerBoardOptions, List<IBoard> defenderBoardOptions, Func<Task>? updateFunc, CancellationToken cancellationToken)
         {
-            CheckBoardOptions(boardOptions);
+            var allBoards = new List<IBoard>(attackerBoardOptions);
+            allBoards.AddRange(defenderBoardOptions);
+            CheckBoardOptions(allBoards);
 
             var report = new Report.Report(rounds, attacker.Name, 0, 0, defender.Name, 0, 0);
 
@@ -67,7 +71,7 @@ namespace BattleshipSimulator
 
             for (int i = 0; i < rounds; i++)
             {
-                var boards = GetBoards(boardOptions);
+                var boards = GetBoards(attackerBoardOptions, defenderBoardOptions);
 
                 CurrentGame.AttackerBoard = new BoardSimulator(boards.Item1);
                 CurrentGame.DefenderBoard = new BoardSimulator(boards.Item2);
@@ -124,15 +128,16 @@ namespace BattleshipSimulator
             }
         }
 
-        private Tuple<IBoard, IBoard> GetBoards(List<IBoard> boardOptions)
+        private Tuple<IBoard, IBoard> GetBoards(List<IBoard> attackerBoard, List<IBoard> defenderBoards)
         {
             switch (SelectionMethod)
             {
                 case BoardSelectionMethod.Random:
-                    return new Tuple<IBoard, IBoard>(boardOptions[_rnd.Next(0, boardOptions.Count)], boardOptions[_rnd.Next(0, boardOptions.Count)]);
-                case BoardSelectionMethod.RandomBothSame:
-                    int target = _rnd.Next(0, boardOptions.Count);
-                    return new Tuple<IBoard, IBoard>(boardOptions[target], boardOptions[target]);
+                    return new Tuple<IBoard, IBoard>(attackerBoard[_rnd.Next(0, attackerBoard.Count)], defenderBoards[_rnd.Next(0, defenderBoards.Count)]);
+                case BoardSelectionMethod.AttackerOnly:
+                    return new Tuple<IBoard, IBoard>(attackerBoard[_rnd.Next(0, attackerBoard.Count)], attackerBoard[_rnd.Next(0, attackerBoard.Count)]);
+                case BoardSelectionMethod.DefenderOnly:
+                    return new Tuple<IBoard, IBoard>(defenderBoards[_rnd.Next(0, defenderBoards.Count)], defenderBoards[_rnd.Next(0, defenderBoards.Count)]);
             }
             throw new ArgumentException("Invalid board selection method");
         }

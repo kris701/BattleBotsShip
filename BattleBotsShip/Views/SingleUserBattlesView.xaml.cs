@@ -36,9 +36,14 @@ namespace BattleBotsShip.Views
 
         private async void StartButton_Click(object sender, RoutedEventArgs e)
         {
-            if (BoardSelector.Boards.Count != 1)
+            if (UserBoardSelector.Boards.Count != 1)
             {
-                MessageBox.Show("Select only one board!");
+                MessageBox.Show("Select only one board as your own!");
+                return;
+            }
+            if (AttackerBoardSelector.Boards.Count <= 0)
+            {
+                MessageBox.Show("Select at least one board for the attacker!");
                 return;
             }
 
@@ -52,7 +57,8 @@ namespace BattleBotsShip.Views
                 1,
                 OpponentBuilder.GetOpponent(AttackerNameCombobox.Text),
                 _user,
-                BoardSelector.Boards.Values.ToList(),
+                AttackerBoardSelector.Boards.Values.ToList(),
+                UserBoardSelector.Boards.Values.ToList(),
                 () => { return UpdateSimulationUI(simulator); },
                 _cts.Token
                 );

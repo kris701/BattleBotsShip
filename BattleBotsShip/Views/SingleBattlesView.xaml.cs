@@ -56,6 +56,7 @@ namespace BattleBotsShip.Views
                     OpponentBuilder.GetOpponent(AttackerNameCombobox.Text),
                     OpponentBuilder.GetOpponent(DefenderNameCombobox.Text),
                     BoardSelector.Boards.Values.ToList(),
+                    BoardSelector.Boards.Values.ToList(),
                     () => { return UpdateSimulationUI(simulator, Int32.Parse(RefreshRateTextbox.Text)); },
                     _cts.Token
                     );
@@ -67,6 +68,7 @@ namespace BattleBotsShip.Views
                     Int32.Parse(RoundsTextbox.Text),
                     OpponentBuilder.GetOpponent(AttackerNameCombobox.Text),
                     OpponentBuilder.GetOpponent(DefenderNameCombobox.Text),
+                    BoardSelector.Boards.Values.ToList(),
                     BoardSelector.Boards.Values.ToList()
                     );
                 Report(result);

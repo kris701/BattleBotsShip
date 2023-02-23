@@ -1,18 +1,21 @@
 ﻿namespace BattleshipSimulator.Report
 {
-    public class Report : IReport
+    public class RunReport : IRunReport
     {
-        public int Rounds { get; }
-
-        public string AttackerName { get; }
+        public int Rounds { get; set; }
+        public string AttackerName { get; set; }
         public int AttackerWon { get; set; }
+        public int AttackerLost => Rounds - AttackerWon;
+        public double AttackerWinRate => (double)AttackerWon / (double)Rounds;
         public long AttackerProcessingTime { get; set; }
 
-        public string DefenderName { get; }
+        public string DefenderName { get; set; }
         public int DefenderWon { get; set; }
+        public int DefenderLost => Rounds - DefenderWon;
+        public double DefenderWinRate => (double)DefenderWon / (double)Rounds;
         public long DefenderProcessingTime { get; set; }
 
-        public Report(int rounds, string attackerName, int attackerWon, long attackerProcessingTime, string defenderName, int defenderWon, long defenderProcessingTime)
+        public RunReport(int rounds, string attackerName, int attackerWon, long attackerProcessingTime, string defenderName, int defenderWon, long defenderProcessingTime)
         {
             Rounds = rounds;
             AttackerName = attackerName;
@@ -23,13 +26,12 @@
             DefenderProcessingTime = defenderProcessingTime;
         }
 
-        public Report()
+        public RunReport()
         {
             Rounds = 0;
             AttackerName = "";
             AttackerWon = 0;
             AttackerProcessingTime = 0;
-
             DefenderName = "";
             DefenderWon = 0;
             DefenderProcessingTime = 0;

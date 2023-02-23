@@ -48,10 +48,6 @@ namespace BattleshipAIs.ProbabilityBased
             await Task.Run(() => DoMoveOn(opponentBoard));
         }
 
-        public void Reset()
-        {
-        }
-
         private List<Point> GetUncoveredHitPoints(IBoardSimulator opponentBoard)
         {
             List<Point> uncoveredPoints = new List<Point>();

@@ -53,13 +53,12 @@ namespace BattleBotsShip.Views
             IBattleshipSimulator simulator = new BattleshipSimulator.BattleshipSimulator(IBattleshipSimulator.BoardSelectionMethod.Random);
             _cts = new CancellationTokenSource();
 
-            var result = await simulator.RunSumulationAsync(
-                1,
+            var result = await simulator.RunSingleSimulationAsync(
                 OpponentBuilder.GetOpponent(AttackerNameCombobox.Text),
                 _user,
                 AttackerBoardSelector.Boards.Values.ToList(),
                 UserBoardSelector.Boards.Values.ToList(),
-                () => { return UpdateSimulationUI(simulator); },
+                (e) => { return UpdateSimulationUI(e); },
                 _cts.Token
                 );
             Report(result);
@@ -68,13 +67,10 @@ namespace BattleBotsShip.Views
             VisualAttackerModel.IsEnabled = false;
         }
 
-        private async Task UpdateSimulationUI(IBattleshipSimulator simulator)
+        private async Task UpdateSimulationUI(IGameSimulator simulator)
         {
-            if (simulator.CurrentGame != null)
-            {
-                VisualAttackerModel.Update(simulator.CurrentGame.AttackerBoard, _user, ShowOpponentCheckbox.IsChecked == true);
-                VisualDefenderModel.Update(simulator.CurrentGame.DefenderBoard);
-            }
+            VisualAttackerModel.Update(simulator.AttackerBoard, _user, ShowOpponentCheckbox.IsChecked == true);
+            VisualDefenderModel.Update(simulator.DefenderBoard);
             await Task.Delay(1);
         }
 
@@ -108,9 +104,9 @@ namespace BattleBotsShip.Views
             e.Handled = regex.IsMatch(e.Text);
         }
 
-        private void Report(IReport report)
+        private void Report(IRunReport report)
         {
-            ResultsGrid.ItemsSource = new List<IReport>() { report };
+            ResultsGrid.ItemsSource = new List<IRunReport>() { report };
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)

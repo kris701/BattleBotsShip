@@ -22,11 +22,8 @@
             <Button x:Name="StartButton" Content="Start" Click="StartButton_Click" Width="100"/>
             <Button x:Name="StopButton" Content="Stop" Click="StopButton_Click" Width="100" IsEnabled="False"/>
             <StackPanel x:Name="DisablableSettings" Orientation="Horizontal">
-                <Label Content="Rounds:"/>
-                <TextBox x:Name="RoundsTextbox" Text="1" Width="100" VerticalContentAlignment="Center" PreviewTextInput="NumbersOnly_TextChanged"/>
-                <CheckBox x:Name="VisualizeCheckbox" Content="Visualize" VerticalAlignment="Center" IsChecked="True"/>
                 <Label Content="Refresh Rate:"/>
-                <TextBox x:Name="RefreshRateTextbox" Text="100" Width="100" VerticalContentAlignment="Center" PreviewTextInput="NumbersOnly_TextChanged"/>
+                <TextBox x:Name="RefreshRateTextbox" Text="10" Width="100" VerticalContentAlignment="Center" PreviewTextInput="NumbersOnly_TextChanged"/>
             </StackPanel>
         </StackPanel>
 

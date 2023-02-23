@@ -45,13 +45,5 @@ namespace BattleshipSimulator
             }
             return IBoardSimulator.HitState.None;
         }
-
-        public void Reset()
-        {
-            Shots.Clear();
-            Hits.Clear();
-            LostShips.Clear();
-            _shipHits.Clear();
-        }
     }
 }

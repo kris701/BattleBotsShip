@@ -1,6 +1,6 @@
 ﻿namespace BattleshipSimulator
 {
-    public interface IOpponent : IResetable
+    public interface IOpponent
     {
         public string Name { get; }
         public void DoMoveOn(IBoardSimulator opponentBoard);

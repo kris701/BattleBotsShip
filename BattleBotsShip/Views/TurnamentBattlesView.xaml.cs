@@ -61,7 +61,7 @@ namespace BattleBotsShip.Views
                 WriteReport(result);
         }
 
-        private void WriteReport(BattleshipTurnaments.Report.IReport report)
+        private void WriteReport(BattleshipTurnaments.Report.IRunReport report)
         {
             List<TurnamentReport> reports = new List<TurnamentReport>();
             foreach(var key in report.WinRate.Keys)

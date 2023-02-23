@@ -1,6 +1,6 @@
 ﻿namespace BattleshipSimulator
 {
-    public interface IGameSimulator : IResetable
+    public interface IGameSimulator
     {
         public enum WinnerState { None, Attacker, Defender }
         public enum TurnState { None, Attacker, Defender }

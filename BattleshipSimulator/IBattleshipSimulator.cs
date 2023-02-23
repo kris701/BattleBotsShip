@@ -8,9 +8,10 @@ namespace BattleshipSimulator
         public enum BoardSelectionMethod { None, Random, AttackerOnly, DefenderOnly }
 
         public BoardSelectionMethod SelectionMethod { get; }
-        public IGameSimulator? CurrentGame { get; }
+        
+        public IRunReport RunSimulation(int rounds, IOpponent attacker, IOpponent defender, List<IBoard> attackerBoardOptions, List<IBoard> defenderBoardOptions);
+        public Task<IRunReport> RunSimulationAsync(int rounds, IOpponent attacker, IOpponent defender, List<IBoard> attackerBoardOptions, List<IBoard> defenderBoardOptions, CancellationToken cancellationToken);
 
-        public IReport RunSumulation(int rounds, IOpponent attacker, IOpponent defender, List<IBoard> attackerBoardOptions, List<IBoard> defenderBoardOptions);
-        public Task<IReport> RunSumulationAsync(int rounds, IOpponent attacker, IOpponent defender, List<IBoard> attackerBoardOptions, List<IBoard> defenderBoardOptions, Func<Task>? updateFunc, CancellationToken cancellationToken);
+        public Task<IRunReport> RunSingleSimulationAsync(IOpponent attacker, IOpponent defender, List<IBoard> attackerBoardOptions, List<IBoard> defenderBoardOptions, Func<IGameSimulator, Task>? updateFunc, CancellationToken cancellationToken);
     }
 }

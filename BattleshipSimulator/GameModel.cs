@@ -56,14 +56,5 @@
             }
             return IGameSimulator.WinnerState.None;
         }
-
-        public void Reset()
-        {
-            AttackerBoard.Reset();
-            AttackerBot.Reset();
-            DefenderBoard.Reset();
-            DefenderBot.Reset();
-            Turn = _originalTurn;
-        }
     }
 }

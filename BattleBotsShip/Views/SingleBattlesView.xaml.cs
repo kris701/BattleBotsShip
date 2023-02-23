@@ -49,41 +49,23 @@ namespace BattleBotsShip.Views
             IBattleshipSimulator simulator = new BattleshipSimulator.BattleshipSimulator(IBattleshipSimulator.BoardSelectionMethod.Random);
             _cts = new CancellationTokenSource();
 
-            if (VisualizeCheckbox.IsChecked == true)
-            {
-                var result = await simulator.RunSumulationAsync(
-                    Int32.Parse(RoundsTextbox.Text),
-                    OpponentBuilder.GetOpponent(AttackerNameCombobox.Text),
-                    OpponentBuilder.GetOpponent(DefenderNameCombobox.Text),
-                    BoardSelector.Boards.Values.ToList(),
-                    BoardSelector.Boards.Values.ToList(),
-                    () => { return UpdateSimulationUI(simulator, Int32.Parse(RefreshRateTextbox.Text)); },
-                    _cts.Token
-                    );
-                Report(result);
-            }
-            else if (VisualizeCheckbox.IsChecked == false)
-            {
-                var result = simulator.RunSumulation(
-                    Int32.Parse(RoundsTextbox.Text),
-                    OpponentBuilder.GetOpponent(AttackerNameCombobox.Text),
-                    OpponentBuilder.GetOpponent(DefenderNameCombobox.Text),
-                    BoardSelector.Boards.Values.ToList(),
-                    BoardSelector.Boards.Values.ToList()
-                    );
-                Report(result);
-            }
+            var result = await simulator.RunSingleSimulationAsync(
+                OpponentBuilder.GetOpponent(AttackerNameCombobox.Text),
+                OpponentBuilder.GetOpponent(DefenderNameCombobox.Text),
+                BoardSelector.Boards.Values.ToList(),
+                BoardSelector.Boards.Values.ToList(),
+                (e) => { return UpdateSimulationUI(e, Int32.Parse(RefreshRateTextbox.Text)); },
+                _cts.Token
+                );
+            Report(result);            
 
             EnableSettings();
         }
 
-        private async Task UpdateSimulationUI(IBattleshipSimulator simulator, int refreshRate)
+        private async Task UpdateSimulationUI(IGameSimulator simulator, int refreshRate)
         {
-            if (simulator.CurrentGame != null)
-            {
-                VisualAttackerModel.Update(simulator.CurrentGame.AttackerBoard);
-                VisualDefenderModel.Update(simulator.CurrentGame.DefenderBoard);
-            }
+            VisualAttackerModel.Update(simulator.AttackerBoard);
+            VisualDefenderModel.Update(simulator.DefenderBoard);
             await Task.Delay(refreshRate);
         }
 
@@ -117,9 +99,9 @@ namespace BattleBotsShip.Views
             e.Handled = regex.IsMatch(e.Text);
         }
 
-        private void Report(IReport report)
+        private void Report(IRunReport report)
         {
-            ResultsGrid.ItemsSource = new List<IReport>() { report };
+            ResultsGrid.ItemsSource = new List<IRunReport>() { report };
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)

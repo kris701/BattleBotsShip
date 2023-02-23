@@ -29,10 +29,5 @@ namespace BattleshipAIs
             opponentBoard.Fire(FireAt);
             FireAt = null;
         }
-
-        public void Reset()
-        {
-            FireAt = null;
-        }
     }
 }

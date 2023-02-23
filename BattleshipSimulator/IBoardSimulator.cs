@@ -3,7 +3,7 @@ using BattleshipTools;
 
 namespace BattleshipSimulator
 {
-    public interface IBoardSimulator : IResetable
+    public interface IBoardSimulator
     {
         public enum HitState { None, Hit, Sunk }
 

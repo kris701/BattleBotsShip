@@ -29,7 +29,6 @@
         <Grid x:Name="DisablableGridTwo" Grid.Row="1" Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="35"/>
-                <RowDefinition Height="35"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
@@ -40,9 +39,9 @@
             <Label Content="Attacker"/>
             <ComboBox x:Name="AttackerNameCombobox" Grid.Column="1"/>
 
-            <StackPanel x:Name="ResultsPanel" Grid.Row="2" Grid.ColumnSpan="2">
-                <Label Content="Results"/>
-            </StackPanel>
+            <ScrollViewer Grid.Row="1" Grid.ColumnSpan="2">
+                <DataGrid x:Name="ResultsGrid"/>
+            </ScrollViewer>
         </Grid>
 
         <Grid x:Name="BoardSelectorGrid" Grid.Row="1">

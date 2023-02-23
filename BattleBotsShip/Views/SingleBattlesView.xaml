@@ -46,9 +46,9 @@
             <Label Content="Defender" Grid.Row="1"/>
             <ComboBox x:Name="DefenderNameCombobox" Grid.Column="1" Grid.Row="1"/>
 
-            <StackPanel x:Name="ResultsPanel" Grid.Row="2" Grid.ColumnSpan="2">
-                <Label Content="Results"/>
-            </StackPanel>
+            <ScrollViewer Grid.Row="2" Grid.ColumnSpan="2">
+                <DataGrid x:Name="ResultsGrid"/>
+            </ScrollViewer>
         </Grid>
 
         <Grid x:Name="BoardSelectorGrid" Grid.Row="1">

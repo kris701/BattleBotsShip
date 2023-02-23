@@ -119,10 +119,7 @@ namespace BattleBotsShip.Views
 
         private void Report(IReport report)
         {
-            ResultsPanel.Children.Add(new Label()
-            {
-                Content = $"Attacker ({report.AttackerName}) won {report.AttackerWon} times and defender ({report.DefenderName}) {report.DefenderWon} times"
-            });
+            ResultsGrid.ItemsSource = new List<IReport>() { report };
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)

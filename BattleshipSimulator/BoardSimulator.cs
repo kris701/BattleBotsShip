@@ -1,5 +1,6 @@
 ﻿using BattleshipModels;
 using BattleshipTools;
+using static BattleshipSimulator.IBoardSimulator;
 
 namespace BattleshipSimulator
 {
@@ -24,12 +25,13 @@ namespace BattleshipSimulator
             _shipHits = new Dictionary<IShip, int>();
         }
 
-        public IBoardSimulator.HitState Fire(Point location)
+        public HitState Fire(Point location)
         {
             Shots.Add(location);
-            if (Board.GetHitPositions().Keys.Contains(location) && !Hits.Contains(location))
+            var hitPositions = Board.GetHitPositions();
+            if (hitPositions.ContainsKey(location) && !Hits.Contains(location))
             {
-                var ship = Board.GetHitPositions()[location];
+                var ship = hitPositions[location];
                 if (_shipHits.ContainsKey(ship))
                     _shipHits[ship]++;
                 else
@@ -38,12 +40,12 @@ namespace BattleshipSimulator
                 if (_shipHits[ship] == ship.Length)
                 {
                     LostShips.Add(ship);
-                    return IBoardSimulator.HitState.Sunk;
+                    return HitState.Sunk;
                 }
                 else
-                    return IBoardSimulator.HitState.Hit;
+                    return HitState.Hit;
             }
-            return IBoardSimulator.HitState.None;
+            return HitState.None;
         }
     }
 }

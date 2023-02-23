@@ -1,12 +1,12 @@
 ﻿using BattleshipModels;
 using BattleshipSimulator.Report;
+using static BattleshipSimulator.BoardSelector;
 
 namespace BattleshipSimulator
 {
     public interface IBattleshipSimulator
     {
-        public enum BoardSelectionMethod { None, Random, AttackerOnly, DefenderOnly }
-
+        public bool RunParallel { get; set; }
         public BoardSelectionMethod SelectionMethod { get; }
         
         public IRunReport RunSimulation(int rounds, string attackerName, string defenderName, List<IBoard> attackerBoardOptions, List<IBoard> defenderBoardOptions);

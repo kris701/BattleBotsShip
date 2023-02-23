@@ -9,14 +9,11 @@ namespace BattleshipTurnaments
 {
     public static class TurnamentBuilder
     {
-        private static Dictionary<string, ITurnament> _turnaments = new Dictionary<string, ITurnament> {
-            { "TowLayerLoop", new TwoLayerLoop() },
+        private static Dictionary<string, Func<ITurnament>> _turnaments = new Dictionary<string, Func<ITurnament>> {
+            { "TowLayerLoop", () => { return new TwoLayerLoop(); } },
         };
 
         public static List<string> TurnamentOptions() => _turnaments.Keys.ToList();
-        public static ITurnament GetTurnament(string name)
-        {
-            return _turnaments[name];
-        }
+        public static ITurnament GetTurnament(string name) => _turnaments[name]();
     }
 }

@@ -11,6 +11,8 @@ namespace BattleshipTurnaments
 {
     public interface ITurnament
     {
+        public bool RunParallel { get; set; }
+
         public IRunReport RunTurnament(int rounds, List<string> opponents, List<IBoard> boardOptions);
         public Task<IRunReport> RunTurnamentAsync(int rounds, List<string> opponents, List<IBoard> boardOptions, CancellationToken cancellationToken);
     }

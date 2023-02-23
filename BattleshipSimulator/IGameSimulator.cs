@@ -6,9 +6,9 @@
         public enum TurnState { None, Attacker, Defender }
 
         public IBoardSimulator AttackerBoard { get; set; }
-        public IOpponent AttackerBot { get; }
+        public IOpponent AttackerOpponent { get; }
         public IBoardSimulator DefenderBoard { get; set; }
-        public IOpponent DefenderBot { get; }
+        public IOpponent DefenderOpponent { get; }
 
         public TurnState Turn { get; }
 

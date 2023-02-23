@@ -21,6 +21,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static BattleshipSimulator.BoardSelector;
 
 namespace BattleBotsShip.Views
 {
@@ -46,7 +47,7 @@ namespace BattleBotsShip.Views
 
             DisableSettings();
 
-            IBattleshipSimulator simulator = new BattleshipSimulator.BattleshipSimulator(IBattleshipSimulator.BoardSelectionMethod.Random);
+            IBattleshipSimulator simulator = new BattleshipSimulator.BattleshipSimulator(BoardSelectionMethod.Random);
             _cts = new CancellationTokenSource();
 
             var result = await simulator.RunSingleSimulationAsync(

@@ -10,17 +10,19 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using static BattleshipSimulator.BoardSelector;
 
 namespace BattleshipTurnaments.TurnamentStyles
 {
     public class TwoLayerLoop : ITurnament
     {
+        public bool RunParallel { get; set; } = true;
+
         public IRunReport RunTurnament(int rounds, List<string> opponents, List<IBoard> boardOptions)
         {
             List<Task<BattleshipSimulator.Report.IRunReport>> tasks = GenerateTasks(rounds, opponents, boardOptions, new CancellationToken());
 
-            Parallel.ForEach(tasks, task => task.Start());
-            Task.WaitAll(tasks.ToArray());
+            TaskHelper.RunTasks(tasks, RunParallel);
 
             return GenerateReport(rounds, tasks);
         }
@@ -29,8 +31,7 @@ namespace BattleshipTurnaments.TurnamentStyles
         {
             List<Task<BattleshipSimulator.Report.IRunReport>> tasks = GenerateTasks(rounds, opponents, boardOptions, cancellationToken);
 
-            Parallel.ForEach(tasks, task => task.Start());
-            await Task.WhenAll(tasks.ToArray());
+            await TaskHelper.RunTasksAsync(tasks, RunParallel, cancellationToken);
 
             return GenerateReport(rounds, tasks);
         }
@@ -46,7 +47,7 @@ namespace BattleshipTurnaments.TurnamentStyles
                 {
                     tasks.Add(new Task<BattleshipSimulator.Report.IRunReport>(() =>
                     {
-                        IBattleshipSimulator simulator = new BattleshipSimulator.BattleshipSimulator(IBattleshipSimulator.BoardSelectionMethod.Random);
+                        IBattleshipSimulator simulator = new BattleshipSimulator.BattleshipSimulator(BoardSelectionMethod.Random);
                         if (cancellationToken.IsCancellationRequested)
                             return new BattleshipSimulator.Report.RunReport();
                         return simulator.RunSimulation(

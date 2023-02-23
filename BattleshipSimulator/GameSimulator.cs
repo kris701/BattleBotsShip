@@ -1,60 +1,60 @@
-﻿namespace BattleshipSimulator
+﻿using static BattleshipSimulator.IGameSimulator;
+
+namespace BattleshipSimulator
 {
     public class GameSimulator : IGameSimulator
     {
         public IBoardSimulator AttackerBoard { get; set; }
-        public IOpponent AttackerBot { get; }
+        public IOpponent AttackerOpponent { get; }
         public IBoardSimulator DefenderBoard { get; set; }
-        public IOpponent DefenderBot { get; }
-        private IGameSimulator.TurnState _originalTurn;
-        public IGameSimulator.TurnState Turn { get; internal set; }
+        public IOpponent DefenderOpponent { get; }
+        public TurnState Turn { get; internal set; }
 
-        public GameSimulator(IBoardSimulator attackerBoard, IOpponent attackerBot, IBoardSimulator defenderBoard, IOpponent defenderBot, IGameSimulator.TurnState turn)
+        public GameSimulator(IBoardSimulator attackerBoard, IOpponent attackerOpponent, IBoardSimulator defenderBoard, IOpponent defenderOpponent, TurnState turn)
         {
             AttackerBoard = attackerBoard;
-            AttackerBot = attackerBot;
+            AttackerOpponent = attackerOpponent;
             DefenderBoard = defenderBoard;
-            DefenderBot = defenderBot;
+            DefenderOpponent = defenderOpponent;
             Turn = turn;
-            _originalTurn = turn;
         }
 
-        public IGameSimulator.WinnerState Update()
+        public WinnerState Update()
         {
-            if (Turn == IGameSimulator.TurnState.Attacker)
+            if (Turn == TurnState.Attacker)
             {
-                AttackerBot.DoMoveOn(DefenderBoard);
+                AttackerOpponent.DoMoveOn(DefenderBoard);
                 if (DefenderBoard.HaveLost)
-                    return IGameSimulator.WinnerState.Attacker;
-                Turn = IGameSimulator.TurnState.Defender;
+                    return WinnerState.Attacker;
+                Turn = TurnState.Defender;
             }
             else
             {
-                DefenderBot.DoMoveOn(AttackerBoard);
+                DefenderOpponent.DoMoveOn(AttackerBoard);
                 if (AttackerBoard.HaveLost)
-                    return IGameSimulator.WinnerState.Defender;
-                Turn = IGameSimulator.TurnState.Attacker;
+                    return WinnerState.Defender;
+                Turn = TurnState.Attacker;
             }
-            return IGameSimulator.WinnerState.None;
+            return WinnerState.None;
         }
 
-        public async Task<IGameSimulator.WinnerState> UpdateAsync(CancellationToken token)
+        public async Task<WinnerState> UpdateAsync(CancellationToken token)
         {
-            if (Turn == IGameSimulator.TurnState.Attacker)
+            if (Turn == TurnState.Attacker)
             {
-                await AttackerBot.DoMoveOnAsync(DefenderBoard, token);
+                await AttackerOpponent.DoMoveOnAsync(DefenderBoard, token);
                 if (DefenderBoard.HaveLost)
-                    return IGameSimulator.WinnerState.Attacker;
-                Turn = IGameSimulator.TurnState.Defender;
+                    return WinnerState.Attacker;
+                Turn = TurnState.Defender;
             }
             else
             {
-                await DefenderBot.DoMoveOnAsync(AttackerBoard, token);
+                await DefenderOpponent.DoMoveOnAsync(AttackerBoard, token);
                 if (AttackerBoard.HaveLost)
-                    return IGameSimulator.WinnerState.Defender;
-                Turn = IGameSimulator.TurnState.Attacker;
+                    return WinnerState.Defender;
+                Turn = TurnState.Attacker;
             }
-            return IGameSimulator.WinnerState.None;
+            return WinnerState.None;
         }
     }
 }

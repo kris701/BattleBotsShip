@@ -12,32 +12,16 @@ namespace BattleshipValidators
 {
     public static class BoardValidator
     {
-        public static bool ValidateBoard(IBoard board)
+        public static List<IShip> GetInvalidShips(IBoard board)
         {
+            List<IShip> invalidShips = new List<IShip>();
             List<Point> occupiedPoints = new List<Point>();
 
             // Location validation
-            foreach(var ship in board.Ships)
+            foreach (var ship in board.Ships)
             {
-                if (ship.Location.X < 0)
-                    return false;
-                if (ship.Orientation == IShip.OrientationDirection.EW)
-                {
-                    if (ship.Location.X + ship.Length > board.Width)
-                        return false;
-                }
-                else if (ship.Location.X >= board.Width)
-                    return false;
-
-                if (ship.Location.Y < 0)
-                    return false;
-                if (ship.Orientation == IShip.OrientationDirection.NS)
-                {
-                    if (ship.Location.Y + ship.Length > board.Height)
-                        return false;
-                }
-                else if (ship.Location.Y >= board.Height)
-                    return false;
+                if (!ShipValidator.ValidateShip(board, ship))
+                    invalidShips.Add(ship);
 
                 for (int i = 0; i < ship.Length; i++)
                 {
@@ -48,10 +32,18 @@ namespace BattleshipValidators
                         newPoint = new Point(ship.Location.X + i, ship.Location.Y);
 
                     if (occupiedPoints.Contains(newPoint))
-                        return false;
+                        if (!invalidShips.Contains(ship))
+                            invalidShips.Add(ship);
                     occupiedPoints.Add(newPoint);
                 }
             }
+            return invalidShips;
+        }
+
+        public static bool ValidateBoard(IBoard board)
+        {
+            if (GetInvalidShips(board).Count > 0)
+                return false;
 
             // Style validation
             var styleBoard = BoardStyles.GetStyleDefinition(board.Style);

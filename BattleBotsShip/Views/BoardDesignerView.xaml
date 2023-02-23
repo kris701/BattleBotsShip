@@ -11,25 +11,16 @@
             <RowDefinition Height="35"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition Width="2*"/>
-        </Grid.ColumnDefinitions>
 
-        <StackPanel Orientation="Horizontal" Margin="5" Grid.ColumnSpan="2">
-            <Label Content="Width" VerticalAlignment="Center"/>
-            <TextBox x:Name="WidthTextbox" Text="10" Width="100" PreviewTextInput="NumbersOnly_TextChanged" TextChanged="UpdateBoardGrid"/>
-            <Label Content="Height" VerticalAlignment="Center"/>
-            <TextBox x:Name="HeightTextbox" Text="10" Width="100" PreviewTextInput="NumbersOnly_TextChanged" TextChanged="UpdateBoardGrid"/>
+        <StackPanel Orientation="Horizontal" Margin="5">
+            <Label Content="Style" VerticalAlignment="Center"/>
+            <ComboBox x:Name="StyleCombobox" Width="200" SelectionChanged="StyleCombobox_SelectionChanged"/>
             <Button x:Name="SaveButton" Content="Save" Click="SaveButton_Click"/>
             <Button x:Name="LoadButton" Content="Load" Click="LoadButton_Click"/>
+            <TextBox x:Name="BoardNameTextbox" Text="NewBoard" Width="200" VerticalContentAlignment="Center"/>
         </StackPanel>
 
-        <StackPanel x:Name="ShipsPanel" Grid.Row="1">
-
-        </StackPanel>
-
-        <Grid x:Name="DesignGrid" Grid.Row="1" Grid.Column="1" Background="Gray" ShowGridLines="True">
+        <Grid x:Name="DesignGrid" Grid.Row="1" Background="Gray" ShowGridLines="True">
             
         </Grid>
     </Grid>

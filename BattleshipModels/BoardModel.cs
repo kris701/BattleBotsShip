@@ -21,7 +21,7 @@ namespace BattleshipModels
         public BoardStyles.Styles Style { get; }
         public List<ShipModel> Ships { get; }
 
-        private Dictionary<Point, IShip> _hitPositions;
+        private Dictionary<Point, IShip> _hitPositions = new Dictionary<Point, IShip>();
         public Dictionary<Point, IShip> GetHitPositions() => _hitPositions;
 
         public BoardModel(List<ShipModel> ships, int width, int height, BoardStyles.Styles style, string name, string description)
@@ -32,8 +32,14 @@ namespace BattleshipModels
             Style = style;
             Name = name;
             Description = description;
-            _hitPositions = new Dictionary<Point, IShip>();
-            foreach(var ship in ships)
+
+            GenerateHitPositions();
+        }
+
+        private void GenerateHitPositions()
+        {
+            _hitPositions.Clear();
+            foreach (var ship in Ships)
             {
                 if (ship.Orientation == IShip.OrientationDirection.NS)
                 {

@@ -21,7 +21,7 @@ namespace BattleshipAIs
             { "ConditionalLineExplosion", () => { return new ConditionalLineExplosionOpponent(); } },
 
             // Probability Based
-            //{ "ProbableShots", new ProbableShotsOpponent() },
+            { "ProbableShots", () => { return new ProbableShotsOpponent(); } },
             { "FurthestShotCLE", () => { return new FurthestShotCLEOpponent(); } },
 
             // Pattern Based

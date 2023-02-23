@@ -38,27 +38,26 @@ namespace BattleshipTurnaments.TurnamentStyles
         {
             List<Task<BattleshipSimulator.Report.IReport>> tasks = new List<Task<BattleshipSimulator.Report.IReport>>();
 
+            int skip = 1;
             foreach (var opponentA in opponents)
             {
-                foreach (var opponentB in opponents)
+                foreach (var opponentB in opponents.Skip(skip))
                 {
-                    if (opponentA != opponentB)
+                    tasks.Add(new Task<BattleshipSimulator.Report.IReport>(() =>
                     {
-                        tasks.Add(new Task<BattleshipSimulator.Report.IReport>(() =>
-                        {
-                            IBattleshipSimulator simulator = new BattleshipSimulator.BattleshipSimulator(IBattleshipSimulator.BoardSelectionMethod.Random);
-                            if (cancellationToken.IsCancellationRequested)
-                                return new BattleshipSimulator.Report.Report();
-                            return simulator.RunSumulation(
-                                            rounds,
-                                            OpponentBuilder.GetOpponent(opponentA),
-                                            OpponentBuilder.GetOpponent(opponentB),
-                                            boardOptions,
-                                            boardOptions
-                                            );
-                        }));
-                    }
+                        IBattleshipSimulator simulator = new BattleshipSimulator.BattleshipSimulator(IBattleshipSimulator.BoardSelectionMethod.Random);
+                        if (cancellationToken.IsCancellationRequested)
+                            return new BattleshipSimulator.Report.Report();
+                        return simulator.RunSumulation(
+                                        rounds,
+                                        OpponentBuilder.GetOpponent(opponentA),
+                                        OpponentBuilder.GetOpponent(opponentB),
+                                        boardOptions,
+                                        boardOptions
+                                        );
+                    }));
                 }
+                skip++;
             }
 
             return tasks;

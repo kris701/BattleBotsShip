@@ -98,9 +98,10 @@ namespace BattleshipAIs.ProbabilityBased
             for (int x = location.X; x < location.X + length; x++)
             {
                 Point checkPoint = new Point(x, location.Y);
-                if (hits.Contains(checkPoint))
+                bool isHit = hits.Contains(checkPoint);
+                if (isHit)
                     horizontalProbability *= _hitShipWeight;
-                if (shots.Contains(checkPoint) && !hits.Contains(checkPoint))
+                else if (shots.Contains(checkPoint))
                 {
                     horizontalProbability = 0;
                     break;
@@ -110,9 +111,10 @@ namespace BattleshipAIs.ProbabilityBased
             for (int y = location.Y; y < location.Y + length; y++)
             {
                 Point checkPoint = new Point(location.X, y);
-                if (hits.Contains(checkPoint))
+                bool isHit = hits.Contains(checkPoint);
+                if (isHit)
                     verticalProbability *= _hitShipWeight;
-                if (shots.Contains(checkPoint) && !hits.Contains(checkPoint))
+                else if (shots.Contains(checkPoint))
                 {
                     verticalProbability = 0;
                     break;

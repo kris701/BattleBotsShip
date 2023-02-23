@@ -17,7 +17,7 @@ namespace BattleshipSimulator.Opponents.RandomBased
         public string Name { get; } = "Crosshair";
 
         private bool _isCrosshairState = false;
-        private Point _lastHit;
+        private Point _lastHit = new Point();
         private int _fireState = 0;
 
         public void DoMoveOn(IBoardSimulator opponentBoard)

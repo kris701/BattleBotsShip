@@ -19,7 +19,7 @@ namespace BattleshipSimulator.Opponents.RandomBased
         public string Name { get; } = "Conditional Line Explosion";
 
         private bool _isCrosshairState = false;
-        private Point _lastHit;
+        private Point _lastHit = new Point();
         private int _fireState = 0;
         private int _reach = 1;
 

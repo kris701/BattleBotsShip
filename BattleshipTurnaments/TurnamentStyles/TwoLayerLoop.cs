@@ -2,6 +2,7 @@
 using BattleshipSimulator;
 using BattleshipTools;
 using BattleshipTurnaments.Report;
+using Nanotek.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

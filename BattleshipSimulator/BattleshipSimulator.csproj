@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Nanotek.Helpers" Version="1.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\BattleshipModels\BattleshipModels.csproj" />
     <ProjectReference Include="..\BattleshipTools\BattleshipTools.csproj" />
   </ItemGroup>

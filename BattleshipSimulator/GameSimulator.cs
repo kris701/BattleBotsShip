@@ -1,6 +1,6 @@
 ﻿namespace BattleshipSimulator
 {
-    public class GameModel : IGameSimulator
+    public class GameSimulator : IGameSimulator
     {
         public IBoardSimulator AttackerBoard { get; set; }
         public IOpponent AttackerBot { get; }
@@ -9,7 +9,7 @@
         private IGameSimulator.TurnState _originalTurn;
         public IGameSimulator.TurnState Turn { get; internal set; }
 
-        public GameModel(IBoardSimulator attackerBoard, IOpponent attackerBot, IBoardSimulator defenderBoard, IOpponent defenderBot, IGameSimulator.TurnState turn)
+        public GameSimulator(IBoardSimulator attackerBoard, IOpponent attackerBot, IBoardSimulator defenderBoard, IOpponent defenderBot, IGameSimulator.TurnState turn)
         {
             AttackerBoard = attackerBoard;
             AttackerBot = attackerBot;

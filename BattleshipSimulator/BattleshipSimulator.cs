@@ -57,7 +57,7 @@ namespace BattleshipSimulator
                     var defender = OpponentBuilder.GetOpponent(defenderName);
 
                     var boards = GetBoards(attackerBoardOptions, defenderBoardOptions);
-                    var game = new GameModel(
+                    var game = new GameSimulator(
                         new BoardSimulator(boards.Item1),
                         attacker,
                         new BoardSimulator(boards.Item2),
@@ -131,7 +131,7 @@ namespace BattleshipSimulator
             CheckBoardOptions(attackerBoardOptions, defenderBoardOptions);
 
             var boards = GetBoards(attackerBoardOptions, defenderBoardOptions);
-            var game = new GameModel(
+            var game = new GameSimulator(
                 new BoardSimulator(boards.Item1),
                 attacker,
                 new BoardSimulator(boards.Item2),

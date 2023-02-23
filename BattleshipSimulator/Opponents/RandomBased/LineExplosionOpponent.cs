@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace BattleshipAIs.RandomBased
+namespace BattleshipSimulator.Opponents.RandomBased
 {
     /// <summary>
     /// When a ship is it, it will check in lines in each direction.
@@ -64,6 +64,7 @@ namespace BattleshipAIs.RandomBased
                     if (_fireState >= 4)
                     {
                         Reset();
+                        DoMoveOn(opponentBoard);
                         return;
                     }
                 }

@@ -1,5 +1,4 @@
-﻿using BattleshipAIs;
-using BattleshipModels;
+﻿using BattleshipModels;
 using BattleshipSimulator;
 using BattleshipTools;
 using BattleshipTurnaments.Report;
@@ -51,8 +50,8 @@ namespace BattleshipTurnaments.TurnamentStyles
                             return new BattleshipSimulator.Report.RunReport();
                         return simulator.RunSimulation(
                                         rounds,
-                                        OpponentBuilder.GetOpponent(opponentA),
-                                        OpponentBuilder.GetOpponent(opponentB),
+                                        opponentA,
+                                        opponentB,
                                         boardOptions,
                                         boardOptions
                                         );

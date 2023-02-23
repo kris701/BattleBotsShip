@@ -1,14 +1,14 @@
-﻿using BattleshipAIs.PatternBased;
-using BattleshipAIs.ProbabilityBased;
-using BattleshipAIs.RandomBased;
-using BattleshipSimulator;
+﻿using BattleshipSimulator;
+using BattleshipSimulator.Opponents.PatternBased;
+using BattleshipSimulator.Opponents.ProbabilityBased;
+using BattleshipSimulator.Opponents.RandomBased;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BattleshipAIs
+namespace BattleshipSimulator.Opponents
 {
     public static class OpponentBuilder
     {
@@ -29,10 +29,7 @@ namespace BattleshipAIs
         };
 
         public static List<string> OpponentOptions() => _opponents.Keys.ToList();
-        public static IOpponent GetOpponent(string name)
-        {
-            return _opponents[name]();
-        }
         public static List<string> GetAllOpponentNames() => _opponents.Keys.ToList();
+        public static IOpponent GetOpponent(string name) => _opponents[name]();
     }
 }

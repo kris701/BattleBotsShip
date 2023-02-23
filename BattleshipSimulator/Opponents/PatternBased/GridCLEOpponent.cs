@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BattleshipAIs.PatternBased
+namespace BattleshipSimulator.Opponents.PatternBased
 {
     /// <summary>
     /// Grid Conditional Line Explosion
@@ -72,6 +72,7 @@ namespace BattleshipAIs.PatternBased
                     if (_fireState >= 4)
                     {
                         Reset();
+                        DoMoveOn(opponentBoard);
                         return;
                     }
                 }
@@ -107,7 +108,7 @@ namespace BattleshipAIs.PatternBased
                 }
                 if (newY >= height)
                 {
-                    return new Point(0,0);
+                    return new Point(0, 0);
                 }
                 newTarget.X = newX;
                 newTarget.Y = newY;

@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace BattleshipAIs.RandomBased
+namespace BattleshipSimulator.Opponents.RandomBased
 {
     public class RandomShotsOpponent : IOpponent
     {
@@ -25,7 +25,7 @@ namespace BattleshipAIs.RandomBased
 
         public void Reset()
         {
-            
+
         }
     }
 }

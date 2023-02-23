@@ -1,4 +1,5 @@
 ﻿using BattleshipModels;
+using BattleshipSimulator.Opponents;
 using BattleshipSimulator.Report;
 using BattleshipTools;
 using System.Diagnostics;
@@ -18,11 +19,11 @@ namespace BattleshipSimulator
             SelectionMethod = selectionMethod;
         }
 
-        public IRunReport RunSimulation(int rounds, IOpponent attacker, IOpponent defender, List<IBoard> attackerBoardOptions, List<IBoard> defenderBoardOptions)
+        public IRunReport RunSimulation(int rounds, string attackerName, string defenderName, List<IBoard> attackerBoardOptions, List<IBoard> defenderBoardOptions)
         {
             CheckBoardOptions(attackerBoardOptions, defenderBoardOptions);
 
-            List<Task<TaskReport>> tasks = GenerateTasks(rounds, attacker, defender, attackerBoardOptions, defenderBoardOptions, new CancellationToken());
+            List<Task<TaskReport>> tasks = GenerateTasks(rounds, attackerName, defenderName, attackerBoardOptions, defenderBoardOptions, new CancellationToken());
 
             Parallel.ForEach(tasks, task => task.Start());
             Task.WaitAll(tasks.ToArray());
@@ -30,11 +31,11 @@ namespace BattleshipSimulator
             return GenerateRunReport(rounds, tasks);
         }
 
-        public async Task<IRunReport> RunSimulationAsync(int rounds, IOpponent attacker, IOpponent defender, List<IBoard> attackerBoardOptions, List<IBoard> defenderBoardOptions, CancellationToken cancellationToken)
+        public async Task<IRunReport> RunSimulationAsync(int rounds, string attackerName, string defenderName, List<IBoard> attackerBoardOptions, List<IBoard> defenderBoardOptions, CancellationToken cancellationToken)
         {
             CheckBoardOptions(attackerBoardOptions, defenderBoardOptions);
 
-            List<Task<TaskReport>> tasks = GenerateTasks(rounds, attacker, defender, attackerBoardOptions, defenderBoardOptions, cancellationToken);
+            List<Task<TaskReport>> tasks = GenerateTasks(rounds, attackerName, defenderName, attackerBoardOptions, defenderBoardOptions, cancellationToken);
 
             Parallel.ForEach(tasks, task => task.Start());
             await Task.WhenAll(tasks.ToArray());
@@ -42,7 +43,7 @@ namespace BattleshipSimulator
             return GenerateRunReport(rounds, tasks);
         }
 
-        private List<Task<TaskReport>> GenerateTasks(int rounds, IOpponent attacker, IOpponent defender, List<IBoard> attackerBoardOptions, List<IBoard> defenderBoardOptions, CancellationToken cancellationToken)
+        private List<Task<TaskReport>> GenerateTasks(int rounds, string attackerName, string defenderName, List<IBoard> attackerBoardOptions, List<IBoard> defenderBoardOptions, CancellationToken cancellationToken)
         {
             List<Task<TaskReport>> tasks = new List<Task<TaskReport>>();
 
@@ -50,7 +51,10 @@ namespace BattleshipSimulator
             {
                 tasks.Add(new Task<TaskReport>(() => {
                     if (cancellationToken.IsCancellationRequested)
-                        return new TaskReport(attacker.Name, 0, 0, defender.Name, 0, 0);
+                        return new TaskReport();
+
+                    var attacker = OpponentBuilder.GetOpponent(attackerName);
+                    var defender = OpponentBuilder.GetOpponent(defenderName);
 
                     var boards = GetBoards(attackerBoardOptions, defenderBoardOptions);
                     var game = new GameModel(

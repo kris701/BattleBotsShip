@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace BattleshipAIs.RandomBased
+namespace BattleshipSimulator.Opponents.RandomBased
 {
     /// <summary>
     /// When a ship is it, it will check in lines in each direction.
@@ -17,9 +17,14 @@ namespace BattleshipAIs.RandomBased
     {
         public string Name { get; } = "Continous Line Explosion";
 
-        private List<Point> _targetPoints = new List<Point>();
+        private List<Point> _targetPoints;
         private int _fireState = 0;
         private int _reach = 1;
+
+        public ContinousLineExplosionOpponent()
+        {
+            _targetPoints = new List<Point>();
+        }
 
         public void DoMoveOn(IBoardSimulator opponentBoard)
         {
@@ -66,6 +71,7 @@ namespace BattleshipAIs.RandomBased
                         if (_targetPoints.Count == 0)
                         {
                             Reset();
+                            DoMoveOn(opponentBoard);
                             return;
                         }
 

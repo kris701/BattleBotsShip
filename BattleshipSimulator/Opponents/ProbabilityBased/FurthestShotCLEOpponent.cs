@@ -1,25 +1,23 @@
-﻿using BattleshipModels;
-using BattleshipSimulator;
+﻿using BattleshipSimulator;
 using BattleshipTools;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
 
-namespace BattleshipAIs.RandomBased
+namespace BattleshipSimulator.Opponents.ProbabilityBased
 {
     /// <summary>
-    /// When a ship is it, it will check in lines in each direction, until it hits an empty space.
-    /// This basically means it will always remove a ship, if it hits it.
+    /// Furthest Shot Conditional Line Explosion
+    /// Based on the Conditional Line Explosion opponent, but instead of random shots it will shoot at a point that is 
     /// </summary>
-    public class ConditionalLineExplosionOpponent : IOpponent
+    public class FurthestShotCLEOpponent : IOpponent
     {
-        public string Name { get; } = "Conditional Line Explosion";
+        public string Name { get; } = "Furthest Shot Conditional Line Explosion";
 
         private bool _isCrosshairState = false;
-        private Point _lastHit;
+        private Point _lastHit = new Point(0, 0);
         private int _fireState = 0;
         private int _reach = 1;
 
@@ -27,7 +25,7 @@ namespace BattleshipAIs.RandomBased
         {
             if (!_isCrosshairState)
             {
-                Point firePoint = RndTools.GetRndNewPoint(opponentBoard.Board.Width, opponentBoard.Board.Height, opponentBoard.Shots);
+                Point firePoint = GetFurthestPoint(opponentBoard.Board.Width, opponentBoard.Board.Height, opponentBoard);
                 if (opponentBoard.Fire(firePoint) == IBoardSimulator.HitState.Hit)
                 {
                     _lastHit = firePoint;
@@ -78,12 +76,52 @@ namespace BattleshipAIs.RandomBased
                 if (hitRes == IBoardSimulator.HitState.Sunk)
                 {
                     Reset();
-                } 
-                else if (hitRes == IBoardSimulator.HitState.None) {
+                }
+                else if (hitRes == IBoardSimulator.HitState.None)
+                {
                     _fireState++;
                     _reach = 1;
                 }
             }
+        }
+
+        private Point GetFurthestPoint(int width, int height, IBoardSimulator opponentBoard)
+        {
+            Point furthestPoint = new Point();
+            Point currentPoint = new Point();
+            double biggestDistance = 0;
+
+            for (int x = 0; x < width; x++)
+            {
+                for (int y = 0; y < height; y++)
+                {
+                    currentPoint.X = x;
+                    currentPoint.Y = y;
+                    if (!opponentBoard.Shots.Contains(currentPoint))
+                    {
+                        double totalDist = double.MaxValue;
+                        foreach (var shot in opponentBoard.Shots)
+                        {
+                            double dist = GetDistance(currentPoint, shot);
+                            if (dist < totalDist)
+                                totalDist = dist;
+                        }
+
+                        if (totalDist > biggestDistance)
+                        {
+                            biggestDistance = totalDist;
+                            furthestPoint = new Point(currentPoint.X, currentPoint.Y);
+                        }
+                    }
+                }
+            }
+
+            return furthestPoint;
+        }
+
+        private double GetDistance(Point a, Point b)
+        {
+            return Math.Sqrt(Math.Pow(b.X - a.X, 2) + Math.Pow(b.Y - a.Y, 2));
         }
 
         public async Task DoMoveOnAsync(IBoardSimulator opponentBoard, CancellationToken token)
@@ -96,6 +134,7 @@ namespace BattleshipAIs.RandomBased
             _isCrosshairState = false;
             _fireState = 0;
             _reach = 1;
+            _lastHit = new Point();
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using BattleshipAIs;
+﻿
 using BattleshipSimulator.Report;
 using BattleshipSimulator;
 using System;
@@ -18,6 +18,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using BattleBotsShip.Views.UserControls;
+using BattleshipSimulator.Opponents;
 
 namespace BattleBotsShip.Views
 {

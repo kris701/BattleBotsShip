@@ -1,6 +1,6 @@
-﻿using BattleshipAIs;
-using BattleshipModels;
+﻿using BattleshipModels;
 using BattleshipSimulator;
+using BattleshipSimulator.Opponents;
 using BattleshipSimulator.Report;
 using BattleshipValidators;
 using System;

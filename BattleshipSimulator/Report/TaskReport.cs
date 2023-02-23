@@ -25,5 +25,15 @@ namespace BattleshipSimulator.Report
             DefenderWon = defenderWon;
             DefenderProcessingTime = defenderProcessingTime;
         }
+
+        public TaskReport()
+        {
+            AttackerName = "";
+            AttackerWon = 0;
+            AttackerProcessingTime = 0;
+            DefenderName = "";
+            DefenderWon = 0;
+            DefenderProcessingTime = 0;
+        }
     }
 }

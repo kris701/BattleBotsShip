@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace BattleshipAIs.RandomBased
+namespace BattleshipSimulator.Opponents.RandomBased
 {
     /// <summary>
     /// A bot that what it hits something, it will try the adjacent points around it in the following rounds
@@ -49,6 +49,7 @@ namespace BattleshipAIs.RandomBased
                     else if (_fireState > 4)
                     {
                         Reset();
+                        DoMoveOn(opponentBoard);
                         return;
                     }
 

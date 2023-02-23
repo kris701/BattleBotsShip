@@ -1,6 +1,6 @@
 ﻿using BattleBotsShip.Views.Models;
-using BattleshipAIs;
 using BattleshipSimulator;
+using BattleshipSimulator.Opponents;
 using BattleshipTurnaments;
 using System;
 using System.Collections.Generic;

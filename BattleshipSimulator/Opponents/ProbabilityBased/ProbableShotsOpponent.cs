@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BattleshipAIs.ProbabilityBased
+namespace BattleshipSimulator.Opponents.ProbabilityBased
 {
     public class ProbableShotsOpponent : IOpponent
     {
@@ -29,7 +29,7 @@ namespace BattleshipAIs.ProbabilityBased
                     {
                         int probability = 0;
 
-                        foreach(var ship in opponentBoard.Board.Ships)
+                        foreach (var ship in opponentBoard.Board.Ships)
                             if (!opponentBoard.LostShips.Contains(ship))
                                 probability += TotalShipProbability(newPoint, opponentBoard.Shots, looseHits, ship.Length, opponentBoard.Board.Width, opponentBoard.Board.Height);
 
@@ -72,7 +72,7 @@ namespace BattleshipAIs.ProbabilityBased
         {
             int probability = 0;
 
-            for(int xOffset = 0; xOffset < length; xOffset++)
+            for (int xOffset = 0; xOffset < length; xOffset++)
             {
                 var newLoc = new Point(location.X - xOffset, location.Y);
                 if (newLoc.X >= 0 && newLoc.X + length <= width)
@@ -127,7 +127,8 @@ namespace BattleshipAIs.ProbabilityBased
                     return false;
                 if (target.X >= ship.Location.X && target.X < ship.Location.X + ship.Length)
                     return true;
-            } else if (ship.Orientation == IShip.OrientationDirection.NS)
+            }
+            else if (ship.Orientation == IShip.OrientationDirection.NS)
             {
                 if (target.X != ship.Location.X)
                     return false;

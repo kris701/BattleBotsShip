@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BattleshipAIs\BattleshipAIs.csproj" />
     <ProjectReference Include="..\BattleshipModels\BattleshipModels.csproj" />
     <ProjectReference Include="..\BattleshipSimulator\BattleshipSimulator.csproj" />
   </ItemGroup>

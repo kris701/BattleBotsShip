@@ -123,7 +123,7 @@ namespace BattleBotsShip.Views
         {
             StartButton.IsEnabled = false;
             StopButton.IsEnabled = true;
-            BoardSelectorGrid.IsEnabled = false;
+            BoardSelector.IsEnabled = false;
             DisablableSettings.IsEnabled = false;
             DisablableGridTwo.IsEnabled = false;
         }
@@ -132,7 +132,7 @@ namespace BattleBotsShip.Views
         {
             StartButton.IsEnabled = true;
             StopButton.IsEnabled = false;
-            BoardSelectorGrid.IsEnabled = true;
+            BoardSelector.IsEnabled = true;
             DisablableSettings.IsEnabled = true;
             DisablableGridTwo.IsEnabled = true;
         }

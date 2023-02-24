@@ -13,10 +13,14 @@
         </Grid.RowDefinitions>
 
         <StackPanel Orientation="Horizontal" Margin="5">
-            <Label Content="Style" VerticalAlignment="Center"/>
+            <Label Content="Board Style" VerticalAlignment="Center"/>
             <ComboBox x:Name="StyleCombobox" Width="200" SelectionChanged="StyleCombobox_SelectionChanged"/>
-            <Button x:Name="SaveButton" Content="Save" Click="SaveButton_Click"/>
-            <Button x:Name="LoadButton" Content="Load" Click="LoadButton_Click"/>
+            <Separator Height="5" Width="10" Margin="5" Background="Black"/>
+            <Button x:Name="SaveButton" Content="Save" Width="50" Click="SaveButton_Click"/>
+            <Separator Height="5" Width="10" Margin="5" Background="Black"/>
+            <Button x:Name="LoadButton" Content="Load" Width="50" Click="LoadButton_Click"/>
+            <Separator Height="5" Width="10" Margin="5" Background="Black"/>
+            <Label Content="Board Name" VerticalAlignment="Center"/>
             <TextBox x:Name="BoardNameTextbox" Text="NewBoard" Width="200" VerticalContentAlignment="Center"/>
         </StackPanel>
 

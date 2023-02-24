@@ -26,6 +26,9 @@ namespace BattleshipSimulator.Opponents
 
             // Pattern Based
             { "GridCLE", () => { return new GridCLEOpponent(); } },
+
+            // Other
+            { "Cheating", () => { return new CheatingOpponent(); } },
         };
 
         public static List<string> OpponentOptions() => _opponents.Keys.ToList();

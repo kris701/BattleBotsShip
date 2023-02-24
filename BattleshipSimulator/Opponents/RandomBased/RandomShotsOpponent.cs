@@ -22,10 +22,5 @@ namespace BattleshipSimulator.Opponents.RandomBased
         {
             await Task.Run(() => DoMoveOn(opponentBoard));
         }
-
-        public void Reset()
-        {
-
-        }
     }
 }

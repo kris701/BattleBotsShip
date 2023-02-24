@@ -58,13 +58,21 @@ namespace BattleBotsShip.Views
                 (e) => { return UpdateSimulationUI(e, Int32.Parse(RefreshRateTextbox.Text)); },
                 _cts.Token
                 );
-            Report(result);            
+            Report(result);
+
+            VisualAttackerModel.IsBoardInitialized = false;
+            VisualDefenderModel.IsBoardInitialized = false;
 
             EnableSettings();
         }
 
         private async Task UpdateSimulationUI(IGameSimulator simulator, int refreshRate)
         {
+            if (!VisualAttackerModel.IsBoardInitialized)
+                VisualAttackerModel.Initialize(simulator.AttackerBoard);
+            if (!VisualDefenderModel.IsBoardInitialized)
+                VisualDefenderModel.Initialize(simulator.DefenderBoard);
+
             VisualAttackerModel.Update(simulator.AttackerBoard);
             VisualDefenderModel.Update(simulator.DefenderBoard);
             await Task.Delay(refreshRate);
@@ -80,7 +88,7 @@ namespace BattleBotsShip.Views
         {
             StartButton.IsEnabled = false;
             StopButton.IsEnabled = true;
-            BoardSelectorGrid.IsEnabled = false;
+            BoardSelector.IsEnabled = false;
             DisablableSettings.IsEnabled = false;
             DisablableGridTwo.IsEnabled = false;
         }
@@ -89,7 +97,7 @@ namespace BattleBotsShip.Views
         {
             StartButton.IsEnabled = true;
             StopButton.IsEnabled = false;
-            BoardSelectorGrid.IsEnabled = true;
+            BoardSelector.IsEnabled = true;
             DisablableSettings.IsEnabled = true;
             DisablableGridTwo.IsEnabled = true;
         }

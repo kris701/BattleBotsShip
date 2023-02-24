@@ -168,7 +168,9 @@ namespace BattleshipSimulator
                     new TaskReport(attacker.Name, 0, attackerProcessingTime, defender.Name, 1, defenderProcessingTime)
                 });
 
-            throw new Exception("Impossible win state occured???");
+            return GenerateRunReport(1, new List<TaskReport>() {
+                    new TaskReport(attacker.Name, 0, 0, defender.Name, 0, 0)
+                });
         }
 
         private void CheckBoardOptions(List<IBoard> attackerOptions, List<IBoard> defenderOptions)

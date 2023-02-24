@@ -1,8 +1,10 @@
 ﻿using BattleshipModels;
 using BattleshipSimulator;
+using BattleshipTools;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.JavaScript;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -22,13 +24,24 @@ namespace BattleBotsShip.Views.UserControls
     /// </summary>
     public partial class VisualBoardModel : UserControl
     {
+        private List<BattleshipTools.Point> _hits = new List<BattleshipTools.Point>();
+        private List<BattleshipTools.Point> _shots = new List<BattleshipTools.Point>();
+        private List<Canvas> _shipElements = new List<Canvas>();
+
+        public bool IsBoardInitialized { get; set; } = false;
+
         public VisualBoardModel()
         {
             InitializeComponent();
         }
 
-        public void Update(IBoardSimulator board)
+        public void Initialize(IBoardSimulator board)
         {
+            MainGrid.Children.Clear();
+            _hits = new List<BattleshipTools.Point>();
+            _shots = new List<BattleshipTools.Point>();
+            _shipElements = new List<Canvas>();
+
             if (MainGrid.RowDefinitions.Count != board.Board.Height)
             {
                 MainGrid.RowDefinitions.Clear();
@@ -43,30 +56,8 @@ namespace BattleBotsShip.Views.UserControls
                     MainGrid.ColumnDefinitions.Add(new ColumnDefinition());
             }
 
-            MainGrid.Children.Clear();
-            foreach (var hitPoint in board.Shots)
-            {
-                var canvas = new Canvas()
-                {
-                    Background = Brushes.Gray
-                };
-                Grid.SetRow(canvas, (int)hitPoint.Y);
-                Grid.SetColumn(canvas, (int)hitPoint.X);
-
-                MainGrid.Children.Add(canvas);
-            }
-
-            foreach (var hitPoint in board.Hits)
-            {
-                var canvas = new Canvas()
-                {
-                    Background = Brushes.Black
-                };
-                Grid.SetRow(canvas, (int)hitPoint.Y);
-                Grid.SetColumn(canvas, (int)hitPoint.X);
-
-                MainGrid.Children.Add(canvas);
-            }
+            CheckShots(board.Shots, _shots, Brushes.Gray);
+            CheckShots(board.Hits, _hits, Brushes.Black);
 
             foreach (var ship in board.Board.Ships)
             {
@@ -74,33 +65,77 @@ namespace BattleBotsShip.Views.UserControls
                 if (board.LostShips.Contains(ship))
                     color = Brushes.Red;
 
+                var canvas = GetShipElement(color);
+                Canvas.SetZIndex(canvas, 999999);
+
                 if (ship.Orientation == IShip.OrientationDirection.EW)
                 {
-                    var canvas = new Canvas()
-                    {
-                        Background = color,
-                        Margin = new Thickness(5)
-                    };
                     Grid.SetColumnSpan(canvas, ship.Length);
                     Grid.SetRow(canvas, (int)ship.Location.Y);
                     Grid.SetColumn(canvas, (int)ship.Location.X);
-
-                    MainGrid.Children.Add(canvas);
                 }
                 else if (ship.Orientation == IShip.OrientationDirection.NS)
                 {
-                    var canvas = new Canvas()
-                    {
-                        Background = color,
-                        Margin = new Thickness(5)
-                    };
                     Grid.SetRowSpan(canvas, ship.Length);
                     Grid.SetRow(canvas, (int)ship.Location.Y);
                     Grid.SetColumn(canvas, (int)ship.Location.X);
+                }
+
+                MainGrid.Children.Add(canvas);
+                _shipElements.Add(canvas);
+            }
+
+            IsBoardInitialized = true;
+        }
+
+        public void Update(IBoardSimulator board)
+        {
+            if (!IsInitialized)
+                throw new Exception("Visual board was not initialized!");
+
+            CheckShots(board.Shots, _shots, Brushes.Gray);
+            CheckShots(board.Hits, _hits, Brushes.Black);
+
+            int shipIndex = 0;
+            foreach (var ship in board.Board.Ships)
+            {
+                var color = Brushes.Blue;
+                if (board.LostShips.Contains(ship))
+                    color = Brushes.Red;
+
+                if (_shipElements[shipIndex].Background != color)
+                    _shipElements[shipIndex].Background = color;
+
+                shipIndex++;
+            }
+        }
+
+        private void CheckShots(List<BattleshipTools.Point> shots, List<BattleshipTools.Point> uiShots, Brush color)
+        {
+            foreach (var hitPoint in shots)
+            {
+                if (!uiShots.Contains(hitPoint))
+                {
+                    uiShots.Add(hitPoint);
+                    var canvas = new Canvas()
+                    {
+                        Background = color
+                    };
+                    Grid.SetRow(canvas, (int)hitPoint.Y);
+                    Grid.SetColumn(canvas, (int)hitPoint.X);
 
                     MainGrid.Children.Add(canvas);
                 }
             }
+        }
+
+        private Canvas GetShipElement(Brush color)
+        {
+            return new Canvas()
+            {
+                Background = color,
+                Margin = new Thickness(5)
+            };
         }
     }
 }

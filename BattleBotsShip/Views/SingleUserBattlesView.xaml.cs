@@ -65,13 +65,21 @@ namespace BattleBotsShip.Views
                 );
             Report(result);
 
+            VisualAttackerModel.IsBoardInitialized = false;
+            VisualDefenderModel.IsBoardInitialized = false;
+
             EnableSettings();
             VisualAttackerModel.IsEnabled = false;
         }
 
         private async Task UpdateSimulationUI(IGameSimulator simulator)
         {
-            VisualAttackerModel.Update(simulator.AttackerBoard, _user, ShowOpponentCheckbox.IsChecked == true);
+            if (!VisualAttackerModel.IsBoardInitialized)
+                VisualAttackerModel.Initialize(simulator.AttackerBoard, _user, ShowOpponentCheckbox.IsChecked == true);
+            if (!VisualDefenderModel.IsBoardInitialized)
+                VisualDefenderModel.Initialize(simulator.DefenderBoard);
+
+            VisualAttackerModel.Update(simulator.AttackerBoard);
             VisualDefenderModel.Update(simulator.DefenderBoard);
             await Task.Delay(1);
         }

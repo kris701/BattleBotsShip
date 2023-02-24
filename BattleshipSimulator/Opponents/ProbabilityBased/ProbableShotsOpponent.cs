@@ -76,19 +76,19 @@ namespace BattleshipSimulator.Opponents.ProbabilityBased
             {
                 var newLoc = new Point(location.X - xOffset, location.Y);
                 if (newLoc.X >= 0 && newLoc.X + length <= width)
-                    probability += ShipProbability(newLoc, length, shots, hits);
+                    probability += HorizontalShipProbability(newLoc, length, shots, hits);
             }
             for (int yOffset = 0; yOffset < length; yOffset++)
             {
                 var newLoc = new Point(location.X, location.Y - yOffset);
                 if (newLoc.Y >= 0 && newLoc.Y + length <= height)
-                    probability += ShipProbability(newLoc, length, shots, hits);
+                    probability += VerticalShipProbability(newLoc, length, shots, hits);
             }
 
             return probability;
         }
 
-        private int ShipProbability(Point location, int length, List<Point> shots, List<Point> hits)
+        private int HorizontalShipProbability(Point location, int length, List<Point> shots, List<Point> hits)
         {
             int horizontalProbability = 1;
             for (int x = location.X; x < location.X + length; x++)
@@ -103,6 +103,11 @@ namespace BattleshipSimulator.Opponents.ProbabilityBased
                     break;
                 }
             }
+            return horizontalProbability;
+        }
+
+        private int VerticalShipProbability(Point location, int length, List<Point> shots, List<Point> hits)
+        {
             int verticalProbability = 1;
             for (int y = location.Y; y < location.Y + length; y++)
             {
@@ -116,7 +121,7 @@ namespace BattleshipSimulator.Opponents.ProbabilityBased
                     break;
                 }
             }
-            return horizontalProbability + verticalProbability;
+            return verticalProbability;
         }
 
         private bool IsPointWithinShip(Point target, IShip ship)

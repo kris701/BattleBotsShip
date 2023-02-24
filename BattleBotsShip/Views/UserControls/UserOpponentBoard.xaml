@@ -6,7 +6,16 @@
              xmlns:local="clr-namespace:BattleBotsShip.Views.UserControls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid x:Name="MainGrid" ShowGridLines="True">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
 
+        <Label x:Name="TitleLabel" Content="" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+        <Grid x:Name="MainGrid" Grid.Row="1" ShowGridLines="True" Background="LightGray">
+            <Label Content="Start a battle to update the visualiser" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        </Grid>
     </Grid>
 </UserControl>

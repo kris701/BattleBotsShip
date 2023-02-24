@@ -35,9 +35,10 @@ namespace BattleBotsShip.Views.UserControls
             InitializeComponent();
         }
 
-        public void Initialize(IBoardSimulator board)
+        public void Initialize(IBoardSimulator board, string title)
         {
             MainGrid.Children.Clear();
+            TitleLabel.Content = title;
             _hits = new List<BattleshipTools.Point>();
             _shots = new List<BattleshipTools.Point>();
             _shipElements = new List<Canvas>();

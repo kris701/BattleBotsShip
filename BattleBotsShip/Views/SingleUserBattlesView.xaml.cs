@@ -75,9 +75,9 @@ namespace BattleBotsShip.Views
         private async Task UpdateSimulationUI(IGameSimulator simulator)
         {
             if (!VisualAttackerModel.IsBoardInitialized)
-                VisualAttackerModel.Initialize(simulator.AttackerBoard, _user, ShowOpponentCheckbox.IsChecked == true);
+                VisualAttackerModel.Initialize(simulator.AttackerBoard, _user, ShowOpponentCheckbox.IsChecked == true, $"AIs board");
             if (!VisualDefenderModel.IsBoardInitialized)
-                VisualDefenderModel.Initialize(simulator.DefenderBoard);
+                VisualDefenderModel.Initialize(simulator.DefenderBoard, $"Your board");
 
             VisualAttackerModel.Update(simulator.AttackerBoard);
             VisualDefenderModel.Update(simulator.DefenderBoard);

@@ -56,8 +56,8 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <usercontrols:VisualBoardModel x:Name="VisualAttackerModel" Margin="10" Background="LightGray"/>
-            <usercontrols:VisualBoardModel x:Name="VisualDefenderModel" Grid.Row="1" Margin="10" Background="LightGray"/>
+            <usercontrols:VisualBoardModel x:Name="VisualAttackerModel" Margin="10"/>
+            <usercontrols:VisualBoardModel x:Name="VisualDefenderModel" Grid.Row="1" Margin="10"/>
 
         </Grid>
 

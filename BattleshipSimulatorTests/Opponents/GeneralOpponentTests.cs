@@ -43,6 +43,28 @@ namespace BattleshipSimulatorTests.Opponents
 
         [TestMethod]
         [DynamicData(nameof(AllOpponents), DynamicDataSourceType.Method)]
+        public async Task Opponent_Property_AllwaysFire_Test_Async(string opponentName)
+        {
+            // ARRANGE
+            var opponent = OpponentBuilder.GetOpponent(opponentName);
+            IBoard testBoard = BoardStyles.GetStyleDefinition(BoardStyles.Styles.Basic);
+            IBoardSimulator simulator = new BoardSimulator(testBoard);
+
+            // ACT
+            int previousShots = 0;
+            while (simulator.Shots.Count != (testBoard.Width * testBoard.Height))
+            {
+                await opponent.DoMoveOnAsync(simulator, new CancellationToken());
+                if (simulator.Shots.Count <= previousShots)
+                {
+                    Assert.Fail($"Opponent ({opponentName}) did not always fire!");
+                }
+                previousShots++;
+            }
+        }
+
+        [TestMethod]
+        [DynamicData(nameof(AllOpponents), DynamicDataSourceType.Method)]
         public void Opponent_Property_CanAlwaysWin_Test(string opponentName)
         {
             // ARRANGE
@@ -54,6 +76,24 @@ namespace BattleshipSimulatorTests.Opponents
             while (simulator.Shots.Count != (testBoard.Width * testBoard.Height))
             {
                 opponent.DoMoveOn(simulator);
+            }
+            if (!simulator.HaveLost)
+                Assert.Fail($"Opponent ({opponentName}) did not always win!");
+        }
+
+        [TestMethod]
+        [DynamicData(nameof(AllOpponents), DynamicDataSourceType.Method)]
+        public async Task Opponent_Property_CanAlwaysWin_Test_Async(string opponentName)
+        {
+            // ARRANGE
+            var opponent = OpponentBuilder.GetOpponent(opponentName);
+            IBoard testBoard = BoardStyles.GetStyleDefinition(BoardStyles.Styles.Basic);
+            IBoardSimulator simulator = new BoardSimulator(testBoard);
+
+            // ACT
+            while (simulator.Shots.Count != (testBoard.Width * testBoard.Height))
+            {
+                await opponent.DoMoveOnAsync(simulator, new CancellationToken());
             }
             if (!simulator.HaveLost)
                 Assert.Fail($"Opponent ({opponentName}) did not always win!");

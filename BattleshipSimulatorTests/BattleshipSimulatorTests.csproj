@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BattleshipSimulator\BattleshipSimulator.csproj" />
+    <ProjectReference Include="..\BattleshipValidators\BattleshipValidators.csproj" />
   </ItemGroup>
 
 </Project>

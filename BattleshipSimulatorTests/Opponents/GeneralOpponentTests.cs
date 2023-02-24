@@ -1,6 +1,8 @@
 ﻿using BattleshipModels;
 using BattleshipSimulator;
 using BattleshipSimulator.Opponents;
+using BattleshipTools;
+using BattleshipValidators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -13,19 +15,27 @@ namespace BattleshipSimulatorTests.Opponents
     [TestClass]
     public class GeneralOpponentTests
     {
-        public static IEnumerable<string[]> AllOpponents()
+        private static int _testBoardsToGenerate = 10;
+        public static IEnumerable<object[]> AllOpponents()
         {
-            foreach(var opponent in OpponentBuilder.OpponentOptions())
-                yield return new string[] { opponent };
+            foreach (var opponent in OpponentBuilder.OpponentOptions())
+            {
+                for (int i = 0; i < _testBoardsToGenerate; i++)
+                {
+                    yield return new object[] {
+                        opponent,
+                        GenerateRandomBoard()
+                    };
+                }
+            }
         }
 
         [TestMethod]
         [DynamicData(nameof(AllOpponents), DynamicDataSourceType.Method)]
-        public void Opponent_Property_AllwaysFire_Test(string opponentName)
+        public void Opponent_Property_AllwaysFire_Test(string opponentName, IBoard testBoard)
         {
             // ARRANGE
             var opponent = OpponentBuilder.GetOpponent(opponentName);
-            IBoard testBoard = BoardStyles.GetStyleDefinition(BoardStyles.Styles.Basic);
             IBoardSimulator simulator = new BoardSimulator(testBoard);
 
             // ACT
@@ -33,7 +43,7 @@ namespace BattleshipSimulatorTests.Opponents
             while (simulator.Shots.Count != (testBoard.Width * testBoard.Height))
             {
                 opponent.DoMoveOn(simulator);
-                if (simulator.Shots.Count <= previousShots)
+                if (simulator.Shots.Count != previousShots + 1)
                 {
                     Assert.Fail($"Opponent ({opponentName}) did not always fire!");
                 }
@@ -43,11 +53,10 @@ namespace BattleshipSimulatorTests.Opponents
 
         [TestMethod]
         [DynamicData(nameof(AllOpponents), DynamicDataSourceType.Method)]
-        public async Task Opponent_Property_AllwaysFire_Test_Async(string opponentName)
+        public async Task Opponent_Property_AllwaysFire_Test_Async(string opponentName, IBoard testBoard)
         {
             // ARRANGE
             var opponent = OpponentBuilder.GetOpponent(opponentName);
-            IBoard testBoard = BoardStyles.GetStyleDefinition(BoardStyles.Styles.Basic);
             IBoardSimulator simulator = new BoardSimulator(testBoard);
 
             // ACT
@@ -55,7 +64,7 @@ namespace BattleshipSimulatorTests.Opponents
             while (simulator.Shots.Count != (testBoard.Width * testBoard.Height))
             {
                 await opponent.DoMoveOnAsync(simulator, new CancellationToken());
-                if (simulator.Shots.Count <= previousShots)
+                if (simulator.Shots.Count != previousShots + 1)
                 {
                     Assert.Fail($"Opponent ({opponentName}) did not always fire!");
                 }
@@ -65,11 +74,10 @@ namespace BattleshipSimulatorTests.Opponents
 
         [TestMethod]
         [DynamicData(nameof(AllOpponents), DynamicDataSourceType.Method)]
-        public void Opponent_Property_CanAlwaysWin_Test(string opponentName)
+        public void Opponent_Property_CanAlwaysWin_Test(string opponentName, IBoard testBoard)
         {
             // ARRANGE
             var opponent = OpponentBuilder.GetOpponent(opponentName);
-            IBoard testBoard = BoardStyles.GetStyleDefinition(BoardStyles.Styles.Basic);
             IBoardSimulator simulator = new BoardSimulator(testBoard);
 
             // ACT
@@ -83,11 +91,10 @@ namespace BattleshipSimulatorTests.Opponents
 
         [TestMethod]
         [DynamicData(nameof(AllOpponents), DynamicDataSourceType.Method)]
-        public async Task Opponent_Property_CanAlwaysWin_Test_Async(string opponentName)
+        public async Task Opponent_Property_CanAlwaysWin_Test_Async(string opponentName, IBoard testBoard)
         {
             // ARRANGE
             var opponent = OpponentBuilder.GetOpponent(opponentName);
-            IBoard testBoard = BoardStyles.GetStyleDefinition(BoardStyles.Styles.Basic);
             IBoardSimulator simulator = new BoardSimulator(testBoard);
 
             // ACT
@@ -97,6 +104,35 @@ namespace BattleshipSimulatorTests.Opponents
             }
             if (!simulator.HaveLost)
                 Assert.Fail($"Opponent ({opponentName}) did not always win!");
+        }
+
+        private static Random rnd = new Random();
+        private static IBoard GenerateRandomBoard()
+        {
+            IBoard boardDefinition = BoardStyles.GetStyleDefinition(BoardStyles.Styles.Basic);
+            do
+            {
+                List<ShipModel> newShips = new List<ShipModel>();
+                for (int j = 0; j < boardDefinition.Ships.Count; j++)
+                {
+                    newShips.Add(new ShipModel(
+                        boardDefinition.Ships[j].Length,
+                        (IShip.OrientationDirection)rnd.Next((int)IShip.OrientationDirection.NS, (int)IShip.OrientationDirection.EW + 1),
+                        new Point(
+                            rnd.Next(0, boardDefinition.Width),
+                            rnd.Next(0, boardDefinition.Height)
+                            )));
+                }
+                boardDefinition = new BoardModel(
+                    newShips,
+                    boardDefinition.Width,
+                    boardDefinition.Height,
+                    boardDefinition.Style,
+                    "Random Generated Board",
+                    "");
+            }
+            while (!BoardValidator.ValidateBoard(boardDefinition));
+            return boardDefinition;
         }
     }
 }

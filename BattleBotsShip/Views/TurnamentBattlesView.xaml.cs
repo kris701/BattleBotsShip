@@ -45,12 +45,23 @@ namespace BattleBotsShip.Views
             DisableSettings();
 
             var turnament = TurnamentBuilder.GetTurnament(TurnamentStyleCombobox.Text);
-            var allOpponents = OpponentBuilder.GetAllOpponentNames();
+
+            List<string> opponents = new List<string>();
+            foreach(var child in OpponentsCombobox.Items)
+            {
+                if (child is CheckBox checkbox)
+                {
+                    if (checkbox.IsChecked == true)
+                        if (checkbox.Content is string opponent)
+                            opponents.Add(opponent);
+                }
+            }
+
             _cts = new CancellationTokenSource();
 
             var result = await turnament.RunTurnamentAsync(
                 Int32.Parse(RoundsTextbox.Text),
-                allOpponents,
+                opponents,
                 BoardSelector.Boards.Values.ToList(),
                 _cts.Token
                 );
@@ -110,6 +121,14 @@ namespace BattleBotsShip.Views
             foreach (var option in TurnamentBuilder.TurnamentOptions())
                 TurnamentStyleCombobox.Items.Add(option);
             TurnamentStyleCombobox.SelectedIndex = 0;
+
+            OpponentsCombobox.Items.Clear();
+            foreach (var opponent in OpponentBuilder.OpponentOptions())
+                OpponentsCombobox.Items.Add(new CheckBox()
+                {
+                    Content = opponent,
+                    IsChecked = true
+                });
         }
 
         private void NumbersOnly_TextChanged(object sender, TextCompositionEventArgs e)

@@ -29,7 +29,6 @@ namespace BattleshipSimulator.Opponents
         };
 
         public static List<string> OpponentOptions() => _opponents.Keys.ToList();
-        public static List<string> GetAllOpponentNames() => _opponents.Keys.ToList();
         public static IOpponent GetOpponent(string name) => _opponents[name]();
     }
 }

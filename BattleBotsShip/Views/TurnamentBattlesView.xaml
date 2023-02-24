@@ -24,7 +24,9 @@
                 <Label Content="Rounds:"/>
                 <TextBox x:Name="RoundsTextbox" Text="1" Width="100" VerticalContentAlignment="Center" PreviewTextInput="NumbersOnly_TextChanged"/>
                 <Label Content="Turnament Strategy"/>
-                <ComboBox x:Name="TurnamentStyleCombobox" Width="200"/>
+                <ComboBox x:Name="TurnamentStyleCombobox" Width="100"/>
+                <Label Content="Opponents"/>
+                <ComboBox x:Name="OpponentsCombobox" Width="100"/>
             </StackPanel>
         </StackPanel>
 

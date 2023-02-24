@@ -48,16 +48,7 @@
             </ScrollViewer>
         </Grid>
 
-        <Grid x:Name="BoardSelectorGrid" Grid.Row="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="35"/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-
-            <Label Content="Selected Boards" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-
-            <usercontrols:FileSelectorControl x:Name="BoardSelector" Grid.Row="1"/>
-        </Grid>
+        <usercontrols:FileSelectorControl x:Name="BoardSelector" Grid.Row="1"/>
 
         <Grid Grid.Row="1" Grid.Column="2">
             <Grid.RowDefinitions>

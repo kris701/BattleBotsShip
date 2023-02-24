@@ -46,15 +46,12 @@
 
         <Grid x:Name="BoardSelectorGrid" Grid.Row="1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="35"/>
                 <RowDefinition/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <Label Content="Selected Boards" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-
-            <usercontrols:FileSelectorControl x:Name="AttackerBoardSelector" Grid.Row="1"/>
-            <usercontrols:FileSelectorControl x:Name="UserBoardSelector" Grid.Row="2"/>
+            <usercontrols:FileSelectorControl x:Name="AttackerBoardSelector" Grid.Row="0"/>
+            <usercontrols:FileSelectorControl x:Name="UserBoardSelector" Grid.Row="1"/>
         </Grid>
 
         <Grid Grid.Row="1" Grid.Column="2">

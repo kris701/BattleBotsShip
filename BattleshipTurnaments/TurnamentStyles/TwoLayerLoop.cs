@@ -11,11 +11,14 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using static BattleshipSimulator.BoardSelector;
+using static BattleshipTurnaments.ITurnament;
 
 namespace BattleshipTurnaments.TurnamentStyles
 {
     public class TwoLayerLoop : ITurnament
     {
+        public event OpponentBattleOverHandler? OnOpponentBattleOver;
+
         public bool RunParallel { get; set; } = true;
 
         public IRunReport RunTurnament(int rounds, List<string> opponents, List<IBoard> boardOptions)
@@ -36,6 +39,19 @@ namespace BattleshipTurnaments.TurnamentStyles
             return GenerateReport(rounds, tasks);
         }
 
+        public int GetExpectedRounds(List<string> opponents)
+        {
+            int maximum = 0;
+            int skip = 1;
+            foreach (var opponentA in opponents)
+            {
+                foreach (var opponentB in opponents.Skip(skip))
+                    maximum++;
+                skip++;
+            }
+            return maximum;
+        }
+
         private List<Task<BattleshipSimulator.Report.IRunReport>> GenerateTasks(int rounds, List<string> opponents, List<IBoard> boardOptions, CancellationToken cancellationToken)
         {
             List<Task<BattleshipSimulator.Report.IRunReport>> tasks = new List<Task<BattleshipSimulator.Report.IRunReport>>();
@@ -50,13 +66,17 @@ namespace BattleshipTurnaments.TurnamentStyles
                         IBattleshipSimulator simulator = new BattleshipSimulator.BattleshipSimulator(BoardSelectionMethod.Random);
                         if (cancellationToken.IsCancellationRequested)
                             return new BattleshipSimulator.Report.RunReport();
-                        return simulator.RunSimulation(
+                        var result = simulator.RunSimulation(
                                         rounds,
                                         opponentA,
                                         opponentB,
                                         boardOptions,
                                         boardOptions
                                         );
+                        if (OnOpponentBattleOver != null)
+                            if (!cancellationToken.IsCancellationRequested)
+                                OnOpponentBattleOver.Invoke(opponentA, opponentB);
+                        return result;
                     }));
                 }
                 skip++;

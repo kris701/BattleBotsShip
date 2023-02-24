@@ -45,22 +45,18 @@ namespace BattleBotsShip.Views
             DisableSettings();
 
             var turnament = TurnamentBuilder.GetTurnament(TurnamentStyleCombobox.Text);
+            int rounds = Int32.Parse(RoundsTextbox.Text);
 
-            List<string> opponents = new List<string>();
-            foreach(var child in OpponentsCombobox.Items)
-            {
-                if (child is CheckBox checkbox)
-                {
-                    if (checkbox.IsChecked == true)
-                        if (checkbox.Content is string opponent)
-                            opponents.Add(opponent);
-                }
-            }
+            List<string> opponents = GetChoosenOpponents();
+
+            StatusProgressbar.Maximum = turnament.GetExpectedRounds(opponents);
+            StatusProgressbar.Value = 0;
+            turnament.OnOpponentBattleOver += UpdateUI;
 
             _cts = new CancellationTokenSource();
 
             var result = await turnament.RunTurnamentAsync(
-                Int32.Parse(RoundsTextbox.Text),
+                rounds,
                 opponents,
                 BoardSelector.Boards.Values.ToList(),
                 _cts.Token
@@ -70,6 +66,32 @@ namespace BattleBotsShip.Views
 
             if (!_cts.IsCancellationRequested)
                 WriteReport(result);
+        }
+
+        private List<string> GetChoosenOpponents()
+        {
+            List<string> opponents = new List<string>();
+            foreach (var child in OpponentsCombobox.Items)
+            {
+                if (child is CheckBox checkbox)
+                {
+                    if (checkbox.IsChecked == true)
+                        if (checkbox.Content is string opponent)
+                            opponents.Add(opponent);
+                }
+            }
+            return opponents;
+        }
+
+        private void UpdateUI(string opponentA, string opponentB)
+        {
+            StatusLabel.Dispatcher.Invoke(new Action(() => {
+                StatusLabel.Content = $"Opponent '{opponentA}' finished its battle against '{opponentB}'";
+                StatusLabel.ToolTip = StatusLabel.Content;
+            }));
+            StatusProgressbar.Dispatcher.Invoke(new Action(() => {
+                StatusProgressbar.Value++;
+            }));
         }
 
         private void WriteReport(BattleshipTurnaments.Report.IRunReport report)

@@ -22,7 +22,7 @@
             <Button x:Name="StopButton" Content="Stop" Click="StopButton_Click" Width="100" IsEnabled="False"/>
             <StackPanel x:Name="DisablableSettings" Orientation="Horizontal">
                 <Label Content="Rounds:"/>
-                <TextBox x:Name="RoundsTextbox" Text="1" Width="100" VerticalContentAlignment="Center" PreviewTextInput="NumbersOnly_TextChanged"/>
+                <TextBox x:Name="RoundsTextbox" Text="10" Width="100" VerticalContentAlignment="Center" PreviewTextInput="NumbersOnly_TextChanged"/>
                 <Label Content="Turnament Strategy"/>
                 <ComboBox x:Name="TurnamentStyleCombobox" Width="100"/>
                 <Label Content="Opponents"/>
@@ -31,8 +31,22 @@
         </StackPanel>
 
         <Grid x:Name="DisablableGridTwo" Grid.Row="1" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="35"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
 
-            <ScrollViewer>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Label x:Name="StatusLabel" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <ProgressBar x:Name="StatusProgressbar" Grid.Column="1" Margin="5"/>
+            </Grid>
+
+            <ScrollViewer Grid.Row="1">
                 <DataGrid x:Name="ResultsGrid">
 
                 </DataGrid>

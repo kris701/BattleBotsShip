@@ -23,6 +23,7 @@ namespace BattleshipSimulator.Opponents
                     return;
                 }
             }
+            opponentBoard.Fire(RndTools.GetRndNewPoint(opponentBoard.Board.Width, opponentBoard.Board.Height, opponentBoard.Shots));
         }
 
         public async Task DoMoveOnAsync(IBoardSimulator opponentBoard, CancellationToken token)

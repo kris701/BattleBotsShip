@@ -81,15 +81,15 @@ namespace BattleshipSimulator
                             attackerProcessingTime += watch.ElapsedMilliseconds;
 
                         if (cancellationToken.IsCancellationRequested)
-                            return new TaskReport(attacker.Name, 0, 0, defender.Name, 0, 0);
+                            return new TaskReport(attacker.Name, 0, 0, 0, 0, defender.Name, 0, 0, 0, 0);
                     }
 
                     if (res == IGameSimulator.WinnerState.Attacker)
-                        return new TaskReport(attacker.Name, 1, attackerProcessingTime, defender.Name, 0, defenderProcessingTime);
+                        return new TaskReport(attacker.Name, 1, attackerProcessingTime, game.DefenderBoard.Shots.Count, game.DefenderBoard.Hits.Count, defender.Name, 0, defenderProcessingTime, game.AttackerBoard.Shots.Count, game.AttackerBoard.Hits.Count);
                     else if (res == IGameSimulator.WinnerState.Defender)
-                        return new TaskReport(attacker.Name, 0, attackerProcessingTime, defender.Name, 1, defenderProcessingTime);
+                        return new TaskReport(attacker.Name, 0, attackerProcessingTime, game.DefenderBoard.Shots.Count, game.DefenderBoard.Hits.Count, defender.Name, 1, defenderProcessingTime, game.AttackerBoard.Shots.Count, game.AttackerBoard.Hits.Count);
 
-                    return new TaskReport(attacker.Name, 0, 0, defender.Name, 0, 0);
+                    return new TaskReport(attacker.Name, 0, 0, 0, 0, defender.Name, 0, 0, 0, 0);
                 }));
             }
 
@@ -110,20 +110,28 @@ namespace BattleshipSimulator
                 throw new ArgumentException("There must be at least one TaskReport!");
             string attackerName = results[0].AttackerName;
             int attackerWon = 0;
+            int attackerShots = 0;
+            int attackerHits = 0;
             long attackerProcessingPower = 0;
             string defenderName = results[0].DefenderName;
             int defenderWon = 0;
+            int defenderShots = 0;
+            int defenderHits = 0;
             long defenderProcessingPower = 0;
 
             foreach (var result in results)
             {
                 attackerWon += result.AttackerWon;
+                attackerShots += result.AttackerShots;
+                attackerHits += result.AttackerHits;
                 attackerProcessingPower += result.AttackerProcessingTime;
                 defenderWon += result.DefenderWon;
+                defenderShots += result.DefenderShots;
+                defenderHits += result.DefenderHits;
                 defenderProcessingPower += result.DefenderProcessingTime;
             }
 
-            return new RunReport(rounds, attackerName, attackerWon, attackerProcessingPower, defenderName, defenderWon, defenderProcessingPower);
+            return new RunReport(rounds, attackerName, attackerWon, attackerProcessingPower, attackerShots, attackerHits, defenderName, defenderWon, defenderProcessingPower, defenderShots, defenderHits);
         }
 
         public async Task<IRunReport> RunSingleSimulationAsync(IOpponent attacker, IOpponent defender, List<IBoard> attackerBoardOptions, List<IBoard> defenderBoardOptions, Func<IGameSimulator, Task>? updateFunc, CancellationToken cancellationToken)
@@ -161,15 +169,15 @@ namespace BattleshipSimulator
 
             if (res == IGameSimulator.WinnerState.Attacker)
                 return GenerateRunReport(1, new List<TaskReport>() {
-                    new TaskReport(attacker.Name, 1, attackerProcessingTime, defender.Name, 0, defenderProcessingTime)
+                    new TaskReport(attacker.Name, 1, attackerProcessingTime, game.DefenderBoard.Shots.Count, game.DefenderBoard.Hits.Count, defender.Name, 0, defenderProcessingTime, game.AttackerBoard.Shots.Count, game.AttackerBoard.Hits.Count)
                 });
             else if (res == IGameSimulator.WinnerState.Defender)
                 return GenerateRunReport(1, new List<TaskReport>() {
-                    new TaskReport(attacker.Name, 0, attackerProcessingTime, defender.Name, 1, defenderProcessingTime)
+                    new TaskReport(attacker.Name, 0, attackerProcessingTime, game.DefenderBoard.Shots.Count, game.DefenderBoard.Hits.Count, defender.Name, 1, defenderProcessingTime, game.AttackerBoard.Shots.Count, game.AttackerBoard.Hits.Count)
                 });
 
             return GenerateRunReport(1, new List<TaskReport>() {
-                    new TaskReport(attacker.Name, 0, 0, defender.Name, 0, 0)
+                    new TaskReport(attacker.Name, 0, 0, 0, 0, defender.Name, 0, 0, 0, 0)
                 });
         }
 

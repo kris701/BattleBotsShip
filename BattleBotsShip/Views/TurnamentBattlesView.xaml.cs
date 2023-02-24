@@ -104,7 +104,10 @@ namespace BattleBotsShip.Views
                     report.Wins[key],
                     report.Losses[key],
                     report.WinRate[key],
-                    report.ProcessingTime[key]
+                    report.ProcessingTime[key],
+                    report.Shots[key],
+                    report.Hits[key],
+                    report.ShotEfficiency[key]
                     ));
             }
 

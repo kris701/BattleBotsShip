@@ -92,6 +92,9 @@ namespace BattleshipTurnaments.TurnamentStyles
             Dictionary<string, long> processingTime = new Dictionary<string, long>();
             Dictionary<string, int> totalRounds = new Dictionary<string, int>();
 
+            Dictionary<string, int> shots = new Dictionary<string, int>();
+            Dictionary<string, int> hits = new Dictionary<string, int>();
+
             foreach (var task in tasks)
             {
                 DictionaryHelper.AddOrIncrement(processingTime, task.Result.AttackerName, task.Result.AttackerProcessingTime);
@@ -105,15 +108,23 @@ namespace BattleshipTurnaments.TurnamentStyles
 
                 DictionaryHelper.AddOrIncrement(looses, task.Result.AttackerName, rounds - task.Result.AttackerWon);
                 DictionaryHelper.AddOrIncrement(looses, task.Result.DefenderName, rounds - task.Result.DefenderWon);
+
+                DictionaryHelper.AddOrIncrement(shots, task.Result.AttackerName, task.Result.AttackerShots);
+                DictionaryHelper.AddOrIncrement(shots, task.Result.DefenderName, task.Result.DefenderShots);
+
+                DictionaryHelper.AddOrIncrement(hits, task.Result.AttackerName, task.Result.AttackerHits);
+                DictionaryHelper.AddOrIncrement(hits, task.Result.DefenderName, task.Result.DefenderHits);
             }
 
+            Dictionary<string, double> shotEfficiency = new Dictionary<string, double>();
             Dictionary<string, double> winRate = new Dictionary<string, double>();
             foreach (var key in wins.Keys)
             {
                 winRate.Add(key, Math.Round(((double)wins[key] / (double)totalRounds[key]) * 100, 2));
+                shotEfficiency.Add(key, Math.Round(((double)hits[key] / (double)shots[key]) * 100, 2));
             }
 
-            return new RunReport(rounds, wins, looses, winRate, processingTime);
+            return new RunReport(rounds, wins, looses, winRate, shots, hits, shotEfficiency, processingTime);
         }
     }
 }

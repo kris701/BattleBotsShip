@@ -2,17 +2,23 @@
 {
     public interface IRunReport
     {
-        public int Rounds { get; set; }
-        public string AttackerName { get; set; }
-        public int AttackerWon { get; set; }
+        public int Rounds { get; }
+        public string AttackerName { get; }
+        public int AttackerWon { get; }
         public int AttackerLost { get; }
         public double AttackerWinRate { get; }
-        public long AttackerProcessingTime { get; set; }
+        public int AttackerShots { get; }
+        public int AttackerHits { get; }
+        public double AttackerShotEfficiency { get; }
+        public long AttackerProcessingTime { get; }
 
-        public string DefenderName { get; set; }
-        public int DefenderWon { get; set; }
+        public string DefenderName { get; }
+        public int DefenderWon { get; }
         public int DefenderLost { get; }
         public double DefenderWinRate { get; }
-        public long DefenderProcessingTime { get; set; }
+        public long DefenderProcessingTime { get; }
+        public int DefenderShots { get; }
+        public int DefenderHits { get; }
+        public double DefenderShotEfficiency { get; }
     }
 }

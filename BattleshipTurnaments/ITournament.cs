@@ -1,13 +1,13 @@
 ﻿using BattleshipModels;
 using BattleshipSimulator;
-using BattleshipTurnaments.Report;
+using BattleshipTournaments.Report;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BattleshipTurnaments
+namespace BattleshipTournaments
 {
     public interface ITournament
     {

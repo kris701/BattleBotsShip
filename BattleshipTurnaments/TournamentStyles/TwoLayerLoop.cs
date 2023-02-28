@@ -1,7 +1,7 @@
 ﻿using BattleshipModels;
 using BattleshipSimulator;
 using BattleshipTools;
-using BattleshipTurnaments.Report;
+using BattleshipTournaments.Report;
 using Nanotek.Helpers;
 using System;
 using System.Collections.Generic;
@@ -11,9 +11,9 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using static BattleshipSimulator.BoardSelector;
-using static BattleshipTurnaments.ITournament;
+using static BattleshipTournaments.ITournament;
 
-namespace BattleshipTurnaments.TurnamentStyles
+namespace BattleshipTournaments.TournamentStyles
 {
     public class TwoLayerLoop : ITournament
     {

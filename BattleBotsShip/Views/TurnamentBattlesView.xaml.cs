@@ -1,7 +1,7 @@
 ﻿using BattleBotsShip.Views.Models;
 using BattleshipSimulator;
 using BattleshipSimulator.Opponents;
-using BattleshipTurnaments;
+using BattleshipTournaments;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -94,7 +94,7 @@ namespace BattleBotsShip.Views
             }));
         }
 
-        private void WriteReport(BattleshipTurnaments.Report.IRunReport report)
+        private void WriteReport(BattleshipTournaments.Report.IRunReport report)
         {
             List<TurnamentReport> reports = new List<TurnamentReport>();
             foreach(var key in report.WinRate.Keys)

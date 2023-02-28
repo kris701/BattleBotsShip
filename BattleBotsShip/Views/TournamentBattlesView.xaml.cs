@@ -97,21 +97,22 @@ namespace BattleBotsShip.Views
         private void WriteReport(BattleshipTournaments.Report.IRunReport report)
         {
             List<TurnamentReport> reports = new List<TurnamentReport>();
-            foreach(var key in report.WinRate.Keys)
+            foreach(var key in report.AvgWinRate.Keys)
             {
                 reports.Add(new TurnamentReport(
                     key,
-                    report.Wins[key],
-                    report.Losses[key],
-                    report.WinRate[key],
-                    report.ProcessingTime[key],
-                    report.Shots[key],
-                    report.Hits[key],
-                    report.ShotEfficiency[key]
+                    report.AvgWins[key],
+                    report.AvgLosses[key],
+                    report.AvgWinRate[key],
+                    report.AvgProcessingTime[key],
+                    report.AvgShots[key],
+                    report.AvgHits[key],
+                    report.AvgShotEfficiency[key],
+                    report.AvgScore[key]
                     ));
             }
 
-            List<TurnamentReport> SortedList = reports.OrderByDescending(o => o.Winrate).ToList();
+            List<TurnamentReport> SortedList = reports.OrderByDescending(o => o.AvgScore).ToList();
 
             ResultsGrid.ItemsSource = SortedList;
         }

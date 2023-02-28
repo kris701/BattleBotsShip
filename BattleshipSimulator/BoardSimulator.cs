@@ -1,5 +1,6 @@
 ﻿using BattleshipModels;
 using BattleshipTools;
+using Nanotek.Helpers;
 using static BattleshipSimulator.IBoardSimulator;
 
 namespace BattleshipSimulator
@@ -32,10 +33,7 @@ namespace BattleshipSimulator
             if (hitPositions.ContainsKey(location) && !Hits.Contains(location))
             {
                 var ship = hitPositions[location];
-                if (_shipHits.ContainsKey(ship))
-                    _shipHits[ship]++;
-                else
-                    _shipHits.Add(ship, 1);
+                DictionaryHelper.AddOrIncrement(_shipHits, ship);
                 Hits.Add(location);
                 if (_shipHits[ship] == ship.Length)
                 {

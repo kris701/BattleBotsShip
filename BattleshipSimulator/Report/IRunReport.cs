@@ -12,6 +12,8 @@
         public double AttackerShotEfficiency { get; }
         public long AttackerProcessingTime { get; }
 
+        public int AttackerScore { get; }
+
         public string DefenderName { get; }
         public int DefenderWon { get; }
         public int DefenderLost { get; }
@@ -20,5 +22,7 @@
         public int DefenderShots { get; }
         public int DefenderHits { get; }
         public double DefenderShotEfficiency { get; }
+
+        public int DefenderScore { get; }
     }
 }

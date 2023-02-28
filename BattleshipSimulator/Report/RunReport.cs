@@ -10,7 +10,9 @@
         public long AttackerProcessingTime { get; }
         public int AttackerShots { get; }
         public int AttackerHits { get; }
-        public double AttackerShotEfficiency => AttackerHits / AttackerShots;
+        public double AttackerShotEfficiency => (double)AttackerHits / (double)AttackerShots;
+
+        public int AttackerScore => (int)(AttackerWinRate * 100) * (int)(AttackerShotEfficiency * 100) - GetProcessingTimePenalty(AttackerProcessingTime);
 
         public string DefenderName { get; }
         public int DefenderWon { get; }
@@ -19,7 +21,14 @@
         public long DefenderProcessingTime { get; }
         public int DefenderShots { get; }
         public int DefenderHits { get; }
-        public double DefenderShotEfficiency => AttackerHits / AttackerShots;
+        public double DefenderShotEfficiency => (double)DefenderHits / (double)DefenderShots;
+
+        public int DefenderScore => (int)(DefenderWinRate * 100) * (int)(DefenderShotEfficiency * 100) - GetProcessingTimePenalty(DefenderProcessingTime);
+
+        private int GetProcessingTimePenalty(long processingTime)
+        {
+            return Math.Min((int)Math.Pow(processingTime, 1.2), 1000);
+        }
 
         public RunReport(int rounds, string attackerName, int attackerWon, long attackerProcessingTime, int attackerShots, int attackerHits, string defenderName, int defenderWon, long defenderProcessingTime, int defenderShots, int defenderHits)
         {

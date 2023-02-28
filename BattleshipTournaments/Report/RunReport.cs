@@ -9,25 +9,26 @@ namespace BattleshipTournaments.Report
     public class RunReport : IRunReport
     {
         public int Rounds { get; }
-        public Dictionary<string, int> Wins { get; }
-        public Dictionary<string, int> Losses { get; }
-        public Dictionary<string, double> WinRate { get; }
-        public Dictionary<string, int> Shots { get; }
-        public Dictionary<string, int> Hits { get; }
-        public Dictionary<string, double> ShotEfficiency { get; }
+        public Dictionary<string, int> AvgWins { get; }
+        public Dictionary<string, int> AvgLosses { get; }
+        public Dictionary<string, double> AvgWinRate { get; }
+        public Dictionary<string, int> AvgShots { get; }
+        public Dictionary<string, int> AvgHits { get; }
+        public Dictionary<string, double> AvgShotEfficiency { get; }
+        public Dictionary<string, long> AvgProcessingTime { get; }
+        public Dictionary<string, int> AvgScore { get; }
 
-        public Dictionary<string, long> ProcessingTime { get; }
-
-        public RunReport(int rounds, Dictionary<string, int> wins, Dictionary<string, int> losses, Dictionary<string, double> winRate, Dictionary<string, int> shots, Dictionary<string, int> hits, Dictionary<string, double> shotEfficiency, Dictionary<string, long> processingTime)
+        public RunReport(int rounds, Dictionary<string, int> wins, Dictionary<string, int> losses, Dictionary<string, double> winRate, Dictionary<string, int> shots, Dictionary<string, int> hits, Dictionary<string, double> shotEfficiency, Dictionary<string, long> processingTime, Dictionary<string, int> score)
         {
             Rounds = rounds;
-            Wins = wins;
-            Losses = losses;
-            WinRate = winRate;
-            Shots = shots;
-            Hits = hits;
-            ShotEfficiency = shotEfficiency;
-            ProcessingTime = processingTime;
+            AvgWins = wins;
+            AvgLosses = losses;
+            AvgWinRate = winRate;
+            AvgShots = shots;
+            AvgHits = hits;
+            AvgShotEfficiency = shotEfficiency;
+            AvgProcessingTime = processingTime;
+            AvgScore = score;
         }
     }
 }

@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BattleshipValidators", "Bat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BattleshipModels", "BattleshipModels\BattleshipModels.csproj", "{3F4CB73E-B008-4F89-A200-B4747BE199F2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BattleshipTournaments", "BattleshipTurnaments\BattleshipTournaments.csproj", "{64BE9F7A-B4DC-460D-9CF2-BB200A1C3E8D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BattleshipTournaments", "BattleshipTournaments\BattleshipTournaments.csproj", "{64BE9F7A-B4DC-460D-9CF2-BB200A1C3E8D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BattleshipBoardGenerators", "BattleshipBoardGenerators\BattleshipBoardGenerators.csproj", "{E96444A3-F508-473C-89BF-D02D7F49B0BB}"
 EndProject

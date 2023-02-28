@@ -26,6 +26,7 @@ namespace BattleshipSimulator.Opponents
 
             // Pattern Based
             { "GridCLE", () => { return new GridCLEOpponent(); } },
+            { "RandomGridCLE", () => { return new RandomGridCLEOpponent(); } },
 
             // Other
             { "Cheating", () => { return new CheatingOpponent(); } },

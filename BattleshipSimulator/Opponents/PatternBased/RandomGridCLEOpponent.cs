@@ -1,5 +1,6 @@
 ﻿using BattleshipSimulator;
 using BattleshipTools;
+using Nanotek.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,11 +11,11 @@ namespace BattleshipSimulator.Opponents.PatternBased
 {
     /// <summary>
     /// Grid Conditional Line Explosion
-    /// Based on the Conditional Line Explosion opponent, but instead of random shots it fire in a grid pattern
+    /// Based on the GridCLEOpponent, but shoots at random points in the grid instead of from an end.
     /// </summary>
-    public class GridCLEOpponent : IOpponent
+    public class RandomGridCLEOpponent : IOpponent
     {
-        public string Name { get; } = "(Grid) Conditional Line Explosion";
+        public string Name { get; } = "(Random Grid) Conditional Line Explosion";
 
         private bool _isCrosshairState = false;
         private Point _lastHit = new Point(0, 0);
@@ -103,6 +104,8 @@ namespace BattleshipSimulator.Opponents.PatternBased
                         _gridPoints.Add(newPoint);
                 }
             }
+
+            ListHelper.Shuffle(_gridPoints);
         }
 
         private Point GetGridPoint(IBoardSimulator opponentBoard)

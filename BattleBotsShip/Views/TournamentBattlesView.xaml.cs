@@ -24,11 +24,11 @@ namespace BattleBotsShip.Views
     /// <summary>
     /// Interaction logic for TurnamentBattlesView.xaml
     /// </summary>
-    public partial class TurnamentBattlesView : UserControl
+    public partial class TournamentBattlesView : UserControl
     {
         private CancellationTokenSource _cts = new CancellationTokenSource();
 
-        public TurnamentBattlesView()
+        public TournamentBattlesView()
         {
             InitializeComponent();
         }
@@ -44,18 +44,18 @@ namespace BattleBotsShip.Views
 
             DisableSettings();
 
-            var turnament = TournamentBuilder.GetTurnament(TurnamentStyleCombobox.Text);
+            var tournament = TournamentBuilder.GetTurnament(TurnamentStyleCombobox.Text);
             int rounds = Int32.Parse(RoundsTextbox.Text);
 
             List<string> opponents = GetChoosenOpponents();
 
-            StatusProgressbar.Maximum = turnament.GetExpectedRounds(opponents);
+            StatusProgressbar.Maximum = tournament.GetExpectedRounds(opponents);
             StatusProgressbar.Value = 0;
-            turnament.OnOpponentBattleOver += UpdateUI;
+            tournament.OnOpponentBattleOver += UpdateUI;
 
             _cts = new CancellationTokenSource();
 
-            var result = await turnament.RunTournamentAsync(
+            var result = await tournament.RunTournamentAsync(
                 rounds,
                 opponents,
                 BoardSelector.Boards.Values.ToList(),

@@ -20,7 +20,7 @@
             <Separator Height="5" Width="10" Margin="5" Background="Black"/>
             <Button x:Name="SingleUserBattlesButton" Content="Single User Battles" Width="125" Click="SingleUserBattlesButton_Click"/>
             <Separator Height="5" Width="10" Margin="5" Background="Black"/>
-            <Button x:Name="TurnamentsButton" Content="Turnament Battles" Width="125" Click="TurnamentsButton_Click"/>
+            <Button x:Name="TournamentsButton" Content="Turnament Battles" Width="125" Click="TurnamentsButton_Click"/>
             <Separator Height="5" Width="10" Margin="5" Background="Black"/>
             <Button x:Name="BoardDesignerButton" Content="Board Designer" Width="125" Click="BoardDesignerButton_Click"/>
         </StackPanel>

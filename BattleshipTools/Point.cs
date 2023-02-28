@@ -9,7 +9,7 @@ namespace BattleshipTools
     /// <summary>
     /// A simple serializable Point
     /// </summary>
-    public class Point : IEquatable<Point>
+    public class Point : IEquatable<object>
     {
         public int X { get; set; }
         public int Y { get; set; }
@@ -26,14 +26,17 @@ namespace BattleshipTools
             Y = 0;
         }
 
-        public bool Equals(Point? other)
+        public override bool Equals(object? other)
         {
-            if (this == null && other == null)
-                return true;
-            if (other == null)
-                return false;
-            if (other.X == X && other.Y == Y)
-                return true;
+            if (other is Point point)
+            {
+                if (this == null && other == null)
+                    return true;
+                if (other == null)
+                    return false;
+                if (point.X == X && point.Y == Y)
+                    return true;
+            }
             return false;
         }
 

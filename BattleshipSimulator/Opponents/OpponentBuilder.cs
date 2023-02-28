@@ -12,7 +12,7 @@ namespace BattleshipSimulator.Opponents
 {
     public static class OpponentBuilder
     {
-        private static Dictionary<string, Func<IOpponent>> _opponents = new Dictionary<string, Func<IOpponent>> {
+        private static readonly Dictionary<string, Func<IOpponent>> _opponents = new Dictionary<string, Func<IOpponent>> {
             // Random Based
             { "Random", () => { return new RandomShotsOpponent(); } },
             { "Crosshair", () => { return new CrosshairOpponent(); } },

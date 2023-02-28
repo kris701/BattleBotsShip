@@ -15,7 +15,7 @@ namespace BattleshipSimulatorTests.Opponents
     [TestClass]
     public class GeneralOpponentTests
     {
-        private static int _testBoardsToGenerate = 50;
+        private static readonly int _testBoardsToGenerate = 50;
         public static IEnumerable<object[]> AllOpponents()
         {
             foreach (var opponent in OpponentBuilder.OpponentOptions())

@@ -33,7 +33,7 @@ namespace BattleshipSimulator
             if (hitPositions.ContainsKey(location) && !Hits.Contains(location))
             {
                 var ship = hitPositions[location];
-                DictionaryHelper.AddOrIncrement(_shipHits, ship);
+                DictionaryHelper.AddOrIncrement(_shipHits, ship, 1);
                 Hits.Add(location);
                 if (_shipHits[ship] == ship.Length)
                 {

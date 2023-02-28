@@ -64,9 +64,9 @@ namespace BattleshipSimulator.Opponents.ProbabilityBased
 
         private ProbabilityPoint GetBestPoint(IBoardSimulator opponentBoard)
         {
-            List<Point> looseHits = GetUncoveredHitPoints(opponentBoard);
+            HashSet<Point> looseHits = GetUncoveredHitPoints(opponentBoard);
 
-            List<ProbabilityPoint> points = new List<ProbabilityPoint>();
+            ProbabilityPoint currentBestPoint = new ProbabilityPoint(-1, -1, 0);
             for (int x = 0; x < opponentBoard.Board.Width; x++)
             {
                 for (int y = 0; y < opponentBoard.Board.Height; y++)
@@ -80,18 +80,18 @@ namespace BattleshipSimulator.Opponents.ProbabilityBased
                             if (!opponentBoard.LostShips.Contains(ship))
                                 probability += TotalShipProbability(newPoint, opponentBoard.Shots, looseHits, ship.Length, opponentBoard.Board.Width, opponentBoard.Board.Height);
 
-                        points.Add(new ProbabilityPoint(x, y, probability));
+                        if (probability > currentBestPoint.Probability)
+                            currentBestPoint = new ProbabilityPoint(x, y, probability);
                     }
                 }
             }
 
-            var sortedPoints = points.OrderByDescending(x => x.Probability).ToList();
-            return sortedPoints.First();
+            return currentBestPoint;
         }
 
-        private List<Point> GetUncoveredHitPoints(IBoardSimulator opponentBoard)
+        private HashSet<Point> GetUncoveredHitPoints(IBoardSimulator opponentBoard)
         {
-            List<Point> uncoveredPoints = new List<Point>();
+            HashSet<Point> uncoveredPoints = new HashSet<Point>();
             foreach (var hit in opponentBoard.Hits)
             {
                 bool isCovered = false;
@@ -109,7 +109,7 @@ namespace BattleshipSimulator.Opponents.ProbabilityBased
             return uncoveredPoints;
         }
 
-        private int TotalShipProbability(Point location, List<Point> shots, List<Point> hits, int length, int width, int height)
+        private int TotalShipProbability(Point location, HashSet<Point> shots, HashSet<Point> hits, int length, int width, int height)
         {
             int probability = 0;
 
@@ -129,7 +129,7 @@ namespace BattleshipSimulator.Opponents.ProbabilityBased
             return probability;
         }
 
-        private int HorizontalShipProbability(Point location, int length, List<Point> shots, List<Point> hits)
+        private int HorizontalShipProbability(Point location, int length, HashSet<Point> shots, HashSet<Point> hits)
         {
             int horizontalProbability = 1;
             for (int x = location.X; x < location.X + length; x++)
@@ -147,7 +147,7 @@ namespace BattleshipSimulator.Opponents.ProbabilityBased
             return horizontalProbability;
         }
 
-        private int VerticalShipProbability(Point location, int length, List<Point> shots, List<Point> hits)
+        private int VerticalShipProbability(Point location, int length, HashSet<Point> shots, HashSet<Point> hits)
         {
             int verticalProbability = 1;
             for (int y = location.Y; y < location.Y + length; y++)

@@ -11,7 +11,7 @@ namespace BattleshipTools
     {
         private static Random _rnd = new Random();
 
-        public static Point GetRndNewPoint(int width, int height, List<Point> shots)
+        public static Point GetRndNewPoint(int width, int height, HashSet<Point> shots)
         {
             Point firePoint = new Point(_rnd.Next(0, width), _rnd.Next(0, height));
             while (shots.Contains(firePoint))

@@ -8,9 +8,9 @@ namespace BattleshipSimulator
         public enum HitState { None, Hit, Sunk }
 
         public bool HaveLost { get; }
-        public List<Point> Shots { get; }
-        public List<Point> Hits { get; }
-        public List<IShip> LostShips { get; }
+        public HashSet<Point> Shots { get; }
+        public HashSet<Point> Hits { get; }
+        public HashSet<IShip> LostShips { get; }
 
         public IBoard Board { get; }
 

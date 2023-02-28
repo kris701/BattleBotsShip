@@ -43,6 +43,8 @@ namespace BattleshipSimulatorTests.Opponents
             while (simulator.Shots.Count != (testBoard.Width * testBoard.Height))
             {
                 opponent.DoMoveOn(simulator);
+                if (simulator.HaveLost)
+                    break;
                 if (simulator.Shots.Count != previousShots + 1)
                 {
                     Assert.Fail($"Opponent ({opponentName}) did not always fire!");
@@ -64,6 +66,8 @@ namespace BattleshipSimulatorTests.Opponents
             while (simulator.Shots.Count != (testBoard.Width * testBoard.Height))
             {
                 await opponent.DoMoveOnAsync(simulator, new CancellationToken());
+                if (simulator.HaveLost)
+                    break;
                 if (simulator.Shots.Count != previousShots + 1)
                 {
                     Assert.Fail($"Opponent ({opponentName}) did not always fire!");
@@ -84,7 +88,11 @@ namespace BattleshipSimulatorTests.Opponents
             while (simulator.Shots.Count != (testBoard.Width * testBoard.Height))
             {
                 opponent.DoMoveOn(simulator);
+                if (simulator.HaveLost)
+                    break;
             }
+
+            // ASSERT
             if (!simulator.HaveLost)
                 Assert.Fail($"Opponent ({opponentName}) did not always win!");
         }
@@ -101,7 +109,11 @@ namespace BattleshipSimulatorTests.Opponents
             while (simulator.Shots.Count != (testBoard.Width * testBoard.Height))
             {
                 await opponent.DoMoveOnAsync(simulator, new CancellationToken());
+                if (simulator.HaveLost)
+                    break;
             }
+
+            // ASSERT
             if (!simulator.HaveLost)
                 Assert.Fail($"Opponent ({opponentName}) did not always win!");
         }

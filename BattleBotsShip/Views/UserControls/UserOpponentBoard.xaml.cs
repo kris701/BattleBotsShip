@@ -24,8 +24,8 @@ namespace BattleBotsShip.Views.UserControls
     /// </summary>
     public partial class UserOpponentBoard : UserControl
     {
-        private List<BattleshipTools.Point> _hits = new List<BattleshipTools.Point>();
-        private List<BattleshipTools.Point> _shots = new List<BattleshipTools.Point>();
+        private HashSet<BattleshipTools.Point> _hits = new HashSet<BattleshipTools.Point>();
+        private HashSet<BattleshipTools.Point> _shots = new HashSet<BattleshipTools.Point>();
         private List<Canvas> _shipElements = new List<Canvas>();
 
         public bool IsBoardInitialized { get; set; } = false;
@@ -41,8 +41,8 @@ namespace BattleBotsShip.Views.UserControls
             MainGrid.Children.Clear();
             _user = user;
             TitleLabel.Content = title;
-            _hits = new List<BattleshipTools.Point>();
-            _shots = new List<BattleshipTools.Point>();
+            _hits = new HashSet<BattleshipTools.Point>();
+            _shots = new HashSet<BattleshipTools.Point>();
             _shipElements = new List<Canvas>();
 
             if (MainGrid.RowDefinitions.Count != board.Board.Height)
@@ -140,7 +140,7 @@ namespace BattleBotsShip.Views.UserControls
             }
         }
 
-        private void CheckShots(List<BattleshipTools.Point> shots, List<BattleshipTools.Point> uiShots, Brush color)
+        private void CheckShots(HashSet<BattleshipTools.Point> shots, HashSet<BattleshipTools.Point> uiShots, Brush color)
         {
             foreach (var hitPoint in shots)
             {

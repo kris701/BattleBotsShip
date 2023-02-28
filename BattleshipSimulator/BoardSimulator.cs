@@ -6,22 +6,22 @@ namespace BattleshipSimulator
 {
     public class BoardSimulator : IBoardSimulator
     {
-        public List<Point> Shots { get; }
-        public List<Point> Hits { get; }
+        public HashSet<Point> Shots { get; }
+        public HashSet<Point> Hits { get; }
 
         public IBoard Board { get; }
 
         public bool HaveLost { get { return LostShips.Count >= Board.Ships.Count; } }
-        public List<IShip> LostShips { get; }
+        public HashSet<IShip> LostShips { get; }
 
         private Dictionary<IShip, int> _shipHits;
 
         public BoardSimulator(IBoard board)
         {
             Board = board;
-            Shots = new List<Point>();
-            Hits = new List<Point>();
-            LostShips = new List<IShip>();
+            Shots = new HashSet<Point>();
+            Hits = new HashSet<Point>();
+            LostShips = new HashSet<IShip>();
             _shipHits = new Dictionary<IShip, int>();
         }
 

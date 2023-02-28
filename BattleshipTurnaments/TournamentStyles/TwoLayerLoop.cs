@@ -11,17 +11,17 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using static BattleshipSimulator.BoardSelector;
-using static BattleshipTurnaments.ITurnament;
+using static BattleshipTurnaments.ITournament;
 
 namespace BattleshipTurnaments.TurnamentStyles
 {
-    public class TwoLayerLoop : ITurnament
+    public class TwoLayerLoop : ITournament
     {
         public event OpponentBattleOverHandler? OnOpponentBattleOver;
 
         public bool RunParallel { get; set; } = true;
 
-        public IRunReport RunTurnament(int rounds, List<string> opponents, List<IBoard> boardOptions)
+        public IRunReport RunTournament(int rounds, List<string> opponents, List<IBoard> boardOptions)
         {
             List<Task<BattleshipSimulator.Report.IRunReport>> tasks = GenerateTasks(rounds, opponents, boardOptions, new CancellationToken());
 
@@ -30,7 +30,7 @@ namespace BattleshipTurnaments.TurnamentStyles
             return GenerateReport(rounds, tasks);
         }
 
-        public async Task<IRunReport> RunTurnamentAsync(int rounds, List<string> opponents, List<IBoard> boardOptions, CancellationToken cancellationToken)
+        public async Task<IRunReport> RunTournamentAsync(int rounds, List<string> opponents, List<IBoard> boardOptions, CancellationToken cancellationToken)
         {
             List<Task<BattleshipSimulator.Report.IRunReport>> tasks = GenerateTasks(rounds, opponents, boardOptions, cancellationToken);
 

@@ -15,7 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BattleshipSimulator\BattleshipSimulator.csproj" />
-    <ProjectReference Include="..\BattleshipTurnaments\BattleshipTurnaments.csproj" />
+    <ProjectReference Include="..\BattleshipTurnaments\BattleshipTournaments.csproj" />
     <ProjectReference Include="..\BattleshipValidators\BattleshipValidators.csproj" />
   </ItemGroup>
 

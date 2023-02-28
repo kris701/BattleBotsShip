@@ -44,7 +44,7 @@ namespace BattleBotsShip.Views
 
             DisableSettings();
 
-            var turnament = TurnamentBuilder.GetTurnament(TurnamentStyleCombobox.Text);
+            var turnament = TournamentBuilder.GetTurnament(TurnamentStyleCombobox.Text);
             int rounds = Int32.Parse(RoundsTextbox.Text);
 
             List<string> opponents = GetChoosenOpponents();
@@ -55,7 +55,7 @@ namespace BattleBotsShip.Views
 
             _cts = new CancellationTokenSource();
 
-            var result = await turnament.RunTurnamentAsync(
+            var result = await turnament.RunTournamentAsync(
                 rounds,
                 opponents,
                 BoardSelector.Boards.Values.ToList(),
@@ -143,7 +143,7 @@ namespace BattleBotsShip.Views
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             TurnamentStyleCombobox.Items.Clear();
-            foreach (var option in TurnamentBuilder.TurnamentOptions())
+            foreach (var option in TournamentBuilder.TurnamentOptions())
                 TurnamentStyleCombobox.Items.Add(option);
             TurnamentStyleCombobox.SelectedIndex = 0;
 

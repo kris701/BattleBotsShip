@@ -22,6 +22,7 @@ namespace BattleshipSimulator.Opponents
 
             // Probability Based
             { "ProbableShots", () => { return new ProbableShotsOpponent(); } },
+            { "ProspectingProbableShots", () => { return new ProspectProbableShotsOpponent(); } },
             { "FurthestShotCLE", () => { return new FurthestShotCLEOpponent(); } },
 
             // Pattern Based

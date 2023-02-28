@@ -14,5 +14,7 @@ namespace BattleshipModels
         public int Length { get; }
         public OrientationDirection Orientation { get; }
         public Point Location { get; }
+
+        public bool IsPointWithin(Point point);
     }
 }

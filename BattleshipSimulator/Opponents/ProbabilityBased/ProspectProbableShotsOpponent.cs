@@ -4,25 +4,62 @@ using BattleshipTools;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace BattleshipSimulator.Opponents.ProbabilityBased
 {
-    public class ProbableShotsOpponent : IOpponent
+    public class ProspectProbableShotsOpponent : IOpponent
     {
-        public string Name { get; } = "Probable Shots";
+        public string Name { get; } = "Prospect Probable Shots";
         // Some high value, to increase the likelyhood of the AI attempting to shoot a location that has a partially sunk ship
         private int _hitShipWeight = 50;
 
+        private int _currentProspectTargetIndex = 0;
+        private List<Point> _prospectTargets = new List<Point>();
+        private bool _isInProspectState = true;
+        private double _prospectDensity = 0.15;
+
         public void DoMoveOn(IBoardSimulator opponentBoard)
         {
-            opponentBoard.Fire(GetBestPoint(opponentBoard));
+            if (_isInProspectState)
+            {
+                if (_prospectTargets.Count == 0)
+                    PopulateProspectList(opponentBoard.Board.Width, opponentBoard.Board.Height);
+
+                opponentBoard.Fire(_prospectTargets[_currentProspectTargetIndex++]);
+                if (_currentProspectTargetIndex >= _prospectTargets.Count)
+                    _isInProspectState = false;
+            }
+            else
+                opponentBoard.Fire(GetBestPoint(opponentBoard));
         }
 
         public async Task DoMoveOnAsync(IBoardSimulator opponentBoard, CancellationToken token)
         {
             await Task.Run(() => DoMoveOn(opponentBoard));
+        }
+
+        private void PopulateProspectList(int width, int height)
+        {
+            int targetPointCount = (int)((width * height) * _prospectDensity);
+            int pointEvery = (int)((double)(width * height) / (double)targetPointCount);
+
+            int pointID = 0;
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    if (pointID % pointEvery == 0)
+                    {
+                        var newPoint = new Point(x, y);
+                        if (BoundTools.IsWithinBounds(width, height, newPoint))
+                            _prospectTargets.Add(newPoint);
+                    }
+                    pointID++;
+                }
+            }
         }
 
         private ProbabilityPoint GetBestPoint(IBoardSimulator opponentBoard)

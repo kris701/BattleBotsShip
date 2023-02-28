@@ -30,6 +30,25 @@ namespace BattleshipModels
             Location = new Point(0,0);
         }
 
+        public bool IsPointWithin(Point point)
+        {
+            if (Orientation == IShip.OrientationDirection.EW)
+            {
+                if (point.Y != Location.Y)
+                    return false;
+                if (point.X >= Location.X && point.X < Location.X + Length)
+                    return true;
+            }
+            else if (Orientation == IShip.OrientationDirection.NS)
+            {
+                if (point.X != Location.X)
+                    return false;
+                if (point.Y >= Location.Y && point.Y < Location.Y + Length)
+                    return true;
+            }
+            return false;
+        }
+
         public override bool Equals(object? obj)
         {
             if (obj == null && this == null)

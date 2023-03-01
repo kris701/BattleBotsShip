@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:BattleBotsShip.Views.UserControls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" Loaded="UserControl_Loaded">
-    <Grid Background="Gray">
+    <Grid Background="#FF3B4767">
         <Grid.RowDefinitions>
             <RowDefinition Height="35"/>
             <RowDefinition/>
@@ -20,14 +20,14 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             
-            <Label Content="Board Selector" Margin="2" VerticalContentAlignment="Center"/>
-            <Button x:Name="ReloadButton" Grid.Column="1" Margin="2" Content="Reload" Click="ReloadButton_Click"/>
-            <Button x:Name="SelectAllButton" Grid.Column="2" Margin="2" Content="Select All" Click="SelectAllButton_Click"/>
-            <Button x:Name="UnSelectAllButton" Grid.Column="3" Margin="2" Content="Unselect All" Click="UnSelectAllButton_Click"/>
+            <Label Content="Board Selector" Margin="2" Style="{StaticResource StandartLabelStyle}"/>
+            <Button x:Name="ReloadButton" Grid.Column="1" Margin="2" Content="Reload" Style="{StaticResource StandartButtonStyle}" Click="ReloadButton_Click"/>
+            <Button x:Name="SelectAllButton" Grid.Column="2" Margin="2" Content="Select All" Style="{StaticResource StandartButtonStyle}" Click="SelectAllButton_Click"/>
+            <Button x:Name="UnSelectAllButton" Grid.Column="3" Margin="2" Content="Unselect All" Style="{StaticResource StandartButtonStyle}" Click="UnSelectAllButton_Click"/>
         </Grid>
         
         <ScrollViewer Grid.Row="1">
-            <TreeView x:Name="LayoutSelector" Margin="5"/>
+            <TreeView x:Name="LayoutSelector" Margin="5" Background="#B2203671"/>
         </ScrollViewer>
     </Grid>
 </UserControl>

@@ -7,8 +7,10 @@ using System.Threading.Tasks;
 
 namespace BattleshipModels
 {
-    public interface IShip
+    public interface IShip : ICloneable
     {
+        public bool HaveBeenTamperedWith { get; }
+
         public enum OrientationDirection { None, NS, EW };
 
         public int Length { get; }
@@ -16,5 +18,6 @@ namespace BattleshipModels
         public Point Location { get; }
 
         public bool IsPointWithin(Point point);
+
     }
 }

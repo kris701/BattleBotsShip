@@ -12,6 +12,24 @@ namespace BattleshipModels
 {
     public class BoardModel : IBoard
     {
+        [JsonIgnore]
+        private bool _haveBeenTamperedWith = false;
+        public bool HaveBeenTamperedWith { get {
+                if (_haveBeenTamperedWith)
+                    return true;
+
+                foreach (var ship in Ships)
+                {
+                    if (ship.HaveBeenTamperedWith)
+                    {
+                        _haveBeenTamperedWith = true;
+                        return true;
+                    }
+                }
+                return false;
+            } 
+        }
+
         public string Name { get; set; }
         public string Description { get; set; }
 
@@ -19,19 +37,22 @@ namespace BattleshipModels
         public int Height { get; }
 
         public BoardStyles.Styles Style { get; }
+
         public List<ShipModel> Ships { get; }
 
-        private Dictionary<Point, IShip> _hitPositions = new Dictionary<Point, IShip>();
-        public Dictionary<Point, IShip> GetHitPositions() => _hitPositions;
+        private Dictionary<Point, IShip> _hitPositions;
 
+        [JsonConstructor]
         public BoardModel(List<ShipModel> ships, int width, int height, BoardStyles.Styles style, string name, string description)
         {
             Width = width;
             Height = height;
-            Ships = ships;
             Style = style;
             Name = name;
             Description = description;
+
+            _hitPositions = new Dictionary<Point, IShip>();
+            Ships = ships;
 
             GenerateHitPositions();
         }
@@ -41,25 +62,18 @@ namespace BattleshipModels
             _hitPositions.Clear();
             foreach (var ship in Ships)
             {
-                if (ship.Orientation == IShip.OrientationDirection.NS)
-                {
-                    for (int i = 0; i < ship.Length; i++)
-                    {
-                        var newPoint = new Point(ship.Location.X, ship.Location.Y + i);
-                        if (!_hitPositions.ContainsKey(newPoint))
-                            _hitPositions.Add(newPoint, ship);
-                    }
-                }
-                else if (ship.Orientation == IShip.OrientationDirection.EW)
-                {
-                    for (int i = 0; i < ship.Length; i++)
-                    {
-                        var newPoint = new Point(ship.Location.X + i, ship.Location.Y);
-                        if (!_hitPositions.ContainsKey(newPoint))
-                            _hitPositions.Add(newPoint, ship);
-                    }
-                }
+                var shipHitPoints = ship.GetHitPoints();
+                foreach(var point in shipHitPoints)
+                    if (!_hitPositions.ContainsKey(point))
+                        _hitPositions.Add(point, ship);
             }
+        }
+
+        public IShip? GetHit(Point location)
+        {
+            if (_hitPositions.ContainsKey(location))
+                return _hitPositions[location];
+            return null;
         }
     }
 }

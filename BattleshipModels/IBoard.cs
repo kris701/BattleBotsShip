@@ -9,6 +9,8 @@ namespace BattleshipModels
 {
     public interface IBoard
     {
+        public bool HaveBeenTamperedWith { get; }
+
         public string Name { get; set; }
         public string Description { get; set; }
 
@@ -18,6 +20,6 @@ namespace BattleshipModels
         public BoardStyles.Styles Style { get; }
         public List<ShipModel> Ships { get; }
 
-        public Dictionary<Point, IShip> GetHitPositions();
+        public IShip? GetHit(Point locationn);
     }
 }

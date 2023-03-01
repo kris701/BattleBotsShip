@@ -11,23 +11,37 @@ namespace BattleshipModels
 {
     public class ShipModel : IShip
     {
+        [JsonIgnore]
+        public bool HaveBeenTamperedWith { get; internal set; } = false;
+
         public int Length { get; }
-        public IShip.OrientationDirection Orientation { get; }
-        public Point Location { get; }
+
+        internal IShip.OrientationDirection _orientation = IShip.OrientationDirection.None;
+        public IShip.OrientationDirection Orientation
+        {
+            get
+            {
+                HaveBeenTamperedWith = true;
+                return _orientation;
+            }
+        }
+
+        internal Point _location = new Point(-1, -1);
+        public Point Location
+        {
+            get
+            {
+                HaveBeenTamperedWith = true;
+                return _location;
+            }
+        }
 
         [JsonConstructor]
         public ShipModel(int length, IShip.OrientationDirection orientation, Point location)
         {
             Length = length;
-            Orientation = orientation;
-            Location = location;
-        }
-
-        public ShipModel(int length)
-        {
-            Length = length;
-            Orientation = IShip.OrientationDirection.EW;
-            Location = new Point(0,0);
+            _orientation = orientation;
+            _location = location;
         }
 
         public bool IsPointWithin(Point point)
@@ -56,15 +70,46 @@ namespace BattleshipModels
             if (obj is ShipModel ship)
             {
                 return  ship.Length == Length &&
-                        ship.Orientation == Orientation &&
-                        ship.Location.Equals(Location);
+                        ship._orientation == _orientation &&
+                        ship._location.Equals(_location);
             }
             else return false;
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Length, Orientation, Location);
+            return HashCode.Combine(Length, _orientation, _location);
+        }
+
+        internal List<Point> GetHitPoints()
+        {
+            List<Point> hitPoints = new List<Point>();
+            if (_orientation == IShip.OrientationDirection.NS)
+            {
+                for (int i = 0; i < Length; i++)
+                {
+                    var newPoint = new Point(_location.X, _location.Y + i);
+                    hitPoints.Add(newPoint);
+                }
+            }
+            else if (_orientation == IShip.OrientationDirection.EW)
+            {
+                for (int i = 0; i < Length; i++)
+                {
+                    var newPoint = new Point(_location.X + i, _location.Y);
+                    hitPoints.Add(newPoint);
+                }
+            }
+            return hitPoints;
+        }
+
+        public object Clone()
+        {
+            return new ShipModel(
+                Length,
+                _orientation,
+                _location
+                );
         }
     }
 }

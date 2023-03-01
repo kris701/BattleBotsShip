@@ -29,15 +29,15 @@ namespace BattleshipSimulator
         public HitState Fire(Point location)
         {
             Shots.Add(location);
-            var hitPositions = Board.GetHitPositions();
-            if (hitPositions.ContainsKey(location) && !Hits.Contains(location))
+            var hitShip = Board.GetHit(location);
+            if (hitShip != null && !Hits.Contains(location))
             {
-                var ship = hitPositions[location];
-                DictionaryHelper.AddOrIncrement(_shipHits, ship, 1);
+                DictionaryHelper.AddOrIncrement(_shipHits, hitShip, 1);
                 Hits.Add(location);
-                if (_shipHits[ship] == ship.Length)
+                if (_shipHits[hitShip] == hitShip.Length)
                 {
-                    LostShips.Add(ship);
+                    if (hitShip.Clone() is IShip ship)
+                        LostShips.Add(ship);
                     return HitState.Sunk;
                 }
                 else

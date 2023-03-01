@@ -118,6 +118,56 @@ namespace BattleshipSimulatorTests.Opponents
                 Assert.Fail($"Opponent ({opponentName}) did not always win!");
         }
 
+        [TestMethod]
+        [DynamicData(nameof(AllOpponents), DynamicDataSourceType.Method)]
+        public void Opponent_Property_DoesNotTamperWithBoardOrShips_Test(string opponentName, IBoard testBoard)
+        {
+            // ARRANGE
+            var opponent = OpponentBuilder.GetOpponent(opponentName);
+            IBoardSimulator simulator = new BoardSimulator(testBoard);
+            Assert.IsFalse(testBoard.HaveBeenTamperedWith);
+            foreach(var ship in testBoard.Ships)
+                Assert.IsFalse(ship.HaveBeenTamperedWith);
+
+            // ACT
+            while (simulator.Shots.Count != (testBoard.Width * testBoard.Height))
+            {
+                opponent.DoMoveOn(simulator);
+                if (simulator.HaveLost)
+                    break;
+            }
+
+            // ASSERT
+            Assert.IsFalse(testBoard.HaveBeenTamperedWith);
+            foreach (var ship in testBoard.Ships)
+                Assert.IsFalse(ship.HaveBeenTamperedWith);
+        }
+
+        [TestMethod]
+        [DynamicData(nameof(AllOpponents), DynamicDataSourceType.Method)]
+        public async Task Opponent_Property_DoesNotTamperWithBoardOrShips_Test_Async(string opponentName, IBoard testBoard)
+        {
+            // ARRANGE
+            var opponent = OpponentBuilder.GetOpponent(opponentName);
+            IBoardSimulator simulator = new BoardSimulator(testBoard);
+            Assert.IsFalse(testBoard.HaveBeenTamperedWith);
+            foreach (var ship in testBoard.Ships)
+                Assert.IsFalse(ship.HaveBeenTamperedWith);
+
+            // ACT
+            while (simulator.Shots.Count != (testBoard.Width * testBoard.Height))
+            {
+                await opponent.DoMoveOnAsync(simulator, new CancellationToken());
+                if (simulator.HaveLost)
+                    break;
+            }
+
+            // ASSERT
+            Assert.IsFalse(testBoard.HaveBeenTamperedWith);
+            foreach (var ship in testBoard.Ships)
+                Assert.IsFalse(ship.HaveBeenTamperedWith);
+        }
+
         private static Random rnd = new Random();
         private static IBoard GenerateRandomBoard()
         {

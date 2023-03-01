@@ -17,8 +17,12 @@ namespace BattleshipValidators
             List<IShip> invalidShips = new List<IShip>();
             List<Point> occupiedPoints = new List<Point>();
 
-            // Location validation
+            List<IShip> copyShips = new List<IShip>();
             foreach (var ship in board.Ships)
+                if (ship.Clone() is IShip aShip)
+                copyShips.Add(aShip);
+                // Location validation
+            foreach (var ship in copyShips)
             {
                 if (!ShipValidator.ValidateShip(board, ship))
                     invalidShips.Add(ship);

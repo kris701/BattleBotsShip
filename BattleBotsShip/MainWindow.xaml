@@ -6,27 +6,43 @@
         xmlns:local="clr-namespace:BattleBotsShip"
         mc:Ignorable="d"
         Title="Battle(bot)Ship" Height="550" Width="1000">
-    <Grid>
+    <Grid Background="#CC0A132B">
         <Grid.RowDefinitions>
             <RowDefinition Height="35"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <Canvas Background="Gray"/>
+        <Canvas Background="#E50A132B"/>
         <StackPanel Orientation="Horizontal" Margin="5">
-            <Label Content="Battle(bot)Ships" Foreground="White"/>
-            <Separator Height="5" Width="10" Margin="5" Background="Black"/>
-            <Button x:Name="SingleBattlesButton" Content="Single AI Battles" Width="125" Click="SingleBattlesButton_Click"/>
-            <Separator Height="5" Width="10" Margin="5" Background="Black"/>
-            <Button x:Name="SingleUserBattlesButton" Content="Single User Battles" Width="125" Click="SingleUserBattlesButton_Click"/>
-            <Separator Height="5" Width="10" Margin="5" Background="Black"/>
-            <Button x:Name="TournamentsButton" Content="Tournament Battles" Width="125" Click="TurnamentsButton_Click"/>
-            <Separator Height="5" Width="10" Margin="5" Background="Black"/>
-            <Button x:Name="BoardDesignerButton" Content="Board Designer" Width="125" Click="BoardDesignerButton_Click"/>
+            <Label Content="Battle(bot)Ships" Style="{StaticResource StandartLabelStyle}"/>
+            <Separator Height="5" Width="10" Margin="5" Background="Transparent"/>
+            <Button x:Name="MainMenuButton" Content="Main Menu" Width="100" Style="{StaticResource StandartButtonStyle}" Click="MainMenuButton_Click"/>
         </StackPanel>
 
+        <Grid x:Name="MainMenuGrid" Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="2*"/>
+            </Grid.RowDefinitions>
+
+            <Label Grid.Column="1" Content="Battle(Bots)Ship" FontSize="30" Style="{StaticResource StandartLabelStyle}"/>
+
+            <StackPanel Grid.Column="1" Grid.Row="1" Margin="5,5,5,5">
+                <Button x:Name="SingleAIBattlesButton" Height="35" Margin="5" Content="Single AI Battles" Style="{StaticResource StandartButtonStyle}" Click="SingleAIBattlesButton_Click"/>
+                <Button x:Name="SingleIserBattlesButton" Height="35" Margin="5" Content="Single User Battles" Style="{StaticResource StandartButtonStyle}" Click="SingleIserBattlesButton_Click"/>
+                <Button x:Name="TournamentBattlesButon" Height="35" Margin="5" Content="Tournament Battles" Style="{StaticResource StandartButtonStyle}" Click="TournamentBattlesButon_Click"/>
+                <Button x:Name="BoardDesignerButton" Height="35" Margin="5" Content="Board Designer" Style="{StaticResource StandartButtonStyle}" Click="BoardDesignerButton_Click"/>
+                <Button x:Name="ExitButton" Height="35" Margin="5" Content="Exit" Style="{StaticResource StandartExitButtonStyle}" Click="ExitButton_Click"/>
+            </StackPanel>
+        </Grid>
+
         <Grid x:Name="MainViewGrid" Grid.Row="1">
-            
+
         </Grid>
     </Grid>
 </Window>

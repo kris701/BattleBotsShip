@@ -4,6 +4,6 @@
              xmlns:local="clr-namespace:BattleBotsShip"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <ResourceDictionary Source="Styles/Default.xaml"/>
     </Application.Resources>
 </Application>

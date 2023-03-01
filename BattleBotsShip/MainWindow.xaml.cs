@@ -10,28 +10,42 @@ namespace BattleBotsShip
             InitializeComponent();
         }
 
-        private void SingleBattlesButton_Click(object sender, RoutedEventArgs e)
+        public void ChangeView(UIElement newElement)
         {
             MainViewGrid.Children.Clear();
-            MainViewGrid.Children.Add(new SingleBattlesView());
+            MainViewGrid.Children.Add(newElement);
+            MainMenuGrid.Visibility = Visibility.Hidden;
         }
 
-        private void TurnamentsButton_Click(object sender, RoutedEventArgs e)
+        private void SingleAIBattlesButton_Click(object sender, RoutedEventArgs e)
         {
-            MainViewGrid.Children.Clear();
-            MainViewGrid.Children.Add(new TournamentBattlesView());
+            ChangeView(new SingleBattlesView());
+        }
+
+        private void SingleIserBattlesButton_Click(object sender, RoutedEventArgs e)
+        {
+            ChangeView(new SingleUserBattlesView());
+        }
+
+        private void TournamentBattlesButon_Click(object sender, RoutedEventArgs e)
+        {
+            ChangeView(new TournamentBattlesView());
         }
 
         private void BoardDesignerButton_Click(object sender, RoutedEventArgs e)
         {
-            MainViewGrid.Children.Clear();
-            MainViewGrid.Children.Add(new BoardDesignerView());
+            ChangeView(new BoardDesignerView());
         }
 
-        private void SingleUserBattlesButton_Click(object sender, RoutedEventArgs e)
+        private void ExitButton_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+
+        private void MainMenuButton_Click(object sender, RoutedEventArgs e)
         {
             MainViewGrid.Children.Clear();
-            MainViewGrid.Children.Add(new SingleUserBattlesView());
+            MainMenuGrid.Visibility = Visibility.Visible;
         }
     }
 }

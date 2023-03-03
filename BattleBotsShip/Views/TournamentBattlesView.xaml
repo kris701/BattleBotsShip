@@ -17,16 +17,16 @@
             <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
 
-        <StackPanel Orientation="Horizontal" Margin="5" Grid.ColumnSpan="3">
-            <Button x:Name="StartButton" Content="Start" Click="StartButton_Click" Width="100"/>
-            <Button x:Name="StopButton" Content="Stop" Click="StopButton_Click" Width="100" IsEnabled="False"/>
+        <StackPanel Orientation="Horizontal" Margin="5" Grid.ColumnSpan="3" Background="#E50A132B">
+            <Button x:Name="StartButton" Content="Start" Click="StartButton_Click" Width="100" Style="{StaticResource StandartButtonStyle}"/>
+            <Button x:Name="StopButton" Content="Stop" Click="StopButton_Click" Width="100" IsEnabled="False" Style="{StaticResource StandartButtonStyle}"/>
             <StackPanel x:Name="DisablableSettings" Orientation="Horizontal">
-                <Label Content="Rounds:"/>
-                <TextBox x:Name="RoundsTextbox" Text="10" Width="100" VerticalContentAlignment="Center" PreviewTextInput="NumbersOnly_TextChanged"/>
-                <Label Content="Tournament Strategy"/>
-                <ComboBox x:Name="TurnamentStyleCombobox" Width="100"/>
-                <Label Content="Opponents"/>
-                <ComboBox x:Name="OpponentsCombobox" Width="100"/>
+                <Label Content="Rounds:" Style="{StaticResource StandartLabelStyle}"/>
+                <TextBox x:Name="RoundsTextbox" Text="10" Width="100" Style="{StaticResource StandartTextBoxStyle}" PreviewTextInput="NumbersOnly_TextChanged"/>
+                <Label Content="Tournament Strategy" Style="{StaticResource StandartLabelStyle}"/>
+                <ComboBox x:Name="TurnamentStyleCombobox" Width="100" Style="{StaticResource StandartComboboxStyle}"/>
+                <Label Content="Opponents" Style="{StaticResource StandartLabelStyle}"/>
+                <ComboBox x:Name="OpponentsCombobox" Width="100" Style="{StaticResource StandartComboboxStyle}"/>
             </StackPanel>
         </StackPanel>
 
@@ -42,12 +42,12 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
-                <Label x:Name="StatusLabel" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Label x:Name="StatusLabel" Content="Status" FontSize="8" Style="{StaticResource StandartLabelStyle}"/>
                 <ProgressBar x:Name="StatusProgressbar" Grid.Column="1" Margin="5"/>
             </Grid>
 
             <ScrollViewer Grid.Row="1">
-                <DataGrid x:Name="ResultsGrid">
+                <DataGrid x:Name="ResultsGrid" Background="#B2203671">
 
                 </DataGrid>
             </ScrollViewer>

@@ -12,10 +12,10 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <Label x:Name="TitleLabel" Content="" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Label x:Name="TitleLabel" Content="" Style="{StaticResource StandartLabelStyle}"/>
 
-        <Grid x:Name="MainGrid" Grid.Row="1" ShowGridLines="True" Background="LightGray">
-            <Label Content="Start a battle to update the visualiser" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <Grid x:Name="MainGrid" Grid.Row="1" ShowGridLines="True" Background="#B2203671">
+            <Label Content="Start a battle to update the visualiser" Style="{StaticResource StandartLabelStyle}"/>
         </Grid>
     </Grid>
 </UserControl>

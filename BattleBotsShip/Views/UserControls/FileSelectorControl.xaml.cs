@@ -48,7 +48,9 @@ namespace BattleBotsShip.Views.UserControls
             var root = new TreeViewItem()
             {
                 Header = "Root",
-                IsExpanded = true
+                IsExpanded = true,
+                Foreground = Brushes.White,
+                FontFamily = new FontFamily("Lucida Console")
             };
             if (Directory.Exists("BoardLayouts"))
             {
@@ -63,7 +65,9 @@ namespace BattleBotsShip.Views.UserControls
             var newItem = new TreeViewItem()
             {
                 Header = directory.Name,
-                IsExpanded = true
+                IsExpanded = true,
+                Foreground = Brushes.White,
+                FontFamily = new FontFamily("Lucida Console")
             };
             foreach (var subDir in directory.EnumerateDirectories())
             {
@@ -75,6 +79,8 @@ namespace BattleBotsShip.Views.UserControls
                 {
                     Content = file.Name,
                     Tag = file.FullName,
+                    Foreground = Brushes.White,
+                    FontFamily = new FontFamily("Lucida Console")
                 };
                 fileItem.Checked += Board_Checked;
                 fileItem.Unchecked += Board_Unchecked;

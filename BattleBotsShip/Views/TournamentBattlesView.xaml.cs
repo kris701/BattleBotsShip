@@ -153,7 +153,10 @@ namespace BattleBotsShip.Views
                 OpponentsCombobox.Items.Add(new CheckBox()
                 {
                     Content = opponent,
-                    IsChecked = true
+                    IsChecked = true,
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    HorizontalContentAlignment = HorizontalAlignment.Left,
+                    Foreground = Brushes.White
                 });
         }
 

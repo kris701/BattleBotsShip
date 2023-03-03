@@ -18,12 +18,12 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <StackPanel Orientation="Horizontal" Margin="5" Grid.ColumnSpan="3">
-            <Button x:Name="StartButton" Content="Start" Click="StartButton_Click" Width="100"/>
-            <Button x:Name="StopButton" Content="Stop" Click="StopButton_Click" Width="100" IsEnabled="False"/>
+        <StackPanel Orientation="Horizontal" Margin="5" Grid.ColumnSpan="3" Background="#E50A132B">
+            <Button x:Name="StartButton" Content="Start" Click="StartButton_Click" Width="100" Style="{StaticResource StandartButtonStyle}"/>
+            <Button x:Name="StopButton" Content="Stop" Click="StopButton_Click" Width="100" IsEnabled="False" Style="{StaticResource StandartButtonStyle}"/>
             <StackPanel x:Name="DisablableSettings" Orientation="Horizontal">
-                <Label Content="Refresh Rate:"/>
-                <TextBox x:Name="RefreshRateTextbox" Text="10" Width="100" VerticalContentAlignment="Center" PreviewTextInput="NumbersOnly_TextChanged"/>
+                <Label Content="Refresh Rate:" Style="{StaticResource StandartLabelStyle}"/>
+                <TextBox x:Name="RefreshRateTextbox" Text="10" Width="100" Style="{StaticResource StandartTextBoxStyle}" PreviewTextInput="NumbersOnly_TextChanged"/>
             </StackPanel>
         </StackPanel>
 
@@ -38,13 +38,13 @@
                 <ColumnDefinition Width="2*"/>
             </Grid.ColumnDefinitions>
 
-            <Label Content="Attacker"/>
-            <ComboBox x:Name="AttackerNameCombobox" Grid.Column="1"/>
-            <Label Content="Defender" Grid.Row="1"/>
-            <ComboBox x:Name="DefenderNameCombobox" Grid.Column="1" Grid.Row="1"/>
+            <Label Content="Attacker" Style="{StaticResource StandartLabelStyle}"/>
+            <ComboBox x:Name="AttackerNameCombobox" Grid.Column="1" Style="{StaticResource StandartComboboxStyle}"/>
+            <Label Content="Defender" Grid.Row="1" Style="{StaticResource StandartLabelStyle}"/>
+            <ComboBox x:Name="DefenderNameCombobox" Grid.Column="1" Grid.Row="1" Style="{StaticResource StandartComboboxStyle}"/>
 
             <ScrollViewer Grid.Row="2" Grid.ColumnSpan="2">
-                <DataGrid x:Name="ResultsGrid"/>
+                <DataGrid x:Name="ResultsGrid" Background="#B2203671"/>
             </ScrollViewer>
         </Grid>
 

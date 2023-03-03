@@ -12,19 +12,19 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Horizontal" Margin="5">
-            <Label Content="Board Style" VerticalAlignment="Center"/>
-            <ComboBox x:Name="StyleCombobox" Width="200" SelectionChanged="StyleCombobox_SelectionChanged"/>
+        <StackPanel Orientation="Horizontal" Margin="5" Background="#E50A132B">
+            <Label Content="Board Style" Style="{StaticResource StandartLabelStyle}"/>
+            <ComboBox x:Name="StyleCombobox" Width="200" Style="{StaticResource StandartComboboxStyle}" SelectionChanged="StyleCombobox_SelectionChanged"/>
             <Separator Height="5" Width="10" Margin="5" Background="Black"/>
-            <Button x:Name="SaveButton" Content="Save" Width="50" Click="SaveButton_Click"/>
+            <Button x:Name="SaveButton" Content="Save" Width="50" Style="{StaticResource StandartButtonStyle}" Click="SaveButton_Click"/>
             <Separator Height="5" Width="10" Margin="5" Background="Black"/>
-            <Button x:Name="LoadButton" Content="Load" Width="50" Click="LoadButton_Click"/>
+            <Button x:Name="LoadButton" Content="Load" Width="50" Style="{StaticResource StandartButtonStyle}" Click="LoadButton_Click"/>
             <Separator Height="5" Width="10" Margin="5" Background="Black"/>
-            <Label Content="Board Name" VerticalAlignment="Center"/>
-            <TextBox x:Name="BoardNameTextbox" Text="NewBoard" Width="200" VerticalContentAlignment="Center"/>
+            <Label Content="Board Name" Style="{StaticResource StandartLabelStyle}"/>
+            <TextBox x:Name="BoardNameTextbox" Text="NewBoard" Width="200" Style="{StaticResource StandartTextBoxStyle}"/>
         </StackPanel>
 
-        <Grid x:Name="DesignGrid" Grid.Row="1" Background="Gray" ShowGridLines="True">
+        <Grid x:Name="DesignGrid" Grid.Row="1" Background="#B2203671" ShowGridLines="True">
             
         </Grid>
     </Grid>

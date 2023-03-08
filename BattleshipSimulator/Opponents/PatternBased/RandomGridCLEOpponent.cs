@@ -13,9 +13,9 @@ namespace BattleshipSimulator.Opponents.PatternBased
     /// Grid Conditional Line Explosion
     /// Based on the GridCLEOpponent, but shoots at random points in the grid instead of from an end.
     /// </summary>
-    public class RandomGridCLEOpponent : IOpponent
+    public class RandomGridCLEOpponent : BaseOpponent
     {
-        public string Name { get; } = "(Random Grid) Conditional Line Explosion";
+        public override string Name { get; } = "(Random Grid) Conditional Line Explosion";
 
         private bool _isCrosshairState = false;
         private Point _lastHit = new Point(0, 0);
@@ -25,11 +25,14 @@ namespace BattleshipSimulator.Opponents.PatternBased
         private List<Point> _gridPoints = new List<Point>();
         private int _currentGridIndex = 0;
 
-        public void DoMoveOn(IBoardSimulator opponentBoard)
+        public override void Initialize(IBoardSimulator opponentBoard)
         {
-            if (_gridPoints.Count == 0)
-                GenerateGridPoints(opponentBoard.Board.Width, opponentBoard.Board.Height);
+            GenerateGridPoints(opponentBoard.Board.Width, opponentBoard.Board.Height);
+            IsInitialized = true;
+        }
 
+        public override void DoMoveOn(IBoardSimulator opponentBoard)
+        {
             if (!_isCrosshairState)
             {
                 Point firePoint = GetGridPoint(opponentBoard);
@@ -124,12 +127,7 @@ namespace BattleshipSimulator.Opponents.PatternBased
             }
         }
 
-        public async Task DoMoveOnAsync(IBoardSimulator opponentBoard, CancellationToken token)
-        {
-            await Task.Run(() => DoMoveOn(opponentBoard));
-        }
-
-        public void Reset()
+        private void Reset()
         {
             _isCrosshairState = false;
             _fireState = 0;

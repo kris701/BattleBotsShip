@@ -13,20 +13,15 @@ namespace BattleshipSimulator.Opponents.RandomBased
     /// When a ship is it, it will check in lines in each direction.
     /// The twist with this one is if one of the lines out hit something, it will continue from there afterwards
     /// </summary>
-    public class ContinousLineExplosionOpponent : IOpponent
+    public class ContinousLineExplosionOpponent : BaseOpponent 
     {
-        public string Name { get; } = "Continous Line Explosion";
+        public override string Name { get; } = "Continous Line Explosion";
 
-        private List<Point> _targetPoints;
+        private List<Point> _targetPoints = new List<Point>();
         private int _fireState = 0;
         private int _reach = 1;
 
-        public ContinousLineExplosionOpponent()
-        {
-            _targetPoints = new List<Point>();
-        }
-
-        public void DoMoveOn(IBoardSimulator opponentBoard)
+        public override void DoMoveOn(IBoardSimulator opponentBoard)
         {
             if (_targetPoints.Count == 0)
             {
@@ -86,12 +81,7 @@ namespace BattleshipSimulator.Opponents.RandomBased
             }
         }
 
-        public async Task DoMoveOnAsync(IBoardSimulator opponentBoard, CancellationToken token)
-        {
-            await Task.Run(() => DoMoveOn(opponentBoard));
-        }
-
-        public void Reset()
+        private void Reset()
         {
             _targetPoints.Clear();
             _fireState = 0;

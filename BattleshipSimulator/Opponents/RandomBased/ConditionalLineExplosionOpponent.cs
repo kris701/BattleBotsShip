@@ -14,16 +14,16 @@ namespace BattleshipSimulator.Opponents.RandomBased
     /// When a ship is it, it will check in lines in each direction, until it hits an empty space.
     /// This basically means it will always remove a ship, if it hits it.
     /// </summary>
-    public class ConditionalLineExplosionOpponent : IOpponent
+    public class ConditionalLineExplosionOpponent : BaseOpponent
     {
-        public string Name { get; } = "Conditional Line Explosion";
+        public override string Name { get; } = "Conditional Line Explosion";
 
         private bool _isCrosshairState = false;
         private Point _lastHit = new Point();
         private int _fireState = 0;
         private int _reach = 1;
 
-        public void DoMoveOn(IBoardSimulator opponentBoard)
+        public override void DoMoveOn(IBoardSimulator opponentBoard)
         {
             if (!_isCrosshairState)
             {
@@ -88,12 +88,7 @@ namespace BattleshipSimulator.Opponents.RandomBased
             }
         }
 
-        public async Task DoMoveOnAsync(IBoardSimulator opponentBoard, CancellationToken token)
-        {
-            await Task.Run(() => DoMoveOn(opponentBoard));
-        }
-
-        public void Reset()
+        private void Reset()
         {
             _isCrosshairState = false;
             _fireState = 0;

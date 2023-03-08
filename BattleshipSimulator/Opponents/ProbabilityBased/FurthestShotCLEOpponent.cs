@@ -12,16 +12,16 @@ namespace BattleshipSimulator.Opponents.ProbabilityBased
     /// Furthest Shot Conditional Line Explosion
     /// Based on the Conditional Line Explosion opponent, but instead of random shots it will shoot at a point that is 
     /// </summary>
-    public class FurthestShotCLEOpponent : IOpponent
+    public class FurthestShotCLEOpponent : BaseOpponent
     {
-        public string Name { get; } = "Furthest Shot Conditional Line Explosion";
+        public override string Name { get; } = "Furthest Shot Conditional Line Explosion";
 
         private bool _isCrosshairState = false;
         private Point _lastHit = new Point(0, 0);
         private int _fireState = 0;
         private int _reach = 1;
 
-        public void DoMoveOn(IBoardSimulator opponentBoard)
+        public override void DoMoveOn(IBoardSimulator opponentBoard)
         {
             if (!_isCrosshairState)
             {
@@ -124,12 +124,7 @@ namespace BattleshipSimulator.Opponents.ProbabilityBased
             return Math.Sqrt(Math.Pow(b.X - a.X, 2) + Math.Pow(b.Y - a.Y, 2));
         }
 
-        public async Task DoMoveOnAsync(IBoardSimulator opponentBoard, CancellationToken token)
-        {
-            await Task.Run(() => DoMoveOn(opponentBoard));
-        }
-
-        public void Reset()
+        private void Reset()
         {
             _isCrosshairState = false;
             _fireState = 0;

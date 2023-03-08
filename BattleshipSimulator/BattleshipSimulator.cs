@@ -62,6 +62,7 @@ namespace BattleshipSimulator
                         attacker,
                         new BoardSimulator(boards.Item2),
                         defender);
+                    game.Initialize();
 
                     long attackerProcessingTime = 0;
                     long defenderProcessingTime = 0;
@@ -146,6 +147,7 @@ namespace BattleshipSimulator
                 attacker,
                 new BoardSimulator(boards.Item2),
                 defender);
+            game.Initialize();
 
             long attackerProcessingTime = 0;
             long defenderProcessingTime = 0;

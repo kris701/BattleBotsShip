@@ -12,6 +12,10 @@
 
         public TurnState Turn { get; }
 
+        public bool IsInitialized { get; }
+
+        public void Initialize();
+
         public WinnerState Update();
         public Task<WinnerState> UpdateAsync(CancellationToken token);
     }

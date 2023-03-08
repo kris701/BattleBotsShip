@@ -12,15 +12,15 @@ namespace BattleshipSimulator.Opponents.RandomBased
     /// <summary>
     /// A bot that what it hits something, it will try the adjacent points around it in the following rounds
     /// </summary>
-    public class CrosshairOpponent : IOpponent
+    public class CrosshairOpponent : BaseOpponent
     {
-        public string Name { get; } = "Crosshair";
+        public override string Name { get; } = "Crosshair";
 
         private bool _isCrosshairState = false;
         private Point _lastHit = new Point();
         private int _fireState = 0;
 
-        public void DoMoveOn(IBoardSimulator opponentBoard)
+        public override void DoMoveOn(IBoardSimulator opponentBoard)
         {
             if (!_isCrosshairState)
             {
@@ -64,12 +64,7 @@ namespace BattleshipSimulator.Opponents.RandomBased
             }
         }
 
-        public async Task DoMoveOnAsync(IBoardSimulator opponentBoard, CancellationToken token)
-        {
-            await Task.Run(() => DoMoveOn(opponentBoard));
-        }
-
-        public void Reset()
+        private void Reset()
         {
             _isCrosshairState = false;
             _fireState = 0;

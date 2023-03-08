@@ -8,17 +8,17 @@ using System.Threading.Tasks;
 
 namespace BattleshipSimulator.Opponents
 {
-    public class UserOpponent : IOpponent
+    public class UserOpponent : BaseOpponent
     {
-        public string Name { get; } = "User";
+        public override string Name { get; } = "User";
         public Point? FireAt { get; set; }
         
-        public void DoMoveOn(IBoardSimulator opponentBoard)
+        public override void DoMoveOn(IBoardSimulator opponentBoard)
         {
             throw new NotImplementedException();
         }
 
-        public async Task DoMoveOnAsync(IBoardSimulator opponentBoard, CancellationToken token)
+        public async override Task DoMoveOnAsync(IBoardSimulator opponentBoard, CancellationToken token)
         {
             while(FireAt == null)
             {

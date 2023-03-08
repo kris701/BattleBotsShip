@@ -9,18 +9,13 @@ using System.Windows;
 
 namespace BattleshipSimulator.Opponents.RandomBased
 {
-    public class RandomShotsOpponent : IOpponent
+    public class RandomShotsOpponent : BaseOpponent
     {
-        public string Name { get; } = "Random";
+        public override string Name { get; } = "Random";
 
-        public void DoMoveOn(IBoardSimulator opponentBoard)
+        public override void DoMoveOn(IBoardSimulator opponentBoard)
         {
             opponentBoard.Fire(RndTools.GetRndNewPoint(opponentBoard.Board.Width, opponentBoard.Board.Height, opponentBoard.Shots));
-        }
-
-        public async Task DoMoveOnAsync(IBoardSimulator opponentBoard, CancellationToken token)
-        {
-            await Task.Run(() => DoMoveOn(opponentBoard));
         }
     }
 }

@@ -9,31 +9,31 @@ using System.Threading.Tasks;
 
 namespace BattleshipSimulator.Opponents.ProbabilityBased
 {
-    public class ProbableShotsOpponent : IOpponent
+    public class ProbableShotsOpponent : BaseOpponent
     {
-        public string Name { get; } = "Probable Shots";
+        public override string Name { get; } = "Probable Shots";
         // Some high value, to increase the likelyhood of the AI attempting to shoot a location that has a partially sunk ship
         private int _hitShipWeight = 50;
         private HashSet<Point> _uncoveredPoints = new HashSet<Point>();
+        List<IShip> _aliveShips = new List<IShip>();
 
-        public void DoMoveOn(IBoardSimulator opponentBoard)
+        public override void Initialize(IBoardSimulator opponentBoard)
         {
-            if (opponentBoard.Fire(GetBestPoint(opponentBoard)) >= IBoardSimulator.HitState.Hit)
-                _uncoveredPoints = GetUncoveredHitPoints(opponentBoard);
+            _aliveShips = GetAliveShips(opponentBoard);
+            IsInitialized = true;
         }
 
-        public async Task DoMoveOnAsync(IBoardSimulator opponentBoard, CancellationToken token)
+        public override void DoMoveOn(IBoardSimulator opponentBoard)
         {
-            await Task.Run(() => DoMoveOn(opponentBoard));
+            var res = opponentBoard.Fire(GetBestPoint(opponentBoard));
+            if (res >= IBoardSimulator.HitState.Hit)
+                _uncoveredPoints = GetUncoveredHitPoints(opponentBoard);
+            if (res == IBoardSimulator.HitState.Sunk)
+                _aliveShips = GetAliveShips(opponentBoard);
         }
 
         private Point GetBestPoint(IBoardSimulator opponentBoard)
         {
-            List<IShip> aliveShips = new List<IShip>();
-            foreach (var ship in opponentBoard.Board.Ships)
-                if (!opponentBoard.LostShips.Contains(ship))
-                    aliveShips.Add(ship);
-
             Point currentBestPoint = new Point(-1, -1);
             int bestProbability = 0;
             for (int x = 0; x < opponentBoard.Board.Width; x++)
@@ -45,7 +45,7 @@ namespace BattleshipSimulator.Opponents.ProbabilityBased
                     {
                         int probability = 0;
 
-                        foreach (var ship in aliveShips)
+                        foreach (var ship in _aliveShips)
                             probability += TotalShipProbability(newPoint, opponentBoard.Shots, _uncoveredPoints, ship.Length, opponentBoard.Board.Width, opponentBoard.Board.Height);
 
                         if (probability > bestProbability)
@@ -79,6 +79,15 @@ namespace BattleshipSimulator.Opponents.ProbabilityBased
                     uncoveredPoints.Add(hit);
             }
             return uncoveredPoints;
+        }
+
+        private List<IShip> GetAliveShips(IBoardSimulator opponentBoard)
+        {
+            List<IShip> aliveShips = new List<IShip>();
+            foreach (var ship in opponentBoard.Board.Ships)
+                if (!opponentBoard.LostShips.Contains(ship))
+                    aliveShips.Add(ship);
+            return aliveShips;
         }
 
         private int TotalShipProbability(Point location, HashSet<Point> shots, HashSet<Point> hits, int length, int width, int height)

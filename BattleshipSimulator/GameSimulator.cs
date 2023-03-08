@@ -4,6 +4,8 @@ namespace BattleshipSimulator
 {
     public class GameSimulator : IGameSimulator
     {
+        public bool IsInitialized { get; internal set; } = false;
+
         public IBoardSimulator AttackerBoard { get; set; }
         public IOpponent AttackerOpponent { get; }
         public IBoardSimulator DefenderBoard { get; set; }
@@ -19,8 +21,20 @@ namespace BattleshipSimulator
             Turn = TurnState.Attacker;
         }
 
+        public void Initialize()
+        {
+            if (!AttackerOpponent.IsInitialized)
+                AttackerOpponent.Initialize(DefenderBoard);
+            if (!DefenderOpponent.IsInitialized)
+                DefenderOpponent.Initialize(AttackerBoard);
+            IsInitialized = true;
+        }
+
         public WinnerState Update()
         {
+            if (!IsInitialized)
+                throw new Exception("The game simulator have not been initialized!");
+
             if (Turn == TurnState.Attacker)
             {
                 AttackerOpponent.DoMoveOn(DefenderBoard);
@@ -40,6 +54,9 @@ namespace BattleshipSimulator
 
         public async Task<WinnerState> UpdateAsync(CancellationToken token)
         {
+            if (!IsInitialized)
+                throw new Exception("The game simulator have not been initialized!");
+
             if (Turn == TurnState.Attacker)
             {
                 await AttackerOpponent.DoMoveOnAsync(DefenderBoard, token);

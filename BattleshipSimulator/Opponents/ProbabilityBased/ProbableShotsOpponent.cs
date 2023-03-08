@@ -14,10 +14,12 @@ namespace BattleshipSimulator.Opponents.ProbabilityBased
         public string Name { get; } = "Probable Shots";
         // Some high value, to increase the likelyhood of the AI attempting to shoot a location that has a partially sunk ship
         private int _hitShipWeight = 50;
+        private HashSet<Point> _uncoveredPoints = new HashSet<Point>();
 
         public void DoMoveOn(IBoardSimulator opponentBoard)
         {
-            opponentBoard.Fire(GetBestPoint(opponentBoard));
+            if (opponentBoard.Fire(GetBestPoint(opponentBoard)) >= IBoardSimulator.HitState.Hit)
+                _uncoveredPoints = GetUncoveredHitPoints(opponentBoard);
         }
 
         public async Task DoMoveOnAsync(IBoardSimulator opponentBoard, CancellationToken token)
@@ -25,16 +27,15 @@ namespace BattleshipSimulator.Opponents.ProbabilityBased
             await Task.Run(() => DoMoveOn(opponentBoard));
         }
 
-        private ProbabilityPoint GetBestPoint(IBoardSimulator opponentBoard)
+        private Point GetBestPoint(IBoardSimulator opponentBoard)
         {
-            HashSet<Point> looseHits = GetUncoveredHitPoints(opponentBoard);
-
             List<IShip> aliveShips = new List<IShip>();
             foreach (var ship in opponentBoard.Board.Ships)
                 if (!opponentBoard.LostShips.Contains(ship))
                     aliveShips.Add(ship);
 
-            ProbabilityPoint currentBestPoint = new ProbabilityPoint(-1, -1, 0);
+            Point currentBestPoint = new Point(-1, -1);
+            int bestProbability = 0;
             for (int x = 0; x < opponentBoard.Board.Width; x++)
             {
                 for (int y = 0; y < opponentBoard.Board.Height; y++)
@@ -45,10 +46,14 @@ namespace BattleshipSimulator.Opponents.ProbabilityBased
                         int probability = 0;
 
                         foreach (var ship in aliveShips)
-                            probability += TotalShipProbability(newPoint, opponentBoard.Shots, looseHits, ship.Length, opponentBoard.Board.Width, opponentBoard.Board.Height);
+                            probability += TotalShipProbability(newPoint, opponentBoard.Shots, _uncoveredPoints, ship.Length, opponentBoard.Board.Width, opponentBoard.Board.Height);
 
-                        if (probability > currentBestPoint.Probability)
-                            currentBestPoint = new ProbabilityPoint(x, y, probability);
+                        if (probability > bestProbability)
+                        {
+                            bestProbability = probability;
+                            currentBestPoint.X = x;
+                            currentBestPoint.Y = y;
+                        }
                     }
                 }
             }
@@ -130,16 +135,6 @@ namespace BattleshipSimulator.Opponents.ProbabilityBased
                 }
             }
             return verticalProbability;
-        }
-
-        internal class ProbabilityPoint : Point
-        {
-            public int Probability { get; set; }
-
-            public ProbabilityPoint(int x, int y, int prob) : base(x, y)
-            {
-                Probability = prob;
-            }
         }
     }
 }

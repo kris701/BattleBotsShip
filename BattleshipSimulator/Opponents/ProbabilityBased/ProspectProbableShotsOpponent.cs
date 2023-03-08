@@ -135,18 +135,39 @@ namespace BattleshipSimulator.Opponents.ProbabilityBased
         private int TotalShipProbability(Point location, HashSet<Point> shots, HashSet<Point> hits, int length, int width, int height)
         {
             int probability = 0;
-
-            for (int xOffset = 0; xOffset < length; xOffset++)
+            bool foundAnyHorizontal = false;
+            for (int x = location.X - (length - 1); x <= location.X; x++)
             {
-                var newLoc = new Point(location.X - xOffset, location.Y);
-                if (newLoc.X >= 0 && newLoc.X + length <= width)
-                    probability += HorizontalShipProbability(newLoc, length, shots, hits);
+                if (x >= 0 && x + length <= width)
+                {
+                    var newLoc = new Point(x, location.Y);
+                    var res = HorizontalShipProbability(newLoc, length, shots, hits);
+                    if (res == 0)
+                    {
+                        if (foundAnyHorizontal)
+                            break;
+                    }
+                    else
+                        foundAnyHorizontal = true;
+                    probability += res;
+                }
             }
-            for (int yOffset = 0; yOffset < length; yOffset++)
+            bool foundAnyVerticxal = false;
+            for (int y = location.Y - (length - 1); y <= location.Y; y++)
             {
-                var newLoc = new Point(location.X, location.Y - yOffset);
-                if (newLoc.Y >= 0 && newLoc.Y + length <= height)
-                    probability += VerticalShipProbability(newLoc, length, shots, hits);
+                if (y >= 0 && y + length <= height)
+                {
+                    var newLoc = new Point(location.X, y);
+                    var res = VerticalShipProbability(newLoc, length, shots, hits);
+                    if (res == 0)
+                    {
+                        if (foundAnyVerticxal)
+                            break;
+                    }
+                    else
+                        foundAnyVerticxal = true;
+                    probability += res;
+                }
             }
 
             return probability;
@@ -155,17 +176,14 @@ namespace BattleshipSimulator.Opponents.ProbabilityBased
         private int HorizontalShipProbability(Point location, int length, HashSet<Point> shots, HashSet<Point> hits)
         {
             int horizontalProbability = 1;
+            Point checkPoint = new Point(-1, location.Y);
             for (int x = location.X; x < location.X + length; x++)
             {
-                Point checkPoint = new Point(x, location.Y);
-                bool isHit = hits.Contains(checkPoint);
-                if (isHit)
+                checkPoint.X = x;
+                if (hits.Contains(checkPoint))
                     horizontalProbability *= _hitShipWeight;
                 else if (shots.Contains(checkPoint))
-                {
-                    horizontalProbability = 0;
-                    break;
-                }
+                    return 0;
             }
             return horizontalProbability;
         }
@@ -173,17 +191,14 @@ namespace BattleshipSimulator.Opponents.ProbabilityBased
         private int VerticalShipProbability(Point location, int length, HashSet<Point> shots, HashSet<Point> hits)
         {
             int verticalProbability = 1;
+            Point checkPoint = new Point(location.X, -1);
             for (int y = location.Y; y < location.Y + length; y++)
             {
-                Point checkPoint = new Point(location.X, y);
-                bool isHit = hits.Contains(checkPoint);
-                if (isHit)
+                checkPoint.Y = y;
+                if (hits.Contains(checkPoint))
                     verticalProbability *= _hitShipWeight;
                 else if (shots.Contains(checkPoint))
-                {
-                    verticalProbability = 0;
-                    break;
-                }
+                    return 0;
             }
             return verticalProbability;
         }

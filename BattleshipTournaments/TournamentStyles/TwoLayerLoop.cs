@@ -90,7 +90,6 @@ namespace BattleshipTournaments.TournamentStyles
             Dictionary<string, int> wins = new Dictionary<string, int>();
             Dictionary<string, int> looses = new Dictionary<string, int>();
             Dictionary<string, long> processingTime = new Dictionary<string, long>();
-            Dictionary<string, int> totalRounds = new Dictionary<string, int>();
             Dictionary<string, int> shots = new Dictionary<string, int>();
             Dictionary<string, int> hits = new Dictionary<string, int>();
             Dictionary<string, int> score = new Dictionary<string, int>();
@@ -99,17 +98,14 @@ namespace BattleshipTournaments.TournamentStyles
 
             foreach (var task in tasks)
             {
-                DictionaryHelper.AddOrIncrement(totalRounds, task.Result.AttackerReport.Name, 1);
-                DictionaryHelper.AddOrIncrement(totalRounds, task.Result.DefenderReport.Name, 1);
-
                 DictionaryHelper.AddOrIncrement(processingTime, task.Result.AttackerReport.Name, task.Result.AttackerReport.ProcessingTime);
                 DictionaryHelper.AddOrIncrement(processingTime, task.Result.DefenderReport.Name, task.Result.DefenderReport.ProcessingTime);
 
                 DictionaryHelper.AddOrIncrement(wins, task.Result.AttackerReport.Name, task.Result.AttackerReport.Won);
                 DictionaryHelper.AddOrIncrement(wins, task.Result.DefenderReport.Name, task.Result.DefenderReport.Won);
 
-                DictionaryHelper.AddOrIncrement(looses, task.Result.AttackerReport.Name, rounds - task.Result.AttackerReport.Won);
-                DictionaryHelper.AddOrIncrement(looses, task.Result.DefenderReport.Name, rounds - task.Result.DefenderReport.Won);
+                DictionaryHelper.AddOrIncrement(looses, task.Result.AttackerReport.Name, task.Result.AttackerReport.Lost);
+                DictionaryHelper.AddOrIncrement(looses, task.Result.DefenderReport.Name, task.Result.DefenderReport.Lost);
 
                 DictionaryHelper.AddOrIncrement(shots, task.Result.AttackerReport.Name, task.Result.AttackerReport.Shots);
                 DictionaryHelper.AddOrIncrement(shots, task.Result.DefenderReport.Name, task.Result.DefenderReport.Shots);
@@ -129,15 +125,15 @@ namespace BattleshipTournaments.TournamentStyles
 
             foreach (var key in score.Keys)
             {
-                processingTime[key] = processingTime[key] / totalRounds[key];
-                wins[key] = wins[key] / totalRounds[key];
-                looses[key] = looses[key] / totalRounds[key];
-                shots[key] = shots[key] / totalRounds[key];
-                hits[key] = hits[key] / totalRounds[key];
+                processingTime[key] = processingTime[key] / (rounds * score.Keys.Count);
+                shots[key] = shots[key] / (rounds * score.Keys.Count);
+                hits[key] = hits[key] / (rounds * score.Keys.Count);
 
-                shotEfficiency[key] = Math.Round(shotEfficiency[key] / totalRounds[key], 2);
-                winRate[key] = Math.Round(winRate[key] / totalRounds[key], 2);
-                score[key] = score[key] / totalRounds[key];
+                wins[key] = wins[key] / score.Keys.Count;
+                looses[key] = looses[key] / score.Keys.Count;
+                shotEfficiency[key] = Math.Round(shotEfficiency[key] / score.Keys.Count, 2);
+                winRate[key] = Math.Round(winRate[key] / score.Keys.Count, 2);
+                score[key] = score[key] / score.Keys.Count;
             }
 
             return new RunReport(rounds, wins, looses, winRate, shots, hits, shotEfficiency, processingTime, score);

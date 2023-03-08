@@ -44,7 +44,7 @@
             <ComboBox x:Name="DefenderNameCombobox" Grid.Column="1" Grid.Row="1" Style="{StaticResource StandartComboboxStyle}"/>
 
             <ScrollViewer Grid.Row="2" Grid.ColumnSpan="2">
-                <DataGrid x:Name="ResultsGrid" Background="#B2203671"/>
+                <StackPanel x:Name="ResultsPanel" Margin="5" Background="#B2203671"/>
             </ScrollViewer>
         </Grid>
 

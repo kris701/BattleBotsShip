@@ -99,32 +99,32 @@ namespace BattleshipTournaments.TournamentStyles
 
             foreach (var task in tasks)
             {
-                DictionaryHelper.AddOrIncrement(totalRounds, task.Result.AttackerName, 1);
-                DictionaryHelper.AddOrIncrement(totalRounds, task.Result.DefenderName, 1);
+                DictionaryHelper.AddOrIncrement(totalRounds, task.Result.AttackerReport.Name, 1);
+                DictionaryHelper.AddOrIncrement(totalRounds, task.Result.DefenderReport.Name, 1);
 
-                DictionaryHelper.AddOrIncrement(processingTime, task.Result.AttackerName, task.Result.AttackerProcessingTime);
-                DictionaryHelper.AddOrIncrement(processingTime, task.Result.DefenderName, task.Result.DefenderProcessingTime);
+                DictionaryHelper.AddOrIncrement(processingTime, task.Result.AttackerReport.Name, task.Result.AttackerReport.ProcessingTime);
+                DictionaryHelper.AddOrIncrement(processingTime, task.Result.DefenderReport.Name, task.Result.DefenderReport.ProcessingTime);
 
-                DictionaryHelper.AddOrIncrement(wins, task.Result.AttackerName, task.Result.AttackerWon);
-                DictionaryHelper.AddOrIncrement(wins, task.Result.DefenderName, task.Result.DefenderWon);
+                DictionaryHelper.AddOrIncrement(wins, task.Result.AttackerReport.Name, task.Result.AttackerReport.Won);
+                DictionaryHelper.AddOrIncrement(wins, task.Result.DefenderReport.Name, task.Result.DefenderReport.Won);
 
-                DictionaryHelper.AddOrIncrement(looses, task.Result.AttackerName, rounds - task.Result.AttackerWon);
-                DictionaryHelper.AddOrIncrement(looses, task.Result.DefenderName, rounds - task.Result.DefenderWon);
+                DictionaryHelper.AddOrIncrement(looses, task.Result.AttackerReport.Name, rounds - task.Result.AttackerReport.Won);
+                DictionaryHelper.AddOrIncrement(looses, task.Result.DefenderReport.Name, rounds - task.Result.DefenderReport.Won);
 
-                DictionaryHelper.AddOrIncrement(shots, task.Result.AttackerName, task.Result.AttackerShots);
-                DictionaryHelper.AddOrIncrement(shots, task.Result.DefenderName, task.Result.DefenderShots);
+                DictionaryHelper.AddOrIncrement(shots, task.Result.AttackerReport.Name, task.Result.AttackerReport.Shots);
+                DictionaryHelper.AddOrIncrement(shots, task.Result.DefenderReport.Name, task.Result.DefenderReport.Shots);
 
-                DictionaryHelper.AddOrIncrement(hits, task.Result.AttackerName, task.Result.AttackerHits);
-                DictionaryHelper.AddOrIncrement(hits, task.Result.DefenderName, task.Result.DefenderHits);
+                DictionaryHelper.AddOrIncrement(hits, task.Result.AttackerReport.Name, task.Result.AttackerReport.Hits);
+                DictionaryHelper.AddOrIncrement(hits, task.Result.DefenderReport.Name, task.Result.DefenderReport.Hits);
 
-                DictionaryHelper.AddOrIncrement(shotEfficiency, task.Result.AttackerName, task.Result.AttackerShotEfficiency);
-                DictionaryHelper.AddOrIncrement(shotEfficiency, task.Result.DefenderName, task.Result.DefenderShotEfficiency);
+                DictionaryHelper.AddOrIncrement(shotEfficiency, task.Result.AttackerReport.Name, task.Result.AttackerReport.ShotEfficiency);
+                DictionaryHelper.AddOrIncrement(shotEfficiency, task.Result.DefenderReport.Name, task.Result.DefenderReport.ShotEfficiency);
                 
-                DictionaryHelper.AddOrIncrement(winRate, task.Result.AttackerName, task.Result.AttackerWinRate);
-                DictionaryHelper.AddOrIncrement(winRate, task.Result.DefenderName, task.Result.DefenderWinRate);
+                DictionaryHelper.AddOrIncrement(winRate, task.Result.AttackerReport.Name, task.Result.AttackerReport.WinRate);
+                DictionaryHelper.AddOrIncrement(winRate, task.Result.DefenderReport.Name, task.Result.DefenderReport.WinRate);
 
-                DictionaryHelper.AddOrIncrement(score, task.Result.AttackerName, task.Result.AttackerScore);
-                DictionaryHelper.AddOrIncrement(score, task.Result.DefenderName, task.Result.DefenderScore);
+                DictionaryHelper.AddOrIncrement(score, task.Result.AttackerReport.Name, task.Result.AttackerReport.Score);
+                DictionaryHelper.AddOrIncrement(score, task.Result.DefenderReport.Name, task.Result.DefenderReport.Score);
             }
 
             foreach (var key in score.Keys)

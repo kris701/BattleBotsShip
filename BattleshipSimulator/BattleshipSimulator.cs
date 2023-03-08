@@ -131,7 +131,10 @@ namespace BattleshipSimulator
                 defenderProcessingPower += result.DefenderProcessingTime;
             }
 
-            return new RunReport(rounds, attackerName, attackerWon, attackerProcessingPower, attackerShots, attackerHits, defenderName, defenderWon, defenderProcessingPower, defenderShots, defenderHits);
+            return new RunReport(
+                new OpponentReport(rounds, attackerName, attackerWon, attackerShots, attackerHits, attackerProcessingPower),
+                new OpponentReport(rounds, defenderName, defenderWon, defenderShots, defenderHits, defenderProcessingPower)
+                );
         }
 
         public async Task<IRunReport> RunSingleSimulationAsync(IOpponent attacker, IOpponent defender, List<IBoard> attackerBoardOptions, List<IBoard> defenderBoardOptions, Func<IGameSimulator, Task>? updateFunc, CancellationToken cancellationToken)

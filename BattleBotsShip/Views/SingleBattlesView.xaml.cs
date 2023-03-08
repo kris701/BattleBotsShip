@@ -110,7 +110,23 @@ namespace BattleBotsShip.Views
 
         private void Report(IRunReport report)
         {
-            ResultsGrid.ItemsSource = new List<IRunReport>() { report };
+            ResultsPanel.Children.Clear();
+            ResultsPanel.Children.Add(GenerateOpponentResultPanel(report.AttackerReport));
+            ResultsPanel.Children.Add(GenerateOpponentResultPanel(report.DefenderReport));
+        }
+
+        private StackPanel GenerateOpponentResultPanel(IOpponentReport report)
+        {
+            var panel = new StackPanel();
+            panel.Background = Brushes.Gray;
+            panel.Margin = new Thickness(5);
+            foreach (var prop in report.GetType().GetProperties())
+                panel.Children.Add(new Label()
+                {
+                    Foreground = Brushes.White,
+                    Content = $"{prop.Name} : {prop.GetValue(report)}"
+                });
+            return panel;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)

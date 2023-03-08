@@ -12,8 +12,8 @@ namespace BattleshipModels
 {
     public class BoardModel : IBoard
     {
-        [JsonIgnore]
         private bool _haveBeenTamperedWith = false;
+        [JsonIgnore]
         public bool HaveBeenTamperedWith { get {
                 if (_haveBeenTamperedWith)
                     return true;

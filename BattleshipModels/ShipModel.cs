@@ -36,7 +36,6 @@ namespace BattleshipModels
             }
         }
 
-        [JsonConstructor]
         public ShipModel(int length, IShip.OrientationDirection orientation, Point location)
         {
             Length = length;
@@ -44,6 +43,12 @@ namespace BattleshipModels
             _location = location;
         }
 
+        /// <summary>
+        /// Says if a point is within a ship's are or not
+        /// Warning: This will trigger the tamper warning
+        /// </summary>
+        /// <param name="point"></param>
+        /// <returns></returns>
         public bool IsPointWithin(Point point)
         {
             if (Orientation == IShip.OrientationDirection.EW)
@@ -63,11 +68,11 @@ namespace BattleshipModels
             return false;
         }
 
-        public override bool Equals(object? obj)
+        public override bool Equals(object? other)
         {
-            if (obj == null && this == null)
+            if (other == null && this == null)
                 return true;
-            if (obj is ShipModel ship)
+            if (other is ShipModel ship)
             {
                 return  ship.Length == Length &&
                         ship._orientation == _orientation &&

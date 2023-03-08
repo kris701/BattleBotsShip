@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BattleshipModels
 {
-    public interface IShip : ICloneable
+    public interface IShip : ICloneable, IEquatable<object>
     {
         public bool HaveBeenTamperedWith { get; }
 
@@ -18,6 +18,5 @@ namespace BattleshipModels
         public Point Location { get; }
 
         public bool IsPointWithin(Point point);
-
     }
 }

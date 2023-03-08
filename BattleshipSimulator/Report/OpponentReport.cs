@@ -24,7 +24,7 @@ namespace BattleshipSimulator.Report
 
         private int GetProcessingTimePenalty(long processingTime)
         {
-            return Math.Min((int)Math.Pow(processingTime, 1.2), 1000);
+            return Math.Min((int)Math.Pow(processingTime, 1.5), 1000);
         }
 
         public OpponentReport(int rounds, string name, int won, int shots, int hits, long processingTime)

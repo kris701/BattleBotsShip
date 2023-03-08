@@ -15,11 +15,15 @@ namespace BattleshipSimulator.Opponents.ProbabilityBased
         // Some high value, to increase the likelyhood of the AI attempting to shoot a location that has a partially sunk ship
         private int _hitShipWeight = 50;
         private HashSet<Point> _uncoveredPoints = new HashSet<Point>();
+        private HashSet<Point> _availableFirePoints = new HashSet<Point>();
         List<IShip> _aliveShips = new List<IShip>();
 
         public override void Initialize(IBoardSimulator opponentBoard)
         {
             _aliveShips = GetAliveShips(opponentBoard);
+            for (int x = 0; x < opponentBoard.Board.Width; x++)
+                for (int y = 0; y < opponentBoard.Board.Height; y++)
+                    _availableFirePoints.Add(new Point(x,y));
             IsInitialized = true;
         }
 
@@ -34,31 +38,28 @@ namespace BattleshipSimulator.Opponents.ProbabilityBased
 
         private Point GetBestPoint(IBoardSimulator opponentBoard)
         {
-            Point currentBestPoint = new Point(-1, -1);
-            int bestProbability = 0;
-            for (int x = 0; x < opponentBoard.Board.Width; x++)
+            Point currentBestPoint = _availableFirePoints.First();
+            int bestProbability = GetProbabilityForPoint(opponentBoard, currentBestPoint);
+            foreach (var point in _availableFirePoints)
             {
-                for (int y = 0; y < opponentBoard.Board.Height; y++)
+                int probability = GetProbabilityForPoint(opponentBoard, point);
+                if (probability > bestProbability)
                 {
-                    Point newPoint = new Point(x, y);
-                    if (!opponentBoard.Shots.Contains(newPoint))
-                    {
-                        int probability = 0;
-
-                        foreach (var ship in _aliveShips)
-                            probability += TotalShipProbability(newPoint, opponentBoard.Shots, _uncoveredPoints, ship.Length, opponentBoard.Board.Width, opponentBoard.Board.Height);
-
-                        if (probability >= bestProbability)
-                        {
-                            bestProbability = probability;
-                            currentBestPoint.X = x;
-                            currentBestPoint.Y = y;
-                        }
-                    }
+                    bestProbability = probability;
+                    currentBestPoint = point;
                 }
             }
+            _availableFirePoints.Remove(currentBestPoint);
 
             return currentBestPoint;
+        }
+
+        private int GetProbabilityForPoint(IBoardSimulator opponentBoard, Point point)
+        {
+            int probability = 0;
+            foreach (var ship in _aliveShips)
+                probability += TotalShipProbability(point, opponentBoard.Shots, _uncoveredPoints, ship.Length, opponentBoard.Board.Width, opponentBoard.Board.Height);
+            return probability;
         }
 
         private HashSet<Point> GetUncoveredHitPoints(IBoardSimulator opponentBoard)
@@ -138,10 +139,12 @@ namespace BattleshipSimulator.Opponents.ProbabilityBased
             for (int x = location.X; x < location.X + length; x++)
             {
                 checkPoint.X = x;
-                if (hits.Contains(checkPoint))
-                    horizontalProbability *= _hitShipWeight;
-                else if (shots.Contains(checkPoint))
-                    return 0;
+                if (shots.Contains(checkPoint))
+                {
+                    if (hits.Contains(checkPoint))
+                        horizontalProbability *= _hitShipWeight;
+                    else return 0;
+                }
             }
             return horizontalProbability;
         }
@@ -153,10 +156,12 @@ namespace BattleshipSimulator.Opponents.ProbabilityBased
             for (int y = location.Y; y < location.Y + length; y++)
             {
                 checkPoint.Y = y;
-                if (hits.Contains(checkPoint))
-                    verticalProbability *= _hitShipWeight;
-                else if (shots.Contains(checkPoint))
-                    return 0;
+                if (shots.Contains(checkPoint))
+                {
+                    if (hits.Contains(checkPoint))
+                        verticalProbability *= _hitShipWeight;
+                    else return 0;
+                }
             }
             return verticalProbability;
         }

@@ -61,17 +61,16 @@ namespace BattleshipSimulator
                         new BoardSimulator(boards.Item1),
                         attacker,
                         new BoardSimulator(boards.Item2),
-                        defender,
-                        IGameSimulator.TurnState.Attacker);
+                        defender);
 
                     long attackerProcessingTime = 0;
                     long defenderProcessingTime = 0;
 
+                    Stopwatch watch = new Stopwatch();
                     var res = IGameSimulator.WinnerState.None;
                     while (res == IGameSimulator.WinnerState.None)
                     {
-                        Stopwatch watch = new Stopwatch();
-                        watch.Start();
+                        watch.Restart();
                         res = game.Update();
                         watch.Stop();
 
@@ -146,8 +145,7 @@ namespace BattleshipSimulator
                 new BoardSimulator(boards.Item1),
                 attacker,
                 new BoardSimulator(boards.Item2),
-                defender,
-                IGameSimulator.TurnState.Attacker);
+                defender);
 
             long attackerProcessingTime = 0;
             long defenderProcessingTime = 0;

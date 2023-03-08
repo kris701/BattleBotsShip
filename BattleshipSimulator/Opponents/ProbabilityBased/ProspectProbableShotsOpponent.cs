@@ -66,6 +66,11 @@ namespace BattleshipSimulator.Opponents.ProbabilityBased
         {
             HashSet<Point> looseHits = GetUncoveredHitPoints(opponentBoard);
 
+            List<IShip> aliveShips = new List<IShip>();
+            foreach (var ship in opponentBoard.Board.Ships)
+                if (!opponentBoard.LostShips.Contains(ship))
+                    aliveShips.Add(ship);
+
             ProbabilityPoint currentBestPoint = new ProbabilityPoint(-1, -1, 0);
             for (int x = 0; x < opponentBoard.Board.Width; x++)
             {
@@ -76,9 +81,8 @@ namespace BattleshipSimulator.Opponents.ProbabilityBased
                     {
                         int probability = 0;
 
-                        foreach (var ship in opponentBoard.Board.Ships)
-                            if (!opponentBoard.LostShips.Contains(ship))
-                                probability += TotalShipProbability(newPoint, opponentBoard.Shots, looseHits, ship.Length, opponentBoard.Board.Width, opponentBoard.Board.Height);
+                        foreach (var ship in aliveShips)
+                            probability += TotalShipProbability(newPoint, opponentBoard.Shots, looseHits, ship.Length, opponentBoard.Board.Width, opponentBoard.Board.Height);
 
                         if (probability > currentBestPoint.Probability)
                             currentBestPoint = new ProbabilityPoint(x, y, probability);

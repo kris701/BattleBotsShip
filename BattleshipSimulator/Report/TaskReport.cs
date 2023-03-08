@@ -13,14 +13,12 @@ namespace BattleshipSimulator.Report
         public long AttackerProcessingTime { get; set; }
         public int AttackerShots { get; set; }
         public int AttackerHits { get; set; }
-        public double AttackerShotEfficiency => AttackerHits / AttackerShots;
 
         public string DefenderName { get; set; }
         public int DefenderWon { get; set; }
         public long DefenderProcessingTime { get; set; }
         public int DefenderShots { get; set; }
         public int DefenderHits { get; set; }
-        public double DefenderShotEfficiency => AttackerHits / AttackerShots;
 
         public TaskReport(string attackerName, int attackerWon, long attackerProcessingTime, int attackerShots, int attackerHits, string defenderName, int defenderWon, long defenderProcessingTime, int defenderShots, int defenderHits)
         {

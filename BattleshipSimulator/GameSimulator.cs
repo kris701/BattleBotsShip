@@ -10,13 +10,13 @@ namespace BattleshipSimulator
         public IOpponent DefenderOpponent { get; }
         public TurnState Turn { get; internal set; }
 
-        public GameSimulator(IBoardSimulator attackerBoard, IOpponent attackerOpponent, IBoardSimulator defenderBoard, IOpponent defenderOpponent, TurnState turn)
+        public GameSimulator(IBoardSimulator attackerBoard, IOpponent attackerOpponent, IBoardSimulator defenderBoard, IOpponent defenderOpponent)
         {
             AttackerBoard = attackerBoard;
             AttackerOpponent = attackerOpponent;
             DefenderBoard = defenderBoard;
             DefenderOpponent = defenderOpponent;
-            Turn = turn;
+            Turn = TurnState.Attacker;
         }
 
         public WinnerState Update()

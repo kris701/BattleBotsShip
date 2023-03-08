@@ -37,6 +37,7 @@ namespace BattleshipSimulatorTests.Opponents
             // ARRANGE
             var opponent = OpponentBuilder.GetOpponent(opponentName);
             IBoardSimulator simulator = new BoardSimulator(testBoard);
+            opponent.Initialize(simulator);
 
             // ACT
             int previousShots = 0;
@@ -60,6 +61,7 @@ namespace BattleshipSimulatorTests.Opponents
             // ARRANGE
             var opponent = OpponentBuilder.GetOpponent(opponentName);
             IBoardSimulator simulator = new BoardSimulator(testBoard);
+            opponent.Initialize(simulator);
 
             // ACT
             int previousShots = 0;
@@ -83,6 +85,7 @@ namespace BattleshipSimulatorTests.Opponents
             // ARRANGE
             var opponent = OpponentBuilder.GetOpponent(opponentName);
             IBoardSimulator simulator = new BoardSimulator(testBoard);
+            opponent.Initialize(simulator);
 
             // ACT
             while (simulator.Shots.Count != (testBoard.Width * testBoard.Height))
@@ -104,6 +107,7 @@ namespace BattleshipSimulatorTests.Opponents
             // ARRANGE
             var opponent = OpponentBuilder.GetOpponent(opponentName);
             IBoardSimulator simulator = new BoardSimulator(testBoard);
+            opponent.Initialize(simulator);
 
             // ACT
             while (simulator.Shots.Count != (testBoard.Width * testBoard.Height))
@@ -125,6 +129,7 @@ namespace BattleshipSimulatorTests.Opponents
             // ARRANGE
             var opponent = OpponentBuilder.GetOpponent(opponentName);
             IBoardSimulator simulator = new BoardSimulator(testBoard);
+            opponent.Initialize(simulator);
             Assert.IsFalse(testBoard.HaveBeenTamperedWith);
             foreach(var ship in testBoard.Ships)
                 Assert.IsFalse(ship.HaveBeenTamperedWith);
@@ -150,6 +155,7 @@ namespace BattleshipSimulatorTests.Opponents
             // ARRANGE
             var opponent = OpponentBuilder.GetOpponent(opponentName);
             IBoardSimulator simulator = new BoardSimulator(testBoard);
+            opponent.Initialize(simulator);
             Assert.IsFalse(testBoard.HaveBeenTamperedWith);
             foreach (var ship in testBoard.Ships)
                 Assert.IsFalse(ship.HaveBeenTamperedWith);
